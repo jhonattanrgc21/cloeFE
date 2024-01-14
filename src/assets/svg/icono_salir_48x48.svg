@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48">
+  <g id="icono_salir_48x48" transform="translate(592 -5131)">
+    <rect id="Rectángulo_11038" data-name="Rectángulo 11038" width="48" height="48" transform="translate(-592 5131)" fill="none"/>
+    <path id="logout_FILL0_wght300_GRAD0_opsz24" d="M143.829-784a3.7,3.7,0,0,1-2.716-1.112A3.7,3.7,0,0,1,140-787.827v-28.344a3.7,3.7,0,0,1,1.112-2.716A3.7,3.7,0,0,1,143.829-820h14.192v3.177H143.829a.623.623,0,0,0-.448.2.623.623,0,0,0-.2.448v28.344a.623.623,0,0,0,.2.448.623.623,0,0,0,.448.2h14.192V-784Zm23.131-8.959-2.2-2.3,5.156-5.156H151.852v-3.176h18.065l-5.156-5.156,2.2-2.3L176-802Z" transform="translate(-726.001 5956.999)" fill="rgba(255,255,255,0.74)"/>
+  </g>
+</svg>
