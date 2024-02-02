@@ -1,4 +1,6 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
-@import 'assets/styles/custom'
+@import 'assets/styles/custom';
+@import '@angular/cdk/overlay-prebuilt.css';
+@import "~@ng-select/ng-select/themes/default.theme.css";

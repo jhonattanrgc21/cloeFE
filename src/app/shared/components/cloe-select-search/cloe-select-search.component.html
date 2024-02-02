@@ -1,0 +1,23 @@
+<label [for]="forName" (click)="onLabelClick()" [ngClass]="{
+  'text-success-500': isInputActive,
+  'text-danger-500': control.invalid && control.touched,
+  'text-disabled': isDisabled
+}" [class.text-success-500]="isInputActive" [class.text-danger-500]="control.invalid && control.touched">
+  {{ label }}
+</label>
+
+<ng-select #mySelect [placeholder]="placeholder" [formControl]="control" [id]="forName"
+  [ngClass]="{
+		'border-success-500': isInputActive,
+		'ring-success-500': isInputActive,
+    'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+    'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+    'border-red-500': control.invalid && (control.dirty || control.touched),
+    'ring-danger-500': control.invalid && (control.dirty || control.touched),
+  }" (focus)="onInputFocus()" (blur)="onInputBlur()">
+  <ng-option *ngFor="let option of options" [value]="option.id">{{ option.name }}</ng-option>
+</ng-select>
+
+<ng-container *ngIf="control.invalid && control.touched">
+  <p class="mt-0.5 ml-3 text-sm text-danger-500">Este campo es obligatorio</p>
+</ng-container>

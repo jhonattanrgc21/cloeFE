@@ -1,0 +1,12 @@
+form {
+
+	@apply w-full;
+
+	label {
+		@apply block tracking-wide text-[#00000099] text-sm font-medium mb-2;
+	}
+
+	input {
+		@apply block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500;
+	}
+}
