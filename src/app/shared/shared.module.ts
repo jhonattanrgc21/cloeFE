@@ -4,17 +4,18 @@ import { CloeInputFieldComponent } from './components/cloe-input-field/cloe-inpu
 import { ReactiveFormsModule } from '@angular/forms';
 import { CloeSelectSearchComponent } from './components/cloe-select-search/cloe-select-search.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AlertComponent } from './components/alert/alert.component';
 
 
 
 
 @NgModule({
-  declarations: [CloeInputFieldComponent, CloeSelectSearchComponent],
-	exports: [CloeInputFieldComponent, CloeSelectSearchComponent],
-  imports: [
-    CommonModule,
+	declarations: [CloeInputFieldComponent, CloeSelectSearchComponent, AlertComponent],
+	exports: [CloeInputFieldComponent, CloeSelectSearchComponent, AlertComponent],
+	imports: [
+		CommonModule,
 		ReactiveFormsModule,
 		NgSelectModule
-  ]
+	]
 })
 export class SharedModule { }
