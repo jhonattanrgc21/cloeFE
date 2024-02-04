@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { LandingModule } from './landing/landing.module';
+import { AuthModule } from './auth/auth.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @NgModule({
   declarations: [
@@ -15,8 +18,11 @@ import { NgSelectModule } from '@ng-select/ng-select';
     BrowserModule,
     AppRoutingModule,
 		ReactiveFormsModule,
+		NgSelectModule,
 		SharedModule,
-		NgSelectModule
+		LandingModule,
+		AuthModule,
+		DashboardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
