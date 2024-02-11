@@ -1,0 +1,38 @@
+.background{
+	background-image: url('../../assets/landing_page_assets/images/jpg/green_background_412x778.jpg');
+	background-repeat:no-repeat;
+}
+
+.customer-container{
+	padding: 0 16px;
+}
+
+@media (min-width: 768px) {
+	.background {
+			background-image: url('../../assets/landing_page_assets/images/jpg/green_background_768x1024.jpg');
+	}
+
+	.customer-container{
+		padding: 0 168px;
+	}
+}
+
+@media (min-width: 1440px) {
+	.background {
+			background-image: url('../../assets/landing_page_assets/images/jpg/green_background_1440x900.jpg');
+	}
+
+	.customer-container{
+		padding: 0 504px;
+	}
+}
+
+@media (min-width: 1920px) {
+	.background {
+			background-image: url('../../assets/landing_page_assets/images/jpg/green_background_1920x1080.jpg');
+	}
+
+	.customer-container{
+		padding: 0 744px;
+	}
+}

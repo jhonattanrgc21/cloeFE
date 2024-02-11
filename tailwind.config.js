@@ -43,7 +43,27 @@ module.exports = {
 				light: '#0000001F',
 				dark: '#000000DE',
 				disabled: '#00000061'
-      }
+      },
+			fontFamily: {
+        'poppins-black': ['Poppins-Black', 'sans-serif'],
+        'poppins-extrabold': ['Poppins-ExtraBold', 'sans-serif'],
+        'poppins-italic': ['Poppins-Italic', 'sans-serif'],
+        'poppins-mediumitalic': ['Poppins-MediumItalic', 'sans-serif'],
+        'poppins-thin': ['Poppins-Thin', 'sans-serif'],
+        'poppins-blackitalic': ['Poppins-BlackItalic', 'sans-serif'],
+        'poppins-extrabolditalic': ['Poppins-ExtraBoldItalic', 'sans-serif'],
+        'poppins-light': ['Poppins-Light', 'sans-serif'],
+        'poppins-regular': ['Poppins-Regular', 'sans-serif'],
+        'poppins-thinitalic': ['Poppins-ThinItalic', 'sans-serif'],
+        'poppins-bold': ['Poppins-Bold', 'sans-serif'],
+        'poppins-extralight': ['Poppins-ExtraLight', 'sans-serif'],
+        'poppins-lightitalic': ['Poppins-LightItalic', 'sans-serif'],
+        'poppins-semibold': ['Poppins-SemiBold', 'sans-serif'],
+        'poppins-bolditalic': ['Poppins-BoldItalic', 'sans-serif'],
+        'poppins-extralightitalic': ['Poppins-ExtraLightItalic', 'sans-serif'],
+        'poppins-medium': ['Poppins-Medium', 'sans-serif'],
+        'poppins-semibolditalic': ['Poppins-SemiBoldItalic', 'sans-serif'],
+      },
     },
   },
   plugins: [
