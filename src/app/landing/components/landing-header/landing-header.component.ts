@@ -1,0 +1,13 @@
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-landing-header',
+  templateUrl: './landing-header.component.html',
+  styleUrls: ['./landing-header.component.scss']
+})
+export class LandingHeaderComponent {
+	isMenuOpen = false;
+	toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
+}

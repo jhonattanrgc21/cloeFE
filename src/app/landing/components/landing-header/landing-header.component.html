@@ -1,0 +1,34 @@
+<header class="bg-success-500 text-white sm:flex sm:justify-between">
+	<div class="container mx-auto flex justify-between items-center">
+		<!-- Logo -->
+		<div class="flex items-center px-4 py-5">
+			<img
+				src="./../../../../assets/landing_page_assets/logo/svg/logo_cloe_negativo.svg"
+				alt="Logo"
+				class="w-20 h-6"
+			/>
+		</div>
+
+		<!-- Icono de hamburguesa para pantallas pequeñas -->
+		<div class="sm:hidden">
+			<button class="block pr-3 py-5" (click)="toggleMenu()">
+				<ng-container *ngIf="!isMenuOpen; else noMenuOpen">
+					<img src="./../../../../assets/svg/icono_hamburguesa_24x24.svg" alt="Logo" class="w-20 h-6 " />
+				</ng-container>
+
+				<ng-template #noMenuOpen>
+					<img src="./../../../../assets/svg/icono_x_24x24_white.svg" alt="Logo" class="w-20 h-6" />
+				</ng-template>
+			</button>
+		</div>
+	</div>
+
+	<!-- Menú principal -->
+	<nav [ngClass]="{ hidden: !isMenuOpen, block: isMenuOpen }" class="w-2/3 px-2 pt-2 pb-4 sm:flex sm:justify-between sm:items-center">
+		<a href="#" class="block px-2 py-1 font-semibold rounded hover:bg-success-600">Buscar centros de acopio</a>
+		<a href="#" class="mt-1 block px-2 py-1 font-semibold rounded hover:bg-success-600 sm:mt-0">¿Qué es CLOE?</a>
+		<button class="mt-1 w-full md:w-auto block px-2 py-1 font-semibold rounded bg-blue-500 text-white sm:mt-0">
+			Iniciar sesión
+		</button>
+	</nav>
+</header>
