@@ -2,25 +2,24 @@
 	<p class="font-poppins-regular">Para ingresar al sistema debes tener una cuenta activada por nuestro equipo. ¿No la tienes? Contáctanos</p>
 </div>
 
-<div class="m-auto px-4 py-10 md:px-10 bg-white max-w-sm rounded overflow-hidden shadow-lg">
+<div class="card-container m-auto px-4 py-10 md:px-10 bg-white rounded overflow-hidden shadow-lg">
 	<p class="text-center text-xl font-poppins-medium text-success-500 mb-6">Iniciar sesión</p>
 
 	<form [formGroup]="loginForm" class="flex flex-col gap-6">
-		<app-cloe-input-field  [label]="'Usuario'" formControlName="username" forName="username" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+		<app-cloe-input-field  [label]="'Usuario'" formControlName="username" [forName]="'usernameLogin'" [typeInput]="'email'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 
-		<app-cloe-input-field [label]="'Contraseña'" formControlName="password" [typeInput]="'password'" [forName]="'password'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+		<app-cloe-input-field [label]="'Contraseña'" formControlName="password" [typeInput]="'password'" [forName]="'passwordLogin'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 
 		<div class="mt-1 flex items-center">
 			<input type="checkbox" class="h-5 w-5 border-success-700 rounded appearance-none checked:bg-success-600 checked:border-success-800 mr-2">
 			<label for="remember" class="font-poppins-regular text-gray-600 m-0">Recordar este dispositivo</label>
 		</div>
 
-		<button type="button" class="mt-2 btn btn-lg btn-primary__success">Iniciar sesión</button>
+		<button type="button" class="mt-2 btn btn-lg btn-primary__success" [disabled]="loginForm.invalid">Iniciar sesión</button>
 
 	</form>
 
 	<div class="mt-4 text-center">
-		<a href="#" class="font-poppins-medium outline-none focus:outline-none text-success-500 hover:text-success-600 hover:underline checked:bg-success-600 checked:border-success-800 ">Recuperar contraseña</a>
+		<a routerLink="/auth/forgot-password" class="font-poppins-medium outline-none focus:outline-none text-success-500 hover:text-success-600 hover:underline checked:bg-success-600 checked:border-success-800 ">Recuperar contraseña</a>
 	</div>
-
 </div>

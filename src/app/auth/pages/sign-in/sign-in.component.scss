@@ -1,0 +1,9 @@
+.card-container{
+	width: 380px;
+}
+
+@media (min-width: 768px) {
+	.card-container{
+		width: 432px;
+	}
+}

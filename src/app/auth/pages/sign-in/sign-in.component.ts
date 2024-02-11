@@ -12,8 +12,12 @@ export class SignInComponent {
 
 	constructor(private fb: FormBuilder, private router: Router) {
 		this.loginForm = this.fb.group({
-			username: ['', [Validators.required]],
-			password: ['', [Validators.required, Validators.minLength(4)]],
+			username: [, [Validators.required]],
+			password: [, [Validators.required, Validators.minLength(4)]],
 		});
+	}
+
+	isNotValid(field: string): boolean {
+		return this.loginForm.controls[field].invalid && this.loginForm.controls[field].touched;
 	}
 }
