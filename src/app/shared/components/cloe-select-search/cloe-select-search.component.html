@@ -1,4 +1,4 @@
-<label [for]="forName" (click)="onLabelClick()" [ngClass]="{
+<label [for]="forName" class="font-poppins-medium" (click)="onLabelClick()" [ngClass]="{
   'text-success-500': isInputActive,
   'text-danger-500': control.invalid && control.touched,
   'text-disabled': isDisabled
@@ -19,5 +19,5 @@
 </ng-select>
 
 <ng-container *ngIf="control.invalid && control.touched">
-  <p class="mt-0.5 ml-3 text-sm text-danger-500">Este campo es obligatorio</p>
+  <p class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">Este campo es obligatorio</p>
 </ng-container>

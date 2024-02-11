@@ -1,4 +1,4 @@
-<label [for]="forName" [ngClass]="{
+<label [for]="forName" class="font-poppins-medium" [ngClass]="{
 	'text-success-500': isInputActive,
 	'text-danger-500': control.invalid && control.touched,
 	'text-disabled': isDisabled
@@ -16,5 +16,7 @@
 	}" (focus)="onInputFocus()" (blur)="onInputBlur()" />
 
 <ng-container *ngIf="control.invalid && control.touched">
-	<p class="mt-0.5 ml-3 text-sm text-danger-500">Este campo es obligatorio</p>
+	<p *ngIf="control.hasError('required')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">Este campo es obligatorio.</p>
+	<p *ngIf="control.hasError('email')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">El correo es invalido.</p>
+	<p *ngIf="control.hasError('minLength')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">La longitud debe ser de minimo 8 caracteres.</p>
 </ng-container>

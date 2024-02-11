@@ -26,7 +26,6 @@ export class ChangePasswordComponent {
 
 	savePassword() {
 		const changePassword = this.form.value;
-		console.log(changePassword);
 		this.isSavePassword = true;
 	}
 

@@ -1,7 +1,7 @@
 <ng-container *ngIf="isVisible">
 	<div class="fixed bottom-0 w-full flex items-center justify-center font-bold px-10 py-5 border-2 rounded" 	[ngClass]="{'bg-[#13DEB9]': type === 'success', 'border-success-400': type === 'success' ,'text-dark': type === 'success' ,'bg-[#FA896B]': type === 'error', 'border-[#f67d5c]': type === 'error' ,'text-white': type === 'error' }">
 		<div class="w-full">
-			<p class="text-center">{{ message }}</p>
+			<p class="font-poppins-medium text-center">{{ message }}</p>
 		</div>
 		<svg aria-label="Cerrar" (click)="closeAlert()" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5  hover:text-dark hover:w-6 hover:h-6 cursor-pointer" [ngClass]="{'hover:text-white' : type === 'error'}" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>

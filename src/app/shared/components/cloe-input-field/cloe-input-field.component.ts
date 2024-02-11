@@ -10,7 +10,7 @@ export class CloeInputFieldComponent implements ControlValueAccessor, OnInit, On
 
 	@Input() label: string = '';
 	@Input() forName: string = '';
-	@Input() typeInput: 'text' | 'email' | 'password' = 'text' ;
+	@Input() typeInput: 'text' | 'email' | 'password' = 'text';
 	@Input() placeholder: string = '';
 	@Input() isDisabled: boolean = false;
 
