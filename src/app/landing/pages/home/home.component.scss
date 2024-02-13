@@ -1,0 +1,44 @@
+.section-1{
+	height: 622px;
+	background-image: url('../../../../assets/landing_page_assets/images/jpg/show_case_1_412x778.jpg');
+	background-repeat:no-repeat;
+
+	&__container{
+		opacity: 0.85;
+	}
+}
+
+@media (min-width: 768px) {
+	.section-1 {
+		height: 863px;
+		background-image: url('../../../../assets/landing_page_assets/images/jpg/show_case_1_768x1024.jpg');
+		&__container{
+			margin-top: 112px;
+			margin-left: 87px;
+			width: 332px;
+			height: 231px;
+		}
+	}
+
+}
+
+@media (min-width: 1440px) {
+	.section-1 {
+		height: 739px;
+		background-image: url('../../../../assets/landing_page_assets/images/jpg/show_case_1_1440x900.jpg');
+		&__container{
+			margin-top: 112px;
+			margin-left: 87px;
+			width: 610px;
+			height: 275px;
+		}
+	}
+
+}
+
+@media (min-width: 1920px) {
+	.section-1 {
+		height: 919px;
+		background-image: url('../../../../assets/landing_page_assets/images/jpg/show_case_1_1920x1080.jpg');
+}
+}
