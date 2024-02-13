@@ -2,60 +2,38 @@
 	<div class="header-page-container relative">
 		<!-- Logo -->
 		<div class="lg:w-6/12">
-			<img
-				src="./../../../../assets/landing_page_assets/logo/svg/logo_cloe_negativo.svg"
-				alt="Logo"
-				class="w-20 h-6"
-			/>
+			<img src="./../../../../assets/landing_page_assets/logo/svg/logo_cloe_negativo.svg" alt="Logo" class="w-20 h-6" />
 		</div>
 
 		<!-- Icono de hamburguesa para pantallas pequeñas -->
 		<div class="md:hidden">
 			<button class="block" (click)="toggleMenu()">
 				<ng-container *ngIf="!isMenuOpen; else noMenuOpen">
-					<img
-						src="./../../../../assets/svg/icono_hamburguesa_24x24.svg"
-						alt="Logo"
-						class="w-20 h-6"
-					/>
+					<img src="./../../../../assets/svg/icono_hamburguesa_24x24.svg" alt="Logo" class="w-20 h-6" />
 				</ng-container>
 
 				<ng-template #noMenuOpen>
-					<img
-						src="./../../../../assets/svg/icono_x_24x24_white.svg"
-						alt="Logo"
-						class="w-20 h-6"
-					/>
+					<img src="./../../../../assets/svg/icono_x_24x24_white.svg" alt="Logo" class="w-20 h-6" />
 				</ng-template>
 			</button>
 		</div>
 
 		<!-- Menú principal -->
-		<nav
-			class="hidden md:9/12 w-7/12 lg:w-6/12 md:flex md:justify-between md:items-center lg:max-w-[460px]"
-		>
+		<nav class="hidden md:9/12 w-7/12 lg:w-6/12 md:flex md:justify-between md:items-center lg:max-w-[460px]">
 			<ng-container *ngTemplateOutlet="navigationItems"></ng-container>
 		</nav>
 	</div>
 
-	<nav
-		[ngClass]="{ hidden: !isMenuOpen, flex: isMenuOpen }"
-		class="bg-success-500 w-full px-2 pt-2 pb-4 gap-2 flex-col justify-between items-center md:hidden absolute top-14 left-0"
-	>
+	<nav [ngClass]="{ hidden: !isMenuOpen, flex: isMenuOpen }"
+		class="bg-success-500 w-full px-2 pt-2 pb-4 gap-2 flex-col justify-between items-center md:hidden absolute top-14 left-0">
 		<ng-container *ngTemplateOutlet="navigationItems"></ng-container>
 	</nav>
 </header>
 
 <ng-template #navigationItems>
-	<a
-		href="#"
-		class="mt-1 block px-2 py-1 font-semibold rounded hover:bg-success-600 sm:mt-0"
-		>Inicio</a
-	>
-	<a href="#" class="block px-2 py-1 font-semibold rounded hover:bg-success-600"
-		>Buscar centros de acopio</a
-	>
-	<button class="btn btn-secundary__success max-w-md md:max-w-[140px]">
+	<a routerLink="/landing"class="mt-1 block px-2 py-1 font-semibold rounded hover:bg-success-600 sm:mt-0">Inicio</a>
+	<a routerLink="/landing/gathering-center" class="block px-2 py-1 font-semibold rounded hover:bg-success-600">Buscar centros de acopio</a>
+	<button class="btn btn-secundary__success max-w-md md:max-w-[140px]" (click)="redirectToLogin()">
 		Iniciar sesión
 	</button>
 </ng-template>
