@@ -1,3 +1,5 @@
+
+
 <label [for]="forName" class="font-poppins-medium" [ngClass]="{
 	'text-success-500': isInputActive,
 	'text-danger-500': control.invalid && control.touched,
@@ -5,18 +7,30 @@
 }" [class.text-success-500]="isInputActive" [class.text-danger-500]="control.invalid && control.touched">
 	{{ label }}
 </label>
-<input [id]="forName" [placeholder]="placeholder" [disabled]="isDisabled" [formControl]="control" [type]="typeInput"
-	[ngClass]="{
-		'isDisabled': isDisabled,
-		'placeholder:text-[#00000061]': isDisabled,
-		'border-red-500': control.invalid && (control.dirty || control.touched),
-		'outline-none': control.invalid && (control.dirty || control.touched),
-		'ring-1': control.invalid && (control.dirty || control.touched),
-		'ring-danger-500': control.invalid && (control.dirty || control.touched)
-	}" (focus)="onInputFocus()" (blur)="onInputBlur()" />
+<div class="relative">
+<input
+	[id]="forName"
+	[placeholder]="placeholder"
+	[disabled]="isDisabled"
+	[formControl]="control"
+	[type]="typeInput === 'password' && !showPassword ? 'password' : 'text'"
+	class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
+	(focus)="onInputFocus()"
+	(blur)="onInputBlur()"
+/>
+<div *ngIf="typeInput === 'password'" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+	<ng-container *ngIf="!showPassword ; else showPasswordTemplate">
+		<img src="../../../../assets/svg/icono_visibilidad_24x24.svg" (click)="togglePasswordVisibility()" alt="Icono" class="h-6 w-6 cursor-pointer">
+	</ng-container>
+
+	<ng-template #showPasswordTemplate>
+		<img src="../../../../assets/svg/visibility_off.svg" (click)="togglePasswordVisibility()" alt="Icono" class="h-6 w-6 cursor-pointer">
+	</ng-template>
+</div>
+</div>
 
 <ng-container *ngIf="control.invalid && control.touched">
 	<p *ngIf="control.hasError('required')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">Este campo es obligatorio.</p>
-	<p *ngIf="control.hasError('email')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">El correo es invalido.</p>
-	<p *ngIf="control.hasError('minLength')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">La longitud debe ser de minimo 8 caracteres.</p>
+	<p *ngIf="control.hasError('email')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">El correo es inválido.</p>
+	<p *ngIf="control.hasError('minlength')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">La longitud debe ser de mínimo 8 caracteres.</p>
 </ng-container>

@@ -17,6 +17,7 @@ export class CloeInputFieldComponent implements ControlValueAccessor, OnInit, On
 
 	control: FormControl = new FormControl(null);
 	isInputActive: boolean = false;
+	showPassword: boolean = false;
 
 	constructor(@Optional() @Self() private ngControl: NgControl, private cdr: ChangeDetectorRef) {
 
@@ -55,6 +56,10 @@ export class CloeInputFieldComponent implements ControlValueAccessor, OnInit, On
 
 	onInputBlur() {
 		this.isInputActive = false;
+	}
+
+	togglePasswordVisibility() {
+		this.showPassword = !this.showPassword;
 	}
 
 }
