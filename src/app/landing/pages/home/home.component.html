@@ -1,12 +1,18 @@
-<div class="section-1 bg-cover relative ">
-	<div class="w-full h-80 section-1__container absolute bg-success-500 bottom-0 left-0 right-0 md:static md:bg-transparent md:bottom-auto md:left-auto md:right-auto ">
-		<div class="flex flex-col items-center justify-center gap-6  text-white px-4 py-10 font-poppins-regular  md:items-start  md:justify-start  md:text-black md:px-0 md:py-0">
-			<h1 class="text-5xl xl:text-6xl ">Sistema Cloe</h1>
-			<p class="text-center text-base md:text-left ">Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore. Lorem ipsum dolor sit amet, adipiscing elit, sed Diam.</p>
+<div class="section-1 bg-cover relative">
+	<div
+		class="w-full h-80 section-1__container absolute bg-success-500 bottom-0 left-0 right-0 md:static md:bg-transparent md:bottom-auto md:left-auto md:right-auto"
+	>
+		<div
+			class="flex flex-col items-center justify-center gap-6 text-white px-4 py-10 font-poppins-regular md:items-start md:justify-start md:text-black md:px-0 md:py-0"
+		>
+			<h1 class="text-5xl xl:text-6xl">Sistema Cloe</h1>
+			<p class="text-center text-base md:text-left">
+				Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh
+				euismod tincidunt ut laoreet dolore. Lorem ipsum dolor sit amet,
+				adipiscing elit, sed Diam.
+			</p>
 			<div class="w-36">
-				<button  class="btn btn-lg btn-secundary__success">
-					Contáctanos
-				</button>
+				<button class="btn btn-lg btn-secundary__success">Contáctanos</button>
 			</div>
 		</div>
 	</div>
@@ -14,10 +20,49 @@
 
 <div class="section-2">
 	<div class="px-4 py-8 flex flex-col items-center">
-		<p class="text-4xl font-poppins-medium text-success-500 mb-8">Ventajas de Cloe</p>
-		<app-cloe-advantages class="mb-10" [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_ventaja_1_32x32.svg'" [title]="'Ventaja 1'" [message]="'Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.'"></app-cloe-advantages>
-		<app-cloe-advantages class="mb-10" [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_ventaja_2_32x32.svg'" [title]="'Ventaja 2'" [message]="'Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.'"></app-cloe-advantages>
-		<app-cloe-advantages [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_ventaja_3_32x32.svg'" [title]="'Ventaja 3'" [message]="'Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.'"></app-cloe-advantages>
+		<p class="text-4xl text-center font-poppins-medium text-success-500 mb-8">
+			Ventajas de Cloe
+		</p>
+		<div class="container flex flex-col lg:flex-row items-center lg:max-w-5xl">
+			<img
+				class="hidden md:block"
+				src="../../../../assets/landing_page_assets/images/jpg/ventajas_768x1024.png"
+				alt="ventajas.png"
+				role="img"
+			/>
+			<div
+				class="container flex flex-col items-center justify-center md:w-11/12 md:max-w-3xl md:mx-auto"
+			>
+				<app-cloe-advantages
+					class="mb-10"
+					[icon]="
+						'../../../../assets/landing_page_assets/icons/svg/icono_ventaja_1_32x32.svg'
+					"
+					[title]="'Ventaja 1'"
+					[message]="
+						'Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.'
+					"
+				></app-cloe-advantages>
+				<app-cloe-advantages
+					class="mb-10"
+					[icon]="
+						'../../../../assets/landing_page_assets/icons/svg/icono_ventaja_2_32x32.svg'
+					"
+					[title]="'Ventaja 2'"
+					[message]="
+						'Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.'
+					"
+				></app-cloe-advantages>
+				<app-cloe-advantages
+					[icon]="
+						'../../../../assets/landing_page_assets/icons/svg/icono_ventaja_3_32x32.svg'
+					"
+					[title]="'Ventaja 3'"
+					[message]="
+						'Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.'
+					"
+				></app-cloe-advantages>
+			</div>
+		</div>
 	</div>
 </div>
-
