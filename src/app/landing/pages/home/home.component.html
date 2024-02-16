@@ -4,7 +4,7 @@
 			<h1 class="text-5xl xl:text-6xl ">Sistema Cloe</h1>
 			<p class="text-center text-base md:text-left ">Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore. Lorem ipsum dolor sit amet, adipiscing elit, sed Diam.</p>
 			<div class="w-36">
-				<button  class="btn btn-secundary__success md:btn-primary__success">
+				<button  class="btn btn-lg btn-secundary__success">
 					Contáctanos
 				</button>
 			</div>
@@ -12,4 +12,12 @@
 	</div>
 </div>
 
+<div class="section-2">
+	<div class="px-4 py-8 flex flex-col items-center">
+		<p class="text-4xl font-poppins-medium text-success-500 mb-8">Ventajas de Cloe</p>
+		<app-cloe-advantages class="mb-10" [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_ventaja_1_32x32.svg'" [title]="'Ventaja 1'" [message]="'Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.'"></app-cloe-advantages>
+		<app-cloe-advantages class="mb-10" [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_ventaja_2_32x32.svg'" [title]="'Ventaja 2'" [message]="'Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.'"></app-cloe-advantages>
+		<app-cloe-advantages [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_ventaja_3_32x32.svg'" [title]="'Ventaja 3'" [message]="'Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.'"></app-cloe-advantages>
+	</div>
+</div>
 

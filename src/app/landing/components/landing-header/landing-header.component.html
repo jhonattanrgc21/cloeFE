@@ -25,7 +25,7 @@
 	</div>
 
 	<nav [ngClass]="{ hidden: !isMenuOpen, flex: isMenuOpen }"
-		class="bg-success-500 w-full px-2 pt-2 pb-4 gap-2 flex-col justify-between items-center md:hidden absolute top-14 left-0">
+		class="z-40 bg-success-500 w-full px-2 pt-2 pb-4 gap-2 flex-col justify-between items-center md:hidden absolute top-14 left-0">
 		<ng-container *ngTemplateOutlet="navigationItems"></ng-container>
 	</nav>
 </header>
