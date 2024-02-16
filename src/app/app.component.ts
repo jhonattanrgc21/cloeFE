@@ -7,7 +7,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 	styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-	title = 'cloeFE';
+	title = 'Sistema Cloe';
 
 	constructor(private formBuilder: FormBuilder) {
 	}
