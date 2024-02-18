@@ -9,6 +9,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { CloeAdvantagesComponent } from './components/cloe-advantages/cloe-advantages.component';
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RaeeTypeCardComponent } from './components/raee-type-card/raee-type-card.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     LandingHeaderComponent,
     LandingFooterComponent,
     HomeComponent,
-    CloeAdvantagesComponent
+    CloeAdvantagesComponent,
+    RaeeTypeCardComponent
   ],
   imports: [
     CommonModule,

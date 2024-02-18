@@ -1,0 +1,6 @@
+.card{
+	width: 278px;
+	height: 215px;
+	padding: 32px 16px 24px 16px;
+	@apply  bg-white rounded overflow-hidden shadow-lg  flex flex-col items-center;
+}

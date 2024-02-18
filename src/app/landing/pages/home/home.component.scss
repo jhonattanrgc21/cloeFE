@@ -19,6 +19,12 @@
 	@apply bg-success-500 text-white;
 }
 
+.section-4b{
+	height: 1850px;
+	background: transparent linear-gradient(180deg, #E5F3F3 0%, var(--unnamed-color-ffffff) 100%) 0% 0% no-repeat padding-box;
+	background: transparent linear-gradient(180deg, #E5F3F3 0%, #FFFFFF 100%) 0% 0% no-repeat padding-box;
+	padding: 32px 64px 66px 70px;
+}
 
 .section-5 {
 	height: 662px;
@@ -79,6 +85,11 @@
 		padding: 48px 124px 64px 124px;
 	}
 
+	.section-4b{
+		height: 1153px;
+		padding: 65px 97px 48px 88px;
+	}
+
 	.section-5 {
 		height: 530px;
 		background-image: url('../../../../assets/landing_page_assets/images/jpg/banner_contacto_768x1024.jpg');
@@ -112,6 +123,10 @@
 
 	.section-2 {
 		height: 725px;
+	}
+
+	.section-4b{
+		height: 1000px;
 	}
 
 	.section-5 {
@@ -149,6 +164,11 @@
 		padding: 116px 140px;
 	}
 
+	.section-4b{
+		height: 810px;
+		padding: 116px 124px 120px 124px;
+	}
+
 	.section-5 {
 		height: 450px;
 
@@ -168,6 +188,10 @@
 		background-image: url('../../../../assets/landing_page_assets/images/jpg/background_que_es_raee_1920x1080.jpg');
 		background-repeat: no-repeat;
 		padding: 116px 380px;
+	}
+
+	.section-4b{
+		padding: 116px 364px 120px 324px;
 	}
 
 	.section-5 {

@@ -46,13 +46,24 @@
 </div>
 
 <div class="section-3 flex flex-col items-center justify-center font-poppins-regula lg:flex-row lg:gap-28 ">
-	<p class="w-full text-center text-4xl mb-4 md:text-6xl md:mb-6 lg:font-poppins-light lg:mb-0 lg:text-left">Qué es RAEE</p>
+	<p class="w-full text-center font-poppins-regular text-4xl mb-4 md:text-6xl md:mb-6 lg:font-poppins-light lg:mb-0 lg:text-left">Qué es RAEE</p>
 	<p class="text-center text-base text-[#FFFFFFBD] tracking-wide lg:text-left">Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore. Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore. Lorem ipsum dolor sit amet, adipiscing elit, sed diam nonummy nibh.</p>
 </div>
 
-<!-- Seccion 4 Inicio -->
-<!-- Seccion 4 Fin -->
+<div class="section-4b">
+	<p class="w-full text-center text-2xl font-poppins-regular text-success-500 mb-8">Clasificación de RAEE</p>
 
+	<div class="flex flex-wrap gap-6 items-center justify-around md:gap-4" >
+		<app-raee-type-card [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_aire_acondicionado_96x96.svg'" [title]="'Aparatos de intercambio de temperatura'"></app-raee-type-card>
+		<app-raee-type-card [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_monitor_96x96.svg'" [title]="'Monitores, pantallas y aparatos con pantallas'"></app-raee-type-card>
+		<app-raee-type-card [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_bombillo_96x96.svg'" [title]="'Lámparas'"></app-raee-type-card>
+		<app-raee-type-card [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_tostador_96x96.svg'" [title]="'Pequeños aparatos'"></app-raee-type-card>
+		<app-raee-type-card [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_lavadora_96x96.svg'" [title]="'Grandes electrodomésticos'"></app-raee-type-card>
+		<app-raee-type-card [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_smartphone_96x96.svg'" [title]="'Aparatos de informática y telecomunicaciones'"></app-raee-type-card>
+		<app-raee-type-card [icon]="'../../../../assets/landing_page_assets/icons/svg/icono_panel_solar_96x96.svg'" [title]="'Paneles fotovoltaicos grandes'"></app-raee-type-card>
+	</div>
+	<p class="text-center font-poppins-italic text-sm mt-8">*Emitida por el parlamento europeo correspondiente al año 2018.</p>
+</div>
 
 <div class="section-5">
 	<div class="section-5__content flex flex-col items-start">
@@ -76,20 +87,20 @@
 		<img class="hidden xl:block" src="../../../../assets/landing_page_assets/images/jpg/contactanos_1920x1080.png" alt="contactanos.png" role="img" />
 
 		<form [formGroup]="landingForm" class="section-6__form flex flex-col">
-			<div class="md:flex md:flex-wrap md:-mx-3">
-				<div class="mb-6 md:w-1/2 md:pl-3">
+			<div class="md:flex md:flex-wrap ">
+				<div class="mb-6 md:w-1/2 ">
 					<app-cloe-input-field [label]="'Nombre'" formControlName="name" [forName]="'nameLanding'" [typeInput]="'text'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 				</div>
-				<div class="mb-6 md:w-1/2 md:pl-4">
+				<div class="mb-6 md:w-1/2 md:pl-4 ">
 					<app-cloe-input-field [label]="'Teléfono'" formControlName="phone" [typeInput]="'text'" [forName]="'phoneLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 				</div>
-				<div class="mb-6 md:w-1/2 md:pl-3">
+				<div class="mb-6 md:w-1/2 ">
 					<app-cloe-input-field [label]="'Correo electrónico'" formControlName="email" [typeInput]="'email'" [forName]="'emailLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 				</div>
-				<div class="mb-6 md:w-1/2 md:pl-4">
+				<div class="mb-6 md:w-1/2 md:pl-4 ">
 					<app-cloe-input-field [label]="'Ciudad'" formControlName="city" [typeInput]="'text'" [forName]="'cityLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 				</div>
-				<div class="mb-6  w-full md:pl-3">
+				<div class="mb-6  w-full ">
 					<app-cloe-input-field [label]="'Mensaje'" formControlName="message" [typeInput]="'textarea'" [forName]="'messageLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 				</div>
 			</div>
