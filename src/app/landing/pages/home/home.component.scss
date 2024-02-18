@@ -11,7 +11,12 @@
 .section-2{
 	height: 806px;
 	background-color: #F5FBFB;
+}
 
+.section-3{
+	height: 313px;
+	padding: 40px 16px;
+	@apply bg-success-500 text-white border;
 }
 
 @media (min-width: 768px) {
@@ -31,7 +36,7 @@
 		}
 
 		.btn-secundary__success {
-	
+
 			@apply bg-success-500 text-white;
 			&:not(:disabled):hover {
 				@apply bg-success-300;
@@ -41,6 +46,15 @@
 				@apply ring-4 ring-success-200 bg-success-600 text-white;
 			}
 		}
+	}
+
+	.section-2{
+		height: 967px;
+	}
+
+	.section-3{
+		height: 339px;
+		padding: 48px 124px 64px 124px;
 	}
 
 }
@@ -53,6 +67,11 @@
 		background-attachment: fixed;
 		background-size: cover;
 	}
+
+	.section-2{
+		height: 725px;
+	}
+
 }
 
 @media (min-width: 1440px) {
@@ -64,11 +83,24 @@
 		}
 	}
 
+	.section-3{
+		height: 327px;
+		background-image: url('../../../../assets/landing_page_assets/images/jpg/background_que_es_raee_1440x900.jpg');
+		background-repeat:no-repeat;
+		padding: 116px 140px;
+	}
+
 }
 
 @media (min-width: 1920px) {
 	.section-1 {
-		height: 919px;
-		background-image: url('../../../../assets/landing_page_assets/images/jpg/show_case_1_1920x1080.jpg');
-}
+			height: 919px;
+			background-image: url('../../../../assets/landing_page_assets/images/jpg/show_case_1_1920x1080.jpg');
+		}
+
+		.section-3 {
+			background-image: url('../../../../assets/landing_page_assets/images/jpg/background_que_es_raee_1920x1080.jpg');
+			background-repeat: no-repeat;
+			padding: 116px 380px;
+		}
 }
