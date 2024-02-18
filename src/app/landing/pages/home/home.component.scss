@@ -1,35 +1,44 @@
-.section-1{
+.section-1 {
 	height: 622px;
 	background-image: url('../../../../assets/landing_page_assets/images/jpg/show_case_1_412x778.jpg');
-	background-repeat:no-repeat;
+	background-repeat: no-repeat;
 
-	&__container{
+	&__container {
 		opacity: 0.85;
 	}
 }
 
-.section-2{
+.section-2 {
 	height: 806px;
 	background-color: #F5FBFB;
 }
 
-.section-3{
+.section-3 {
 	height: 313px;
 	padding: 40px 16px;
 	@apply bg-success-500 text-white;
 }
 
 
-.section-5{
+.section-5 {
 	height: 662px;
 	background-image: url('../../../../assets/landing_page_assets/images/jpg/banner_contacto_412x778.jpg');
-	background-repeat:no-repeat;
+	background-repeat: no-repeat;
 	background-size: cover;
 
-	&__content{
+	&__content {
 		padding: 73px 64px 250px 16px;
 	}
 }
+
+.section-6 {
+	height: 950px;
+
+	&__form {
+		padding: 0px 16px 24px 16px;
+	}
+}
+
 
 @media (min-width: 768px) {
 	.section-1 {
@@ -39,7 +48,7 @@
 		background-size: cover;
 
 
-		&__container{
+		&__container {
 			position: absolute;
 			margin-top: 112px;
 			margin-left: 87px;
@@ -50,6 +59,7 @@
 		.btn-secundary__success {
 
 			@apply bg-success-500 text-white;
+
 			&:not(:disabled):hover {
 				@apply bg-success-300;
 			}
@@ -60,25 +70,35 @@
 		}
 	}
 
-	.section-2{
+	.section-2 {
 		height: 967px;
 	}
 
-	.section-3{
+	.section-3 {
 		height: 339px;
 		padding: 48px 124px 64px 124px;
 	}
 
-	.section-5{
+	.section-5 {
 		height: 530px;
 		background-image: url('../../../../assets/landing_page_assets/images/jpg/banner_contacto_768x1024.jpg');
-		background-repeat:no-repeat;
+		background-repeat: no-repeat;
 		background-size: cover;
 
-		&__content{
+		&__content {
 			padding: 95px 349px 96px 87px;
 		}
 	}
+
+	.section-6 {
+		height: 1227px;
+		background-color: #F5F5F5;
+
+		&__form {
+			padding: 0px 88px 72px 84px;
+		}
+	}
+
 }
 
 @media (min-width: 1024px) {
@@ -90,39 +110,49 @@
 		background-size: cover;
 	}
 
-	.section-2{
+	.section-2 {
 		height: 725px;
 	}
 
-	.section-5{
+	.section-5 {
 		background-image: url('../../../../assets/landing_page_assets/images/jpg/banner_contacto_1440x900.jpg');
-		background-repeat:no-repeat;
+		background-repeat: no-repeat;
 		background-size: cover;
 
-		&__content{
+		&__content {
 			padding: 86px 700px 78px 64p;
 		}
+	}
+
+	.section-6 {
+		height: 941px;
+		&__form {
+			padding-right: 140px;
+		}
+	}
 }
 
 @media (min-width: 1440px) {
 	.section-1 {
 		height: 739px;
-		&__container{
+
+		&__container {
 			width: 610px;
 			height: 275px;
 		}
 	}
 
-	.section-3{
+	.section-3 {
 		height: 327px;
 		background-image: url('../../../../assets/landing_page_assets/images/jpg/background_que_es_raee_1440x900.jpg');
-		background-repeat:no-repeat;
+		background-repeat: no-repeat;
 		padding: 116px 140px;
 	}
 
-	.section-5{
+	.section-5 {
 		height: 450px;
-		&__content{
+
+		&__content {
 			padding: 86px 728px 86px 138px;
 		}
 	}
@@ -130,23 +160,29 @@
 
 @media (min-width: 1920px) {
 	.section-1 {
-			height: 919px;
-			background-image: url('../../../../assets/landing_page_assets/images/jpg/show_case_1_1920x1080.jpg');
-		}
+		height: 919px;
+		background-image: url('../../../../assets/landing_page_assets/images/jpg/show_case_1_1920x1080.jpg');
+	}
 
-		.section-3 {
-			background-image: url('../../../../assets/landing_page_assets/images/jpg/background_que_es_raee_1920x1080.jpg');
-			background-repeat: no-repeat;
-			padding: 116px 380px;
-		}
+	.section-3 {
+		background-image: url('../../../../assets/landing_page_assets/images/jpg/background_que_es_raee_1920x1080.jpg');
+		background-repeat: no-repeat;
+		padding: 116px 380px;
+	}
 
-		.section-5{
-			background-image: url('../../../../assets/landing_page_assets/images/jpg/banner_contacto_1920x1080.jpg');
-			background-repeat:no-repeat;
-			background-size: cover;
-			&__content{
-				padding: 86px 968px 86px 378px;
-			}
+	.section-5 {
+		background-image: url('../../../../assets/landing_page_assets/images/jpg/banner_contacto_1920x1080.jpg');
+		background-repeat: no-repeat;
+		background-size: cover;
+
+		&__content {
+			padding: 86px 968px 86px 378px;
+		}
+	}
+
+	.section-6 {
+		&__form {
+			padding-right: 380px;
 		}
 	}
 }

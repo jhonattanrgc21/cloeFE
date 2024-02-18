@@ -67,3 +67,36 @@
 			</div>
 	</div>
 </div>
+
+<div class="section-6">
+	<p class="text-left font-poppins-regular text-4xl pl-4 pt-9 pb-6 md:text-center md:font-poppins-light md:text-6xl md:pl-0 md:pt-12 lg:pl-36 lg:pt-28 lg:pb-20 lg:text-left xl:pl-96">Contáctanos</p>
+	<div class="flex flex-col items-start md:gap-16 lg:flex-row lg:gap-14">
+		<img class="hidden md:block lg:hidden" src="../../../../assets/landing_page_assets/images/jpg/contactanos_768x1024.png" alt="contactanos.png" role="img" />
+		<img class="hidden lg:block xl:hidden" src="../../../../assets/landing_page_assets/images/jpg/contactanos_1400x900.png" alt="contactanos.png" role="img" />
+		<img class="hidden xl:block" src="../../../../assets/landing_page_assets/images/jpg/contactanos_1920x1080.png" alt="contactanos.png" role="img" />
+
+		<form [formGroup]="landingForm" class="section-6__form flex flex-col">
+			<div class="md:flex md:flex-wrap md:-mx-3">
+				<div class="mb-6 md:w-1/2 md:pl-3">
+					<app-cloe-input-field [label]="'Nombre'" formControlName="name" [forName]="'nameLanding'" [typeInput]="'text'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+				</div>
+				<div class="mb-6 md:w-1/2 md:pl-4">
+					<app-cloe-input-field [label]="'Teléfono'" formControlName="phone" [typeInput]="'text'" [forName]="'phoneLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+				</div>
+				<div class="mb-6 md:w-1/2 md:pl-3">
+					<app-cloe-input-field [label]="'Correo electrónico'" formControlName="email" [typeInput]="'email'" [forName]="'emailLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+				</div>
+				<div class="mb-6 md:w-1/2 md:pl-4">
+					<app-cloe-input-field [label]="'Ciudad'" formControlName="city" [typeInput]="'text'" [forName]="'cityLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+				</div>
+				<div class="mb-6  w-full md:pl-3">
+					<app-cloe-input-field [label]="'Mensaje'" formControlName="message" [typeInput]="'textarea'" [forName]="'messageLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+				</div>
+			</div>
+			<div class="w-24 m-auto md:m-0">
+				<button class="btn btn-lg btn-primary__success" [disabled]="landingForm.invalid">Enviar</button>
+			</div>
+		</form>
+	</div>
+
+</div>
