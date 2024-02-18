@@ -16,7 +16,19 @@
 .section-3{
 	height: 313px;
 	padding: 40px 16px;
-	@apply bg-success-500 text-white border;
+	@apply bg-success-500 text-white;
+}
+
+
+.section-5{
+	height: 662px;
+	background-image: url('../../../../assets/landing_page_assets/images/jpg/banner_contacto_412x778.jpg');
+	background-repeat:no-repeat;
+	background-size: cover;
+
+	&__content{
+		padding: 73px 64px 250px 16px;
+	}
 }
 
 @media (min-width: 768px) {
@@ -57,6 +69,16 @@
 		padding: 48px 124px 64px 124px;
 	}
 
+	.section-5{
+		height: 530px;
+		background-image: url('../../../../assets/landing_page_assets/images/jpg/banner_contacto_768x1024.jpg');
+		background-repeat:no-repeat;
+		background-size: cover;
+
+		&__content{
+			padding: 95px 349px 96px 87px;
+		}
+	}
 }
 
 @media (min-width: 1024px) {
@@ -72,6 +94,14 @@
 		height: 725px;
 	}
 
+	.section-5{
+		background-image: url('../../../../assets/landing_page_assets/images/jpg/banner_contacto_1440x900.jpg');
+		background-repeat:no-repeat;
+		background-size: cover;
+
+		&__content{
+			padding: 86px 700px 78px 64p;
+		}
 }
 
 @media (min-width: 1440px) {
@@ -90,6 +120,12 @@
 		padding: 116px 140px;
 	}
 
+	.section-5{
+		height: 450px;
+		&__content{
+			padding: 86px 728px 86px 138px;
+		}
+	}
 }
 
 @media (min-width: 1920px) {
@@ -103,4 +139,14 @@
 			background-repeat: no-repeat;
 			padding: 116px 380px;
 		}
+
+		.section-5{
+			background-image: url('../../../../assets/landing_page_assets/images/jpg/banner_contacto_1920x1080.jpg');
+			background-repeat:no-repeat;
+			background-size: cover;
+			&__content{
+				padding: 86px 968px 86px 378px;
+			}
+		}
+	}
 }
