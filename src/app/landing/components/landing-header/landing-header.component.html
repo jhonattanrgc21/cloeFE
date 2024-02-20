@@ -31,8 +31,8 @@
 </header>
 
 <ng-template #navigationItems>
-	<a routerLink="/landing"class="mt-1 block px-2 py-1 font-semibold rounded hover:bg-success-600 sm:mt-0">Inicio</a>
-	<a routerLink="/landing/gathering-center" class="block px-2 py-1 font-semibold rounded hover:bg-success-600">Buscar centros de acopio</a>
+	<a routerLink="/landing/home" routerLinkActive="active" class=" font-poppins-medium text-sm mt-1 block px-2 py-1 font-semibold rounded hover:bg-success-600 sm:mt-0">Inicio</a>
+	<a routerLink="/landing/gathering-center" 		routerLinkActive="active" class=" font-poppins-medium text-sm block px-2 py-1 font-semibold rounded hover:bg-success-600">Buscar centros de acopio</a>
 	<button class="btn btn-secundary__success max-w-md md:max-w-[140px]" (click)="redirectToLogin()">
 		Iniciar sesión
 	</button>

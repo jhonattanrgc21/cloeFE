@@ -5,3 +5,7 @@
 .header-page-container {
 	@apply container mx-auto flex justify-between items-center;
 }
+
+.active{
+	@apply rounded bg-success-600 text-success-50 outline-none hover:text-success-600 hover:bg-success-50
+}
