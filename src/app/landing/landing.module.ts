@@ -10,6 +10,9 @@ import { CloeAdvantagesComponent } from './components/cloe-advantages/cloe-advan
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RaeeTypeCardComponent } from './components/raee-type-card/raee-type-card.component';
+import { LocationCardComponent } from './components/location-card/location-card.component';
+import { GatheringCenterComponent } from './pages/gathering-center/gathering-center.component';
+import { MaterialModule } from '../material.module';
 
 
 @NgModule({
@@ -18,14 +21,17 @@ import { RaeeTypeCardComponent } from './components/raee-type-card/raee-type-car
     LandingHeaderComponent,
     LandingFooterComponent,
     HomeComponent,
+		GatheringCenterComponent,
     CloeAdvantagesComponent,
-    RaeeTypeCardComponent
+    RaeeTypeCardComponent,
+    LocationCardComponent
   ],
   imports: [
     CommonModule,
 		ReactiveFormsModule,
     LandingRoutingModule,
 		SharedModule,
+		MaterialModule
   ]
 })
 export class LandingModule { }

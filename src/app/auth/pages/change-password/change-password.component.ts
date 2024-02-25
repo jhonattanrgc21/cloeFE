@@ -11,7 +11,7 @@ import { ROUTES } from 'src/app/core/constants';
 export class ChangePasswordComponent {
 	token: string = '';
 	form: FormGroup;
-	isSavePassword = true;
+	isSavePassword = false;
 
 	constructor(
 		private _fb: FormBuilder,

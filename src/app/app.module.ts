@@ -5,10 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { SharedModule } from './shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { LandingModule } from './landing/landing.module';
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
+import { MaterialModule } from './material.module';
 
 @NgModule({
   declarations: [
@@ -18,11 +20,13 @@ import { DashboardModule } from './dashboard/dashboard.module';
     BrowserModule,
     AppRoutingModule,
 		ReactiveFormsModule,
+		BrowserAnimationsModule,
 		NgSelectModule,
 		SharedModule,
+		MaterialModule,
 		LandingModule,
 		AuthModule,
-		DashboardModule
+		DashboardModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

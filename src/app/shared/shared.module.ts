@@ -5,17 +5,16 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CloeSelectSearchComponent } from './components/cloe-select-search/cloe-select-search.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AlertComponent } from './components/alert/alert.component';
-
-
-
+import { PaginatePipe } from './pipes/paginate.pipe';
 
 @NgModule({
-	declarations: [CloeInputFieldComponent, CloeSelectSearchComponent, AlertComponent],
-	exports: [CloeInputFieldComponent, CloeSelectSearchComponent, AlertComponent],
-	imports: [
-		CommonModule,
-		ReactiveFormsModule,
-		NgSelectModule
-	]
+	declarations: [
+		CloeInputFieldComponent,
+		CloeSelectSearchComponent,
+		AlertComponent,
+		PaginatePipe,
+	],
+	exports: [CloeInputFieldComponent, CloeSelectSearchComponent, AlertComponent, PaginatePipe],
+	imports: [CommonModule, ReactiveFormsModule, NgSelectModule],
 })
-export class SharedModule { }
+export class SharedModule {}

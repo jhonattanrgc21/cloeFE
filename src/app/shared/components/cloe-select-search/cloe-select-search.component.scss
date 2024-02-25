@@ -5,3 +5,13 @@
 :host ::ng-deep .ng-select.ng-select-focused .ng-select-container {
   border-color: #009688;
 }
+
+::ng-deep  .ng-select.ng-select-single .ng-select-container {
+	height: 45px;
+}
+
+::ng-deep  .ng-select-container {
+	padding-left: 16px;
+	padding-top: 12px;
+	padding-bottom: 12px;
+}
