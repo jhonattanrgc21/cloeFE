@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
@@ -11,7 +11,7 @@ import { GatheringCenter } from '../../interfaces/gathering-center.interface';
 	templateUrl: './gathering-center.component.html',
 	styleUrls: ['./gathering-center.component.scss'],
 })
-export class GatheringCenterComponent {
+export class GatheringCenterComponent implements OnInit {
 	locationForm: FormGroup;
 	states: State[] = [
 		{
@@ -40,26 +40,32 @@ export class GatheringCenterComponent {
 		},
 	];
 
+	originalCities: City[] = [];
 	cities: City[] = [
 		{
 			id: 1,
 			name: 'Valencia',
+			parentStateId: 2,
 		},
 		{
 			id: 2,
 			name: 'Guacara',
+			parentStateId: 4,
 		},
 		{
 			id: 3,
 			name: 'Los Guayos',
+			parentStateId: 2,
 		},
 		{
 			id: 4,
 			name: 'Bejuma',
+			parentStateId: 5,
 		},
 		{
 			id: 5,
 			name: 'Caracas',
+			parentStateId: 1,
 		},
 	];
 
@@ -69,6 +75,7 @@ export class GatheringCenterComponent {
 			city: {
 				id: 3,
 				name: 'Los Guayos',
+				parentStateId: 2,
 			},
 			state: {
 				id: 2,
@@ -78,9 +85,10 @@ export class GatheringCenterComponent {
 		},
 		{
 			id: 2,
-			city: 		{
+			city: {
 				id: 5,
 				name: 'Caracas',
+				parentStateId: 1,
 			},
 			state: {
 				id: 1,
@@ -93,6 +101,7 @@ export class GatheringCenterComponent {
 			city: {
 				id: 1,
 				name: 'Valencia',
+				parentStateId: 2,
 			},
 			state: {
 				id: 2,
@@ -105,8 +114,9 @@ export class GatheringCenterComponent {
 			city: {
 				id: 1,
 				name: 'Valencia',
+				parentStateId: 1,
 			},
-			state:  {
+			state: {
 				id: 2,
 				name: 'Carabobo',
 			},
@@ -117,8 +127,9 @@ export class GatheringCenterComponent {
 			city: {
 				id: 1,
 				name: 'Valencia',
+				parentStateId: 1,
 			},
-			state:  {
+			state: {
 				id: 2,
 				name: 'Carabobo',
 			},
@@ -129,8 +140,9 @@ export class GatheringCenterComponent {
 			city: {
 				id: 1,
 				name: 'Valencia',
+				parentStateId: 1,
 			},
-			state:  {
+			state: {
 				id: 2,
 				name: 'Carabobo',
 			},
@@ -141,6 +153,7 @@ export class GatheringCenterComponent {
 			city: {
 				id: 1,
 				name: 'Valencia',
+				parentStateId: 1,
 			},
 			state: {
 				id: 1,
@@ -153,6 +166,7 @@ export class GatheringCenterComponent {
 			city: {
 				id: 1,
 				name: 'Valencia',
+				parentStateId: 1,
 			},
 			state: {
 				id: 1,
@@ -161,6 +175,8 @@ export class GatheringCenterComponent {
 			address: 'MERCADO LA HOYADA, Caracas 1010, Distrito Capital',
 		},
 	];
+
+	filteredGatheringCenters: GatheringCenter[] = [];
 
 	pageNumber: number = 1;
 	pageSize: number = 6;
@@ -172,6 +188,27 @@ export class GatheringCenterComponent {
 			state: [],
 		});
 	}
+
+	ngOnInit() {
+		this.filteredGatheringCenters = this.gatheringCenters;
+		this.originalCities = [...this.cities];
+		this.locationForm.valueChanges.subscribe(() => {
+			this.applyFilters();
+		});
+	}
+
+	applyFilters(): void {
+    const stateId = this.locationForm.get('state')?.value;
+    const cityId = this.locationForm.get('city')?.value;
+
+    this.filteredGatheringCenters = this.gatheringCenters.filter(center => {
+        return (!stateId || center.state.id === stateId) && (!cityId || center.city.id === cityId);
+    });
+
+    if (stateId) this.cities = this.originalCities.filter(city => city.parentStateId === stateId);
+    else this.cities = [...this.originalCities];
+}
+
 
 	handlePage(event: PageEvent): void {
 		this.pageNumber = event.pageIndex + 1;
