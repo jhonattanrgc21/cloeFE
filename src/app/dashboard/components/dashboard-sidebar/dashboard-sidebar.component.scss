@@ -1,0 +1,40 @@
+.sidebar{
+	width: 348px;
+	@apply h-screen bg-white text-[#000000DE] px-4 pt-8;
+
+	.option{
+		padding: 10px;
+		@apply hover:bg-success-400 hover:text-white text-sm font-poppins-regular flex gap-2 items-center;
+
+		.svg-default {
+			display: block;
+		}
+
+		.svg-hover {
+			display: none;
+		}
+
+		&:hover .svg-default {
+			display: none;
+		}
+
+		&:hover .svg-hover {
+			display: block;
+		}
+	}
+}
+
+@media (min-width: 768px) {
+	.sidebar{
+		width: 256px;
+	}
+}
+
+
+@media (min-width: 1440px) {
+
+}
+
+@media (min-width: 1920px) {
+
+}

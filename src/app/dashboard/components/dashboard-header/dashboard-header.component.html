@@ -1,0 +1,30 @@
+<header class="h-16 bg-success-500 py-3 px-6 flex items-center justify-between text-white">
+	<div class="flex items-center justify-between gap-6">
+		<button class="block" (click)="toggleSidebar()">
+			<img src="./../../../../assets/svg/icono_hamburguesa_24x24.svg" alt="Logo" class="w-6 h-6" />
+		</button>
+
+		<div class="lg:w-6/12">
+			<img src="./../../../../assets/landing_page_assets/logo/svg/logo_cloe_negativo.svg" alt="Logo" class="w-20 h-6" />
+		</div>
+
+	</div>
+
+	<div class="flex items-center justify-between gap-4">
+		<div  class="hidden md:block">
+			<div class=" flex flex-col items-end">
+				<p class="font-poppins-regular text-base -mb-1.5">Luis González</p>
+				<div class="flex items-center">
+					<p class="font-poppins-regular text-xs">Admin</p>
+					<button class="block" (click)="toggleSidebar()">
+						<img src="./../../../../assets/svg/icono_flecha_abajo_blanco_24x24.svg" alt="Logo" class="w-6 h-6" />
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="flex items-center justify-center rounded-full bg-white w-9 h-9 ">
+			<p class="text-success-500 font-poppins-regular text-base px-4 py-2 text-center">L</p>
+		</div>
+	</div>
+</header>

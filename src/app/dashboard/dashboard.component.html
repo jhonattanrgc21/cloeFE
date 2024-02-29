@@ -1,1 +1,19 @@
-<p>dashboard works!</p>
+<div class="flex flex-col">
+  <!-- Header -->
+	<app-dashboard-header (sidebarToggled)="onSidebarToggle()"></app-dashboard-header>
+
+  <!-- Sidebar y Contenido principal -->
+  <div class="flex">
+    <!-- Sidebar -->
+    <div class="lg:w-64" [class.hidden]="!isSidebarOpen">
+      <app-dashboard-sidebar></app-dashboard-sidebar>
+    </div>
+
+		<div class="relative flex-grow">
+			<div class="lg:hidden absolute inset-0 bg-[#00000052] opacity-100 z-10" [class.hidden]="!isSidebarOpen"></div>
+	    <div class="bg-[#F5F5F5] h-screen w-screen">
+				<router-outlet></router-outlet>
+			</div>
+		</div>
+  </div>
+</div>

@@ -15,7 +15,7 @@
 			<label for="remember" class="font-poppins-regular text-gray-600 m-0">Recordar este dispositivo</label>
 		</div>
 
-		<button type="button" class="mt-2 btn btn-lg btn-primary__success" [disabled]="loginForm.invalid">Iniciar sesión</button>
+		<button (click)="login()" class="mt-2 btn btn-lg btn-primary__success" [disabled]="loginForm.invalid">Iniciar sesión</button>
 
 	</form>
 
