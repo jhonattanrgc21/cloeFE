@@ -10,6 +10,7 @@ import { GatheringCentersComponent } from './pages/gathering-centers/gathering-c
 import { UsersComponent } from './pages/users/users.component';
 import { ClasificationComponent } from './pages/clasification/clasification.component';
 import { SeparationComponent } from './pages/separation/separation.component';
+import { MaterialModule } from '../material.module';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { SeparationComponent } from './pages/separation/separation.component';
   ],
   imports: [
     CommonModule,
-    DashboardRoutingModule
+    DashboardRoutingModule,
+		MaterialModule
   ]
 })
 export class DashboardModule { }
