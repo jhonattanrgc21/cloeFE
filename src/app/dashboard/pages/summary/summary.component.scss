@@ -1,12 +1,13 @@
 .summary{
-	@apply my-4 grid grid-cols-1 lg:grid-cols-2 md:px-6 gap-4;
+	@apply my-4 grid grid-cols-1 lg:grid-cols-3 md:px-6 gap-4;
 
 	.content{
 		@apply w-full bg-white rounded shadow-lg shadow-[#004D4014];
 	}
 
 	.graph-container{
-		height: 448px;
+		height: 440px;
+		@apply flex flex-col items-center justify-center px-4 py-7 gap-2
 	}
 
 	.table-container {

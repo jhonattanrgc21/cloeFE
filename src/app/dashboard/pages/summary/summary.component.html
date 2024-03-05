@@ -1,14 +1,16 @@
 <div class="summary">
-	<section class="content graph-container">
-		Grafica 1
+	<section class="content graph-container lg:col-span-1">
+		<p class="font-poppins-medium text-lg">Tipos de RAEE - Según su línea </p>
+		<canvas id="chart1">{{ raeeTypeGraph }}</canvas>
 	</section>
 
-	<section class="content graph-container">
-		Grafica 2
+	<section class="content graph-container lg:col-span-2">
+		<p class="font-poppins-medium text-lg">Materiales químicos en existencia</p>
+		<canvas id="chart2">{{ graphOfChemicalMaterials }}</canvas>
 	</section>
 
-	<section class="content px-4 py-6 lg:col-span-2 ">
-		<div class="flex items-start justify-between">
+	<section class="content px-4 py-6 lg:col-span-3 ">
+		<div class="flex flex-col items-start gap-3 md:flex-row md:justify-between">
 			<p class="text-lg font-poppins-medium text-[#0B132B]">Usuarios registrados</p>
 
 			<div class="relative">
@@ -20,7 +22,7 @@
 			</div>
 		</div>
 
-		<div class="table-container">
+		<div class="mt-2 table-container">
 			<table mat-table [dataSource]="dataSource">
 				<ng-container matColumnDef="name">
 					<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium"> Nombre </th>

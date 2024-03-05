@@ -34,7 +34,7 @@ export class DashboardComponent {
 		let headerMessage: string = '';
 		switch (this.rutaActual) {
 			case 'summary':
-				headerMessage = '!Bienvenido!';
+				headerMessage = '¡Bienvenido!';
 				break;
 			case 'gathering-centers':
 				headerMessage = 'Centros de acopio';
