@@ -1,5 +1,23 @@
 .gathering-centers{
 	height: 459px;
 	@apply w-full my-4 px-4 py-6 bg-white rounded shadow-lg shadow-[#004D4014];
+}
 
+
+@media (min-width: 768px) {
+	.gathering-centers{
+		height: 670px;
+	}
+}
+
+@media (min-width: 1024px) {
+	.gathering-centers{
+		height: 438px;
+	}
+}
+
+@media (min-width: 1920px) {
+	.gathering-centers{
+		height: 601px;
+	}
 }

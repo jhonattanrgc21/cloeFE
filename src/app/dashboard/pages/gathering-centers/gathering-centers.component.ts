@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ViewportRuler } from '@angular/cdk/scrolling';
 import { NewGatheringCentersPopupComponent } from './new-gathering-centers-popup/new-gathering-centers-popup.component';
 import { ConfirmationGatheringCenterPopupComponent } from './confirmation-gathering-center-popup/confirmation-gathering-center-popup.component';
 import { GatheringCenter } from '../../interfaces/gathering-center.interface';
@@ -9,12 +10,16 @@ import { GatheringCenter } from '../../interfaces/gathering-center.interface';
   templateUrl: './gathering-centers.component.html',
   styleUrls: ['./gathering-centers.component.scss']
 })
-export class GatheringCentersComponent {
-	constructor(private _dialog: MatDialog){}
+export class GatheringCentersComponent implements OnInit {
+	constructor(private _dialog: MatDialog, private viewportRuler: ViewportRuler){}
+
+	ngOnInit(): void {
+	}
 
 	openDialogNewGatheringCenter(id?: number): void {
+		const viewportSize = this.viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(NewGatheringCentersPopupComponent, {
-      width: '380px',
+      width: viewportSize.width < 768 ? '380px' : '474px' ,
 			height: 'auto',
 			autoFocus: false,
 			data: {},
