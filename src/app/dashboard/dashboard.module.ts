@@ -11,6 +11,10 @@ import { UsersComponent } from './pages/users/users.component';
 import { ClasificationComponent } from './pages/clasification/clasification.component';
 import { SeparationComponent } from './pages/separation/separation.component';
 import { MaterialModule } from '../material.module';
+import { NewGatheringCentersPopupComponent } from './pages/gathering-centers/new-gathering-centers-popup/new-gathering-centers-popup.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
+import { ConfirmationGatheringCenterPopupComponent } from './pages/gathering-centers/confirmation-gathering-center-popup/confirmation-gathering-center-popup.component';
 
 
 @NgModule({
@@ -22,12 +26,16 @@ import { MaterialModule } from '../material.module';
     GatheringCentersComponent,
     UsersComponent,
     ClasificationComponent,
-    SeparationComponent
+    SeparationComponent,
+    NewGatheringCentersPopupComponent,
+    ConfirmationGatheringCenterPopupComponent
   ],
   imports: [
     CommonModule,
+		ReactiveFormsModule,
     DashboardRoutingModule,
-		MaterialModule
+		MaterialModule,
+		SharedModule
   ]
 })
 export class DashboardModule { }

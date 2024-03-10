@@ -73,7 +73,7 @@ export class SummaryComponent  implements OnInit , AfterViewInit {
 					'rgba(30, 188, 229, 1)'
 				],
 				hoverOffset: 4,
-				cutout: 100,
+				cutout: 70,
 			}],
 
 		};
