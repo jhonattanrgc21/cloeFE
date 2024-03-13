@@ -10,6 +10,15 @@
 <div class="relative">
   <ng-container *ngIf="typeInput !== 'textarea'; else textareaTemplate">
     <input
+			[ngClass]="{
+				'border-success-500': isInputActive,
+				'ring-success-500': isInputActive,
+				'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+				'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+				'border-danger-500': control.invalid && (control.dirty || control.touched),
+				'ring-danger-500': control.invalid && (control.dirty || control.touched),
+			}"
+
       [id]="forName"
       [placeholder]="placeholder"
       [disabled]="isDisabled"
@@ -22,6 +31,15 @@
   </ng-container>
   <ng-template #textareaTemplate>
     <textarea
+			[ngClass]="{
+				'border-success-500': isInputActive,
+				'ring-success-500': isInputActive,
+				'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+				'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+				'border-danger-500': control.invalid && (control.dirty || control.touched),
+				'ring-danger-500': control.invalid && (control.dirty || control.touched),
+			}"
+
       [id]="forName"
       [placeholder]="placeholder"
       [disabled]="isDisabled"
