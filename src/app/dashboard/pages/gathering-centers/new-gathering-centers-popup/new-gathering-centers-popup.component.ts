@@ -81,10 +81,10 @@ export class NewGatheringCentersPopupComponent {
 	) {
 		this.gatheringCenterForm = this._fb.group({
 			id: new FormControl(null),
-			managerId: new FormControl(null, Validators.required),
+			manager: new FormControl(null, Validators.required),
 			description: new FormControl(null, Validators.required),
-			statusId: new FormControl(null, Validators.required),
-			cityId: new FormControl(null, Validators.required),
+			status: new FormControl(null, Validators.required),
+			city: new FormControl(null, Validators.required),
 			address: new FormControl(null, Validators.required),
 		});
 	}

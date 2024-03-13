@@ -15,7 +15,7 @@
     'border-danger-500': control.invalid && (control.dirty || control.touched),
     'ring-danger-500': control.invalid && (control.dirty || control.touched),
   }" (focus)="onInputFocus()" (blur)="onInputBlur()">
-  <ng-option *ngFor="let option of options" [value]="option.id">{{ option.name }}</ng-option>
+  <ng-option *ngFor="let option of options" [value]="option">{{ option.name }}</ng-option>
 </ng-select>
 
 <ng-container *ngIf="control.invalid && control.touched">

@@ -19,8 +19,8 @@ export class GatheringCentersComponent implements OnInit {
 	openDialogNewGatheringCenter(id?: number): void {
 		const viewportSize = this.viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(NewGatheringCentersPopupComponent, {
-      width: viewportSize.width < 768 ? '380px' : '474px' ,
-			height: 'auto',
+      		width: viewportSize.width < 768 ? '380px' : '474px' ,
+			height: '500px',
 			autoFocus: false,
 			data: {},
     });

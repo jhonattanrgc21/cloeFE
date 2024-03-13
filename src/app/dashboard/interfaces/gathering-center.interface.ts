@@ -1,9 +1,8 @@
 export interface GatheringCenter{
 	id: number;
-	managerId: number;
+	manager: number;
 	description: string;
-	statusId: number;
-	countyId: number;
-	cityId: number;
+	status: number;
+	city: number;
 	address: string;
 }
