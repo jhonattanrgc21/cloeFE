@@ -1,5 +1,5 @@
 <ng-container *ngIf="isVisible">
-	<div class="fixed bottom-0 w-full flex items-center justify-center font-bold px-10 py-5 border-2 rounded" 	[ngClass]="{'bg-[#13DEB9]': type === 'success', 'border-success-400': type === 'success' ,'text-dark': type === 'success' ,'bg-[#FA896B]': type === 'error', 'border-[#f67d5c]': type === 'error' ,'text-white': type === 'error' }">
+	<div class="fixed bottom-0 w-screen flex items-center justify-center font-bold px-10 py-5 border-2 rounded" 	[ngClass]="{'bg-[#13DEB9]': type === 'success', 'border-success-400': type === 'success' ,'text-dark': type === 'success' ,'bg-[#FA896B]': type === 'error', 'border-[#f67d5c]': type === 'error' ,'text-white': type === 'error' }">
 		<div class="w-full">
 			<p class="font-poppins-medium text-center">{{ message }}</p>
 		</div>

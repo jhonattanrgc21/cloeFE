@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { GatheringCenter } from 'src/app/dashboard/interfaces/gathering-center.interface';
+import { GatheringCenter, Manager } from 'src/app/dashboard/interfaces/gathering-center.interface';
 import { City } from 'src/app/landing/interfaces/cities.interface';
 import { State } from 'src/app/landing/interfaces/states.interface';
 
@@ -12,7 +12,7 @@ import { State } from 'src/app/landing/interfaces/states.interface';
 })
 export class NewGatheringCentersPopupComponent {
 	gatheringCenterForm!: FormGroup;
-	managers: any[] = [
+	managers: Manager[] = [
 		{
 			id: 1,
 			name: 'Jhonattan Garcia',
@@ -83,7 +83,7 @@ export class NewGatheringCentersPopupComponent {
 			id: new FormControl(null),
 			manager: new FormControl(null, Validators.required),
 			description: new FormControl(null, Validators.required),
-			status: new FormControl(null, Validators.required),
+			state: new FormControl(null, Validators.required),
 			city: new FormControl(null, Validators.required),
 			address: new FormControl(null, Validators.required),
 		});

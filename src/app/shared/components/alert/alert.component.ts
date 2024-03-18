@@ -1,3 +1,4 @@
+import { AlertService } from './../../services/alert.service';
 import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
@@ -11,6 +12,8 @@ export class AlertComponent implements OnInit {
 
   isVisible: boolean = true;
 
+	constructor(private alertService: AlertService){}
+
 	ngOnInit(): void {
     setTimeout(() => {
       this.closeAlert();
@@ -18,6 +21,7 @@ export class AlertComponent implements OnInit {
   }
 
 	closeAlert(): void {
+		this.alertService.setAlert({isActive: false, message: ''})
     this.isVisible = false;
   }
 }

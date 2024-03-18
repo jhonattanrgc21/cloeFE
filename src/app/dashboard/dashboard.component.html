@@ -15,7 +15,9 @@
 				<div class="flex items-center bg-white px-6 py-4 shadow-[#004D401A] shadow-md ">
 					<p class="text-black font-poppins-medium text-xl">{{ obtenerMensaje() }}</p>
 				</div>
-				<router-outlet></router-outlet>
+				<div class="md:px-6 ">
+					<router-outlet></router-outlet>
+				</div>
 				<div class="flex items-center justify-center bg-white py-4">
 					<p class="text-black font-poppins-regular text-xs">© Cloe 2024</p>
 				</div>
@@ -23,3 +25,7 @@
 		</div>
   </div>
 </div>
+
+<ng-container *ngIf="alertObj.isActive">
+	<app-alert [message]="alertObj.message"></app-alert>
+</ng-container>

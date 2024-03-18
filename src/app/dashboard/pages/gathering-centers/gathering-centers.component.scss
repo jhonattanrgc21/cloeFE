@@ -1,23 +1,32 @@
 .gathering-centers{
-	height: 459px;
-	@apply w-full my-4 px-4 py-6 bg-white rounded shadow-lg shadow-[#004D4014];
+	@apply w-screen md:w-full my-4 px-4 py-6 bg-white rounded shadow-lg shadow-[#004D4014];
+
+	.card-content{
+		height: 459px;
+	}
 }
 
 
 @media (min-width: 768px) {
 	.gathering-centers{
-		height: 670px;
+		.card-content{
+			height: 670px;
+		}
 	}
 }
 
 @media (min-width: 1024px) {
 	.gathering-centers{
-		height: 438px;
+		.card-content{
+			height: 438px;
+		}
 	}
 }
 
 @media (min-width: 1920px) {
 	.gathering-centers{
-		height: 601px;
+		.card-content{
+			height: 601px;
+		}
 	}
 }

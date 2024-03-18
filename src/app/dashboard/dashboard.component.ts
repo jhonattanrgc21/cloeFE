@@ -1,17 +1,21 @@
-import { Component } from '@angular/core';
+import { AlertService } from './../shared/services/alert.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { filter, map } from 'rxjs';
+import { Subscription, filter, map } from 'rxjs';
+import { Alert } from '../shared/interfaces/alert.interface';
 
 @Component({
 	selector: 'app-dashboard',
 	templateUrl: './dashboard.component.html',
 	styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent {
+export class DashboardComponent implements OnInit, OnDestroy {
 	isSidebarOpen: boolean = false;
 	rutaActual: string = '';
+	alertObj!: Alert;
+	private alertSubscription!: Subscription;
 
-	constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+	constructor(private router: Router, private activatedRoute: ActivatedRoute, private alertService: AlertService,) {
 		this.router.events
 			.pipe(
 				filter((event) => event instanceof NavigationEnd),
@@ -28,6 +32,15 @@ export class DashboardComponent {
 			.subscribe((url: string) => {
 				this.rutaActual = url;
 			});
+	}
+
+	ngOnInit(): void{
+		this.alertSubscription =
+		this.alertService.alert$.subscribe(
+			(alert: Alert) => {
+				this.alertObj = alert;
+			}
+		);
 	}
 
 	obtenerMensaje(): string {
@@ -54,5 +67,11 @@ export class DashboardComponent {
 
 	onSidebarToggle() {
 		this.isSidebarOpen = !this.isSidebarOpen;
+	}
+
+	ngOnDestroy(): void {
+		if (this.alertSubscription) {
+			this.alertSubscription.unsubscribe();
+		}
 	}
 }
