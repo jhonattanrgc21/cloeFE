@@ -14,9 +14,15 @@ import { ConfirmationPopupComponent } from './components/confirmation-popup/conf
 		CloeSelectSearchComponent,
 		AlertComponent,
 		PaginatePipe,
-  ConfirmationPopupComponent,
+		ConfirmationPopupComponent,
 	],
-	exports: [CloeInputFieldComponent, CloeSelectSearchComponent, AlertComponent, PaginatePipe],
+	exports: [
+		CloeInputFieldComponent,
+		CloeSelectSearchComponent,
+		AlertComponent,
+		PaginatePipe,
+		ConfirmationPopupComponent,
+	],
 	imports: [CommonModule, ReactiveFormsModule, NgSelectModule],
 })
 export class SharedModule {}

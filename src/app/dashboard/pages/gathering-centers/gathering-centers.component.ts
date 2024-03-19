@@ -3,7 +3,6 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChi
 import { MatDialog } from '@angular/material/dialog';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 import { NewGatheringCentersPopupComponent } from './new-gathering-centers-popup/new-gathering-centers-popup.component';
-import { ConfirmationGatheringCenterPopupComponent } from './confirmation-gathering-center-popup/confirmation-gathering-center-popup.component';
 import {
 	GatheringCenter,
 	RegisterGatheringCenter,
@@ -12,7 +11,6 @@ import { GatheringCentersService } from '../../services/gatherin-centers.service
 import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { DesabletGatheringCenterPopupComponent } from './desablet-gathering-center-popup/desablet-gathering-center-popup.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 
 @Component({
@@ -115,14 +113,17 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 	openDialogConfirmationGatheringCenter(
 		gatheringCenter: GatheringCenter
 	): void {
-		const dialogRef = this._dialog.open(
-			ConfirmationGatheringCenterPopupComponent,
-			{
-				width: '380px',
-				height: 'auto',
-				autoFocus: false,
-			}
-		);
+		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
+			width: '380px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				icon: './../../../../../assets/svg/icono_sidebar_centros_acopios_verde_24x24.svg',
+				title: 'Registrar centro de acopio',
+				subtitle: '¿Seguro de que deseas registrar este centro de acopio?',
+				type: 'edit',
+			},
+		});
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
@@ -155,7 +156,7 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 					icon: './../../../../../assets/svg/icono_sidebar_centros_acopios_rojo_24x24.svg',
 					title: 'Desactivar centro de acopio',
 					subtitle: '¿Seguro de que deseas desactivar este centro de acopio?',
-					type: 'edit'
+					type: 'delete'
 				}
 			}
 		);

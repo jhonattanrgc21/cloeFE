@@ -14,9 +14,6 @@ import { MaterialModule } from '../material.module';
 import { NewGatheringCentersPopupComponent } from './pages/gathering-centers/new-gathering-centers-popup/new-gathering-centers-popup.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
-import { ConfirmationGatheringCenterPopupComponent } from './pages/gathering-centers/confirmation-gathering-center-popup/confirmation-gathering-center-popup.component';
-import { DesabletGatheringCenterPopupComponent } from './pages/gathering-centers/desablet-gathering-center-popup/desablet-gathering-center-popup.component';
-
 
 @NgModule({
   declarations: [
@@ -29,8 +26,6 @@ import { DesabletGatheringCenterPopupComponent } from './pages/gathering-centers
     ClasificationComponent,
     SeparationComponent,
     NewGatheringCentersPopupComponent,
-    ConfirmationGatheringCenterPopupComponent,
-    DesabletGatheringCenterPopupComponent
   ],
   imports: [
     CommonModule,
