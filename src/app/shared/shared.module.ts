@@ -6,6 +6,7 @@ import { CloeSelectSearchComponent } from './components/cloe-select-search/cloe-
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AlertComponent } from './components/alert/alert.component';
 import { PaginatePipe } from './pipes/paginate.pipe';
+import { ConfirmationPopupComponent } from './components/confirmation-popup/confirmation-popup.component';
 
 @NgModule({
 	declarations: [
@@ -13,6 +14,7 @@ import { PaginatePipe } from './pipes/paginate.pipe';
 		CloeSelectSearchComponent,
 		AlertComponent,
 		PaginatePipe,
+  ConfirmationPopupComponent,
 	],
 	exports: [CloeInputFieldComponent, CloeSelectSearchComponent, AlertComponent, PaginatePipe],
 	imports: [CommonModule, ReactiveFormsModule, NgSelectModule],

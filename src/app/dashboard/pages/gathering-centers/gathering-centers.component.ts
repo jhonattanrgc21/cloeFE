@@ -12,6 +12,8 @@ import { GatheringCentersService } from '../../services/gatherin-centers.service
 import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
+import { DesabletGatheringCenterPopupComponent } from './desablet-gathering-center-popup/desablet-gathering-center-popup.component';
+import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 
 @Component({
 	selector: 'app-gathering-centers',
@@ -27,7 +29,6 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 		'state',
 		'city',
 		'address',
-		'status',
 		'actions',
 	];
 	dataSource = new MatTableDataSource<GatheringCenter>(
@@ -137,6 +138,32 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 
 				gatheringCenter.status = 'Activo';
 				this.gatheringCenterService.addGatheringCenter(gatheringCenter);
+				this.cdr.detectChanges();
+				this.alertService.setAlert({isActive: true, message: 'Excelente, el centro de acopio se ha registrado con éxito.'})
+			}
+		});
+	}
+
+	openDisabletGatheringCenter(center: GatheringCenter){
+		const dialogRef = this._dialog.open(
+			ConfirmationPopupComponent,
+			{
+				width: '380px',
+				height: 'auto',
+				autoFocus: false,
+				data: {
+					icon: './../../../../../assets/svg/icono_sidebar_centros_acopios_rojo_24x24.svg',
+					title: 'Desactivar centro de acopio',
+					subtitle: '¿Seguro de que deseas desactivar este centro de acopio?',
+					type: 'edit'
+				}
+			}
+		);
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				center.status = (center.status === 'Activo') ? 'Inactivo' : 'Activo'
+				this.gatheringCenterService.removeGatheringCenter(center);
 				this.cdr.detectChanges();
 				this.alertService.setAlert({isActive: true, message: 'Excelente, el centro de acopio se ha registrado con éxito.'})
 			}

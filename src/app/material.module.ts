@@ -5,11 +5,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
 import { CustomMatPaginatorIntl } from './core/paginator-es';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
 	declarations: [],
-	exports: [MatPaginatorModule, MatTableModule, MatDialogModule],
-	imports: [CommonModule, MatPaginatorModule, MatTableModule, MatDialogModule],
+	exports: [MatPaginatorModule, MatTableModule, MatDialogModule, MatTooltipModule],
+	imports: [CommonModule, MatPaginatorModule, MatTableModule, MatDialogModule, MatTooltipModule],
 	providers: [
 		{ provide: MatPaginatorIntl, useClass: CustomMatPaginatorIntl },
 		{ provide: MAT_DATE_LOCALE, useValue: 'en-GB' },
