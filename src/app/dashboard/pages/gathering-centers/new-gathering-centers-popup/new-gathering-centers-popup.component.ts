@@ -77,16 +77,17 @@ export class NewGatheringCentersPopupComponent {
 	constructor(
 		public dialogRef: MatDialogRef<NewGatheringCentersPopupComponent>,
 		private _fb: FormBuilder,
-		@Inject(MAT_DIALOG_DATA) public data: any
+		@Inject(MAT_DIALOG_DATA) public data: GatheringCenter
 	) {
-		this.gatheringCenterForm = this._fb.group({
-			id: new FormControl(null),
-			manager: new FormControl(null, Validators.required),
-			description: new FormControl(null, Validators.required),
-			state: new FormControl(null, Validators.required),
-			city: new FormControl(null, Validators.required),
-			address: new FormControl(null, Validators.required),
+    this.gatheringCenterForm = this._fb.group({
+			id: [data?.id],
+			manager: [data?.manager, Validators.required],
+			description: [data?.description, Validators.required],
+			state: [data?.state, Validators.required],
+			city: [data?.city, Validators.required],
+			address: [data?.address, Validators.required],
 		});
+
 	}
 
 	onClose(gatheringCenter?: GatheringCenter): void {

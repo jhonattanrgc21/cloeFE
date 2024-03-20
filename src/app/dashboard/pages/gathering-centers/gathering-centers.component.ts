@@ -96,13 +96,13 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	openDialogNewGatheringCenter(id?: number): void {
+	openDialogNewGatheringCenter(center?: GatheringCenter): void {
 		const viewportSize = this.viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(NewGatheringCentersPopupComponent, {
 			width: viewportSize.width < 768 ? '380px' : '474px',
 			height: '500px',
 			autoFocus: false,
-			data: {},
+			data: center,
 		});
 
 		dialogRef.afterClosed().subscribe((result: GatheringCenter) => {
