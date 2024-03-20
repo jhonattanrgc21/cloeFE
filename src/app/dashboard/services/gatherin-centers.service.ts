@@ -21,7 +21,6 @@ export class GatheringCentersService {
 
 		if (index !== -1) currentList[index] = gatheringCenter;
 		else currentList.push(gatheringCenter);
-
 		this.gatheringCenterListSubject.next(currentList);
 	}
 

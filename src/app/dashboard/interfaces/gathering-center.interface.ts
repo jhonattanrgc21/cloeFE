@@ -14,7 +14,6 @@ export interface GatheringCenter{
 	state: State;
 	city: City;
 	address: string;
-	status: string
 }
 
 export type RegisterGatheringCenter = Pick<GatheringCenter, 'id' | 'description' | 'address'> & {

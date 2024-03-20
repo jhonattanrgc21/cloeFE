@@ -72,7 +72,7 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 			filter: string
 		) => {
 			const searchData =
-				`${data.manager.name} ${data.state.name} ${data.city.name} ${data.address} ${data.status}`.toLowerCase();
+				`${data.manager.name} ${data.state.name} ${data.city.name} ${data.address}`.toLowerCase();
 			return searchData.includes(filter.trim().toLowerCase());
 		};
 
@@ -81,13 +81,11 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 			filter: string
 		) => {
 			const searchData =
-				`${data.manager.name} ${data.state.name} ${data.city.name} ${data.address} ${data.status}`.toLowerCase();
-			const statusMatch =
-				data.status.toLowerCase() === filter.trim().toLowerCase();
+				`${data.manager.name} ${data.state.name} ${data.city.name} ${data.address}`.toLowerCase();
 			const otherColumnsMatch = searchData.includes(
 				filter.trim().toLowerCase()
 			);
-			return statusMatch || otherColumnsMatch;
+			return otherColumnsMatch;
 		};
 	}
 
@@ -113,14 +111,16 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 	openDialogConfirmationGatheringCenter(
 		gatheringCenter: GatheringCenter
 	): void {
+		const title = gatheringCenter.id? 'Editar centro de acopio': 'Registrar centro de acopio'
+		const subtitle = gatheringCenter.id? '¿Seguro de que deseas editar este centro de acopio?': '¿Seguro de que deseas registrar este centro de acopio?'
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
 			height: 'auto',
 			autoFocus: false,
 			data: {
 				icon: './../../../../../assets/svg/icono_sidebar_centros_acopios_verde_24x24.svg',
-				title: 'Registrar centro de acopio',
-				subtitle: '¿Seguro de que deseas registrar este centro de acopio?',
+				title,
+				subtitle,
 				type: 'edit',
 			},
 		});
@@ -137,7 +137,6 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 					cityId: gatheringCenter.state.id,
 				};
 
-				gatheringCenter.status = 'Activo';
 				this.gatheringCenterService.addGatheringCenter(gatheringCenter);
 				this.cdr.detectChanges();
 				this.alertService.setAlert({isActive: true, message: 'Excelente, el centro de acopio se ha registrado con éxito.'})
@@ -154,8 +153,8 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 				autoFocus: false,
 				data: {
 					icon: './../../../../../assets/svg/icono_sidebar_centros_acopios_rojo_24x24.svg',
-					title: 'Desactivar centro de acopio',
-					subtitle: '¿Seguro de que deseas desactivar este centro de acopio?',
+					title: 'Eliminar centro de acopio',
+					subtitle: '¿Seguro de que deseas eliminar este centro de acopio?',
 					type: 'delete'
 				}
 			}
@@ -163,10 +162,9 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				center.status = (center.status === 'Activo') ? 'Inactivo' : 'Activo'
 				this.gatheringCenterService.removeGatheringCenter(center);
 				this.cdr.detectChanges();
-				this.alertService.setAlert({isActive: true, message: 'Excelente, el centro de acopio se ha registrado con éxito.'})
+				this.alertService.setAlert({isActive: true, message: 'Excelente, el centro de acopio se ha eliminado con éxito.'})
 			}
 		});
 	}

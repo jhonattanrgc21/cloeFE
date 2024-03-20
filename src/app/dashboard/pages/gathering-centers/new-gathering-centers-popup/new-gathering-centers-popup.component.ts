@@ -1,7 +1,7 @@
+import { Manager, GatheringCenter } from './../../../interfaces/gathering-center.interface';
 import { Component, Inject } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { GatheringCenter, Manager } from 'src/app/dashboard/interfaces/gathering-center.interface';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { City } from 'src/app/landing/interfaces/cities.interface';
 import { State } from 'src/app/landing/interfaces/states.interface';
 
@@ -81,10 +81,10 @@ export class NewGatheringCentersPopupComponent {
 	) {
     this.gatheringCenterForm = this._fb.group({
 			id: [data?.id],
-			manager: [data?.manager, Validators.required],
+			manager: [data?.manager.id, Validators.required],
 			description: [data?.description, Validators.required],
-			state: [data?.state, Validators.required],
-			city: [data?.city, Validators.required],
+			state: [data?.state.id, Validators.required],
+			city: [data?.city.id, Validators.required],
 			address: [data?.address, Validators.required],
 		});
 
@@ -95,7 +95,21 @@ export class NewGatheringCentersPopupComponent {
 	}
 
 	onSaveGatheringCenter(){
-		const gatheringCenter: GatheringCenter = this.gatheringCenterForm.value;
-		this.onClose(gatheringCenter);
+		const form = this.gatheringCenterForm.value;
+		const managerObj = this.managers.find(manager => manager.id == form.manager);
+		const stateObj = this.states.find(state => state.id == form.state);
+		const cityObj = this.cities.find(city => city.id == form.city);
+
+		if (managerObj && stateObj && cityObj) {
+			const gatheringCenter: GatheringCenter = {
+				id: form.id,
+				address: form.address,
+				description: form.description,
+				manager: managerObj,
+				state: stateObj,
+				city: cityObj
+			};
+			this.onClose(gatheringCenter);
+		}
 	}
 }

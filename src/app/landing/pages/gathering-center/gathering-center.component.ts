@@ -198,8 +198,8 @@ export class GatheringCenterComponent implements OnInit {
 	}
 
 	applyFilters(): void {
-    const stateId = this.locationForm.get('state')?.value.id;
-    const cityId = this.locationForm.get('city')?.value.id;
+    const stateId = this.locationForm.get('state')?.value;
+    const cityId = this.locationForm.get('city')?.value;
 
     this.filteredGatheringCenters = this.gatheringCenters.filter(center => {
         return (!stateId || center.state.id === stateId) && (!cityId || center.city.id === cityId);
