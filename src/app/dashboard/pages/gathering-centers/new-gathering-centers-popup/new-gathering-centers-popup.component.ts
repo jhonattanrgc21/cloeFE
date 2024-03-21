@@ -11,6 +11,7 @@ import { State } from 'src/app/landing/interfaces/states.interface';
 	styleUrls: ['./new-gathering-centers-popup.component.scss'],
 })
 export class NewGatheringCentersPopupComponent {
+	title: string = '';
 	gatheringCenterForm!: FormGroup;
 	managers: Manager[] = [
 		{
@@ -79,6 +80,7 @@ export class NewGatheringCentersPopupComponent {
 		private _fb: FormBuilder,
 		@Inject(MAT_DIALOG_DATA) public data: GatheringCenter
 	) {
+		this.title = data?.id ? 'Editar centro de acopio': 'Registrar centro de acopio';
     this.gatheringCenterForm = this._fb.group({
 			id: [data?.id],
 			manager: [data?.manager.id, Validators.required],

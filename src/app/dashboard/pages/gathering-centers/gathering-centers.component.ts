@@ -18,7 +18,9 @@ import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmati
 	templateUrl: './gathering-centers.component.html',
 	styleUrls: ['./gathering-centers.component.scss'],
 })
-export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestroy {
+export class GatheringCentersComponent
+	implements OnInit, AfterViewInit, OnDestroy
+{
 	gatheringCenterList: GatheringCenter[] = [];
 	private gatheringCenterListSubscription!: Subscription;
 
@@ -36,15 +38,15 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 
 	constructor(
 		private _dialog: MatDialog,
-		private viewportRuler: ViewportRuler,
-		private gatheringCenterService: GatheringCentersService,
-		private cdr: ChangeDetectorRef,
-		private alertService: AlertService
+		private _viewportRuler: ViewportRuler,
+		private _gatheringCenterService: GatheringCentersService,
+		private _cdr: ChangeDetectorRef,
+		private _alertService: AlertService
 	) {}
 
 	ngOnInit(): void {
 		this.gatheringCenterListSubscription =
-			this.gatheringCenterService.gatheringCenterList$.subscribe(
+			this._gatheringCenterService.gatheringCenterList$.subscribe(
 				(centers: GatheringCenter[]) => {
 					this.gatheringCenterList = centers;
 					this.dataSource.data = centers;
@@ -55,26 +57,17 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 
 	waitForPaginator(): void {
 		if (!this.paginator) {
-				setTimeout(() => {
-						this.waitForPaginator();
-				}, 100);
+			setTimeout(() => {
+				this.waitForPaginator();
+			}, 100);
 		} else {
-				this.dataSource.paginator = this.paginator;
-				this.cdr.detectChanges();
+			this.dataSource.paginator = this.paginator;
+			this._cdr.detectChanges();
 		}
-}
+	}
 
 	ngAfterViewInit() {
 		this.dataSource.paginator = this.paginator;
-
-		this.dataSource.filterPredicate = (
-			data: GatheringCenter,
-			filter: string
-		) => {
-			const searchData =
-				`${data.manager.name} ${data.state.name} ${data.city.name} ${data.address}`.toLowerCase();
-			return searchData.includes(filter.trim().toLowerCase());
-		};
 
 		this.dataSource.filterPredicate = (
 			data: GatheringCenter,
@@ -95,7 +88,7 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 	}
 
 	openDialogNewGatheringCenter(center?: GatheringCenter): void {
-		const viewportSize = this.viewportRuler.getViewportSize();
+		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(NewGatheringCentersPopupComponent, {
 			width: viewportSize.width < 768 ? '380px' : '474px',
 			height: '500px',
@@ -111,8 +104,12 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 	openDialogConfirmationGatheringCenter(
 		gatheringCenter: GatheringCenter
 	): void {
-		const title = gatheringCenter.id? 'Editar centro de acopio': 'Registrar centro de acopio'
-		const subtitle = gatheringCenter.id? '¿Seguro de que deseas editar este centro de acopio?': '¿Seguro de que deseas registrar este centro de acopio?'
+		const title = gatheringCenter.id
+			? 'Editar centro de acopio'
+			: 'Registrar centro de acopio';
+		const subtitle = gatheringCenter.id
+			? '¿Seguro de que deseas editar este centro de acopio?'
+			: '¿Seguro de que deseas registrar este centro de acopio?';
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
 			height: 'auto',
@@ -137,41 +134,44 @@ export class GatheringCentersComponent implements OnInit, AfterViewInit, OnDestr
 					cityId: gatheringCenter.state.id,
 				};
 
-				this.gatheringCenterService.addGatheringCenter(gatheringCenter);
-				this.cdr.detectChanges();
-				this.alertService.setAlert({isActive: true, message: 'Excelente, el centro de acopio se ha registrado con éxito.'})
+				this._gatheringCenterService.addGatheringCenter(gatheringCenter);
+				this._cdr.detectChanges();
+				this._alertService.setAlert({
+					isActive: true,
+					message: 'Excelente, el centro de acopio se ha guardado con éxito.',
+				});
 			}
 		});
 	}
 
-	openDisabletGatheringCenter(center: GatheringCenter){
-		const dialogRef = this._dialog.open(
-			ConfirmationPopupComponent,
-			{
-				width: '380px',
-				height: 'auto',
-				autoFocus: false,
-				data: {
-					icon: './../../../../../assets/svg/icono_sidebar_centros_acopios_rojo_24x24.svg',
-					title: 'Eliminar centro de acopio',
-					subtitle: '¿Seguro de que deseas eliminar este centro de acopio?',
-					type: 'delete'
-				}
-			}
-		);
+	openDisabletGatheringCenter(center: GatheringCenter) {
+		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
+			width: '380px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				icon: './../../../../../assets/svg/icono_sidebar_centros_acopios_rojo_24x24.svg',
+				title: 'Eliminar centro de acopio',
+				subtitle: '¿Seguro de que deseas eliminar este centro de acopio?',
+				type: 'delete',
+			},
+		});
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				this.gatheringCenterService.removeGatheringCenter(center);
-				this.cdr.detectChanges();
-				this.alertService.setAlert({isActive: true, message: 'Excelente, el centro de acopio se ha eliminado con éxito.'})
+				this._gatheringCenterService.removeGatheringCenter(center);
+				this._cdr.detectChanges();
+				this._alertService.setAlert({
+					isActive: true,
+					message: 'Excelente, el centro de acopio se ha eliminado con éxito.',
+				});
 			}
 		});
 	}
 
 	ngOnDestroy(): void {
 		if (this.gatheringCenterListSubscription) {
-			this.alertService.setAlert({isActive: false, message: ''});
+			this._alertService.setAlert({ isActive: false, message: '' });
 			this.gatheringCenterListSubscription.unsubscribe();
 		}
 	}

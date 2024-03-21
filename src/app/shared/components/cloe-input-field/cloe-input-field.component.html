@@ -1,5 +1,3 @@
-
-
 <label [for]="forName" class="font-poppins-medium" [ngClass]="{
 	'text-success-500': isInputActive,
 	'text-danger-500': control.invalid && control.touched,
@@ -8,7 +6,7 @@
 	{{ label }}
 </label>
 <div class="relative">
-  <ng-container *ngIf="typeInput !== 'textarea'; else textareaTemplate">
+  <ng-container *ngIf="typeInput == 'text' || typeInput == 'email' || typeInput == 'password'">
     <input
 			[ngClass]="{
 				'border-success-500': isInputActive,
@@ -29,7 +27,7 @@
       (blur)="onInputBlur()"
     />
   </ng-container>
-  <ng-template #textareaTemplate>
+  <ng-container *ngIf="typeInput == 'textarea'">
     <textarea
 			[ngClass]="{
 				'border-success-500': isInputActive,
@@ -49,7 +47,7 @@
       (blur)="onInputBlur()"
 			rows="10"
     ></textarea>
-  </ng-template>
+  </ng-container>
   <div *ngIf="typeInput === 'password'" class="absolute inset-y-0 right-0 pr-3 flex items-center">
     <ng-container *ngIf="!showPassword ; else showPasswordTemplate">
       <img src="../../../../assets/svg/icono_visibilidad_24x24.svg" (click)="togglePasswordVisibility()" alt="Icono" class="h-6 w-6 cursor-pointer">
@@ -58,6 +56,27 @@
       <img src="../../../../assets/svg/visibility_off.svg" (click)="togglePasswordVisibility()" alt="Icono" class="h-6 w-6 cursor-pointer">
     </ng-template>
   </div>
+
+	<ng-container *ngIf="typeInput == 'select'">
+		<select
+		[ngClass]="{
+			'border-success-500': isInputActive,
+			'ring-success-500': isInputActive,
+			'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+			'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+			'border-danger-500': control.invalid && (control.dirty || control.touched),
+			'ring-danger-500': control.invalid && (control.dirty || control.touched),
+		}"
+		[id]="forName"
+		[disabled]="isDisabled"
+		[formControl]="control"
+		class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
+		(focus)="onInputFocus()"
+		(blur)="onInputBlur()"
+	>
+		<option *ngFor="let option of options" [value]="option">{{ option }}</option>
+	</select>
+	</ng-container>
 </div>
 
 <ng-container *ngIf="control.invalid && control.touched">

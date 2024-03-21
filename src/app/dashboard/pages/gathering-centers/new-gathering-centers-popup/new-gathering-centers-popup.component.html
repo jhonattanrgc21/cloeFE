@@ -1,5 +1,5 @@
 <div class="new-gathering-centers">
-	<p class="text-[#0B132B] font-poppins-medium text-lg mb-6">Registrar centro de acopio</p>
+	<p class="text-[#0B132B] font-poppins-medium text-lg mb-6">{{ title }}</p>
 
 	<form [formGroup]="gatheringCenterForm" class="flex flex-col gap-4">
 		<app-cloe-select-search  formControlName="manager" [forName]="'managerGatheringCenters'" [label]="'Encargado'" [placeholder]="'Selecciona'" [options]="managers"></app-cloe-select-search>
@@ -15,7 +15,7 @@
 		</div>
 
 		<div class="w-24">
-			<button class="btn btn-md btn-primary__success" (click)="onSaveGatheringCenter()" [disabled]="gatheringCenterForm.invalid">Registrar</button>
+			<button class="btn btn-md btn-primary__success" (click)="onSaveGatheringCenter()" [disabled]="gatheringCenterForm.invalid">Guardar</button>
 		</div>
 	</div>
 </div>
