@@ -129,7 +129,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 					firstName: user.firstName,
 					lastName: user.lastName,
 					email: user.email,
-					identificatrion: user.identificatrion,
+					identification: user.identification,
 					address: user.address,
 					stateId: user.state.id,
 					cityId: user.city.id,

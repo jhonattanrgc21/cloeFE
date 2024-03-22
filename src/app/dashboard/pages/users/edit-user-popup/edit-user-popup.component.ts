@@ -113,7 +113,7 @@ export class EditUserPopupComponent {
 		const form = this.userForm.value;
 		const stateObj = this.states.find(state => state.id == form.state);
 		const cityObj = this.cities.find(city => city.id == form.city);
-		const employePositionObj = this.employePositions.find(employePosition => employePosition.id == form.employePositions);
+		const employePositionObj = this.employePositions.find(employePosition => employePosition.id == form.employePosition);
 
 		if (stateObj && cityObj && employePositionObj) {
 			const user: any = {
@@ -121,7 +121,7 @@ export class EditUserPopupComponent {
 				firstName: form.firstName,
 				lastName: form.lastName,
 				email: form.email,
-				identificatrion: form.documentType + '-' + form.identificatrion,
+				identification: form.documentType + '-' + form.identification,
 				address: form.address,
 				state: stateObj,
 				city: cityObj,
