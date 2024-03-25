@@ -1,0 +1,21 @@
+<div class="edit-clasification-popup">
+	<p class="text-[#0B132B] font-poppins-medium text-lg mb-6">{{ title }}</p>
+
+	<form [formGroup]="clasificationForm" class="flex flex-col gap-4">
+		<app-cloe-input-field [label]="'Marca'" formControlName="make" [typeInput]="'text'" [forName]="'makeClasification'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+		<app-cloe-input-field [label]="'Modelo'" formControlName="model" [typeInput]="'text'" [forName]="'modelClasification'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+		<app-cloe-select-search  formControlName="lineType" [forName]="'lineTypeClasification'" [label]="'Línea'" [placeholder]="'Selecciona'" [options]="lineTypes"></app-cloe-select-search>
+		<app-cloe-select-search  formControlName="category" [forName]="'categoryClasification'" [label]="'Categoría'" [placeholder]="'Selecciona'" [options]="categorties"></app-cloe-select-search>
+		<app-cloe-input-field [label]="'Información adicional (opcional)'" formControlName="information" [typeInput]="'text'" [forName]="'informationClasification'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+	</form>
+
+	<div class="mt-6 flex items-center justify-end gap-6">
+		<div class="w-24">
+			<button class="btn btn-md btn-secundary__success" (click)="onClose()">Cancelar</button>
+		</div>
+
+		<div class="w-24">
+			<button class="btn btn-md btn-primary__success" (click)="onSaveClasification()" [disabled]="clasificationForm.invalid">Guardar</button>
+		</div>
+	</div>
+</div>

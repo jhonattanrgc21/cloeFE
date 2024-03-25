@@ -15,6 +15,7 @@ import { NewGatheringCentersPopupComponent } from './pages/gathering-centers/new
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 import { EditUserPopupComponent } from './pages/users/edit-user-popup/edit-user-popup.component';
+import { EditClasificationComponent } from './pages/clasification/edit-clasification/edit-clasification.component';
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -27,6 +28,7 @@ import { EditUserPopupComponent } from './pages/users/edit-user-popup/edit-user-
     SeparationComponent,
     NewGatheringCentersPopupComponent,
     EditUserPopupComponent,
+    EditClasificationComponent,
   ],
   imports: [
     CommonModule,
