@@ -8,6 +8,7 @@ import { ClasificationService } from '../../services/clasification.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { EditClasificationComponent } from './edit-clasification/edit-clasification.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
+import { ClasificationDetailComponent } from './clasification-detail/clasification-detail.component';
 
 @Component({
   selector: 'app-clasification',
@@ -89,6 +90,21 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 
 		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) this.openDialogConfirmationClasification(result);
+		});
+	}
+
+	openDialogClasificationDetail(clasification?: any): void {
+		const viewportSize = this._viewportRuler.getViewportSize();
+		const dialogRef = this._dialog.open(ClasificationDetailComponent, {
+			width: viewportSize.width < 768 ? '380px' : '479px',
+			height: 'auto',
+			autoFocus: false,
+			data: clasification,
+		});
+
+		dialogRef.afterClosed().subscribe((result: any) => {
+			if (result == 'edit') this.openDialogEditClasification(clasification);
+			if (result == 'delete') this.openDiaglogDisabletClasification(clasification);
 		});
 	}
 
