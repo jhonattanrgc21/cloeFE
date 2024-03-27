@@ -1,5 +1,5 @@
 .btn {
-	@apply  border disabled:border-light font-poppins-bold text-xs flex flex-row justify-center items-center cursor-pointer text-white py-2 px-4 rounded w-full disabled:bg-disabled;
+	@apply h-full border disabled:border-light font-poppins-bold text-xs flex flex-row justify-center items-center cursor-pointer text-white py-2 px-4 rounded w-full disabled:bg-disabled;
 
 	&-xs {
 		@apply px-2 py-0.5;

@@ -13,9 +13,22 @@
 					</div>
 				</div>
 
-				<div class="md:w-24">
-					<button class="btn btn-primary__success btn-md" (click)="openDialogEditClasification()">Registrar</button>
+				<div class="flex flex-col-reverse gap-4 md:flex-row">
+
+					<div class="w-full md:w-auto btn-download">
+						<button class="btn btn-outline btn-outline__success btn-md"
+							(click)="openDialogClasificationDownload()">
+							<img class="w-6 h-6 mr-3 svg-download-default" src="../../../../assets/svg/icono_descarga_24x24.svg" alt="" role="img" />
+							<img class="w-6 h-6 mr-3 svg-download-hover" src="../../../../assets/svg/icono_descarga_blanco_24x24.svg" alt="" role="img" />
+							Descargar
+						</button>
+					</div>
+
+					<div class="w-full md:w-auto">
+						<button class="btn btn-primary btn-primary__success btn-md" (click)="openDialogEditClasification()">Registrar</button>
+					</div>
 				</div>
+
 			</div>
 		</div>
 

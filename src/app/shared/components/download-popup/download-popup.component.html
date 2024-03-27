@@ -1,0 +1,17 @@
+<div class="p-6 flex flex-col gap-6">
+	<p class="font-poppins-medium text-lg text-[#0B132B]">Descargar reporte</p>
+
+	<form [formGroup]="downloadForm">
+		<app-cloe-select-search  formControlName="id" [forName]="'idDownload'" [label]="'Cargo'" [placeholder]="'Selecciona'" [options]="options"></app-cloe-select-search>
+	</form>
+
+	<div class="flex items-center justify-end gap-6">
+		<div class="w-24">
+			<button class="btn btn-md btn-secundary__success" (click)="onClose()">Cancelar</button>
+		</div>
+
+		<div class="w-24">
+			<button class="btn btn-md btn-primary__success" (click)="onConfirmation()" [disabled]="downloadForm.invalid">Descargar</button>
+		</div>
+	</div>
+</div>
