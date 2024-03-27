@@ -7,7 +7,7 @@
 	</ng-container>
 	<div class="mt-6 flex items-center justify-center gap-6">
 		<div class="w-24">
-			<button class="btn btn-md " [ngClass]="{'btn-outline__danger': data.type == 'delete', 'btn-secundary__success': data.type == 'edit'}" (click)="onClose()">Cancelar</button>
+			<button class="btn btn-md " [ngClass]="{'btn-outline': data.type == 'delete','btn-outline__danger': data.type == 'delete', 'btn-secundary': data.type == 'edit' ,'btn-secundary__success': data.type == 'edit'}" (click)="onClose()">Cancelar</button>
 		</div>
 
 		<div class="w-24">
