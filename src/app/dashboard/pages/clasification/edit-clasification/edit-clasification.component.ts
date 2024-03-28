@@ -1,6 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { GenerarlService } from 'src/app/shared/services/generarl.service';
 
 @Component({
   selector: 'app-edit-clasification',
@@ -53,13 +54,14 @@ export class EditClasificationComponent {
 	constructor(
 		public dialogRef: MatDialogRef<EditClasificationComponent>,
 		private _fb: FormBuilder,
+		private _generalService: GenerarlService,
 		@Inject(MAT_DIALOG_DATA) public data: any
 	) {
 		this.title = data?.id ? 'Editar clasificación de RAEE': 'Clasificar RAEE';
     this.clasificationForm = this._fb.group({
 			id: [data?.id],
-			make: [data?.make, Validators.required],
-			model: [data?.model, Validators.required],
+			make: [data?.make, Validators.required, this._generalService.noWhitespaceValidator()],
+			model: [data?.model, Validators.required, this._generalService.noWhitespaceValidator()],
 			lineType: [data?.lineType.id, Validators.required],
 			category: [data?.category.id, Validators.required],
 			information: [data?.information],
@@ -79,11 +81,11 @@ export class EditClasificationComponent {
 		if (lineType && category) {
 			const clasification: any = {
 				id: form.id,
-				make: form.make,
-				model: form.model,
+				make: form.make.trin(),
+				model: form.model.trin(),
 				lineType: lineType,
 				category: category,
-				information: form.information,
+				information: form.information.trin(),
 			};
 			this.onClose(clasification);
 		}

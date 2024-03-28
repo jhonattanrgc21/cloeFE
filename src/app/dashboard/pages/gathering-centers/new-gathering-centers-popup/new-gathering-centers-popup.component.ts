@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { City } from 'src/app/landing/interfaces/cities.interface';
 import { State } from 'src/app/landing/interfaces/states.interface';
+import { GenerarlService } from 'src/app/shared/services/generarl.service';
 
 @Component({
 	selector: 'app-new-gathering-centers-popup',
@@ -78,16 +79,17 @@ export class NewGatheringCentersPopupComponent {
 	constructor(
 		public dialogRef: MatDialogRef<NewGatheringCentersPopupComponent>,
 		private _fb: FormBuilder,
+		private _generalService: GenerarlService,
 		@Inject(MAT_DIALOG_DATA) public data: GatheringCenter
 	) {
 		this.title = data?.id ? 'Editar centro de acopio': 'Registrar centro de acopio';
     this.gatheringCenterForm = this._fb.group({
 			id: [data?.id],
 			manager: [data?.manager.id, Validators.required],
-			description: [data?.description, Validators.required],
+			description: [data?.description, [Validators.required, this._generalService.noWhitespaceValidator()]],
 			state: [data?.state.id, Validators.required],
 			city: [data?.city.id, Validators.required],
-			address: [data?.address, Validators.required],
+			address: [data?.address, [Validators.required, this._generalService.noWhitespaceValidator()]],
 		});
 
 	}
@@ -105,8 +107,8 @@ export class NewGatheringCentersPopupComponent {
 		if (managerObj && stateObj && cityObj) {
 			const gatheringCenter: GatheringCenter = {
 				id: form.id,
-				address: form.address,
-				description: form.description,
+				address: form.address.trin(),
+				description: form.description.trin(),
 				manager: managerObj,
 				state: stateObj,
 				city: cityObj

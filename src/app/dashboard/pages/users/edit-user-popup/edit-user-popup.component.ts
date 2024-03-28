@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { City } from 'src/app/landing/interfaces/cities.interface';
 import { State } from 'src/app/landing/interfaces/states.interface';
+import { GenerarlService } from 'src/app/shared/services/generarl.service';
 
 @Component({
   selector: 'app-edit-user-popup',
@@ -87,20 +88,21 @@ export class EditUserPopupComponent {
 	constructor(
 		public dialogRef: MatDialogRef<EditUserPopupComponent>,
 		private _fb: FormBuilder,
+		private _generalService: GenerarlService,
 		@Inject(MAT_DIALOG_DATA) public data: any
 	) {
 		this.title = data?.id ? 'Editar usuario': 'Registrar usuario';
     this.userForm = this._fb.group({
 			id: [data?.id],
-			firstName: [data?.firstName, Validators.required],
-			lastName: [data?.lastName, Validators.required],
-			email: [data?.email, Validators.required],
+			firstName: [data?.firstName, [Validators.required, this._generalService.noWhitespaceValidator()]],
+			lastName: [data?.lastName, [Validators.required, this._generalService.noWhitespaceValidator()]],
+			email: [data?.email, [Validators.required, this._generalService.noWhitespaceValidator()]],
 			documentType: [data?.identification.split('-')[0], Validators.required],
-			identification: [data?.identification.split('-')[1], Validators.required],
+			identification: [data?.identification.split('-')[1], [Validators.required, this._generalService.noWhitespaceValidator()]],
 			employePosition: [data?.employePosition.id, Validators.required],
 			state: [data?.state.id, Validators.required],
 			city: [data?.city.id, Validators.required],
-			address: [data?.address, Validators.required],
+			address: [data?.address, [Validators.required, this._generalService.noWhitespaceValidator()]],
 		});
 
 	}
@@ -118,11 +120,11 @@ export class EditUserPopupComponent {
 		if (stateObj && cityObj && employePositionObj) {
 			const user: any = {
 				id: form.id,
-				firstName: form.firstName,
-				lastName: form.lastName,
-				email: form.email,
-				identification: form.documentType + '-' + form.identification,
-				address: form.address,
+				firstName: form.firstName.trin(),
+				lastName: form.lastName.trin(),
+				email: form.email.trin(),
+				identification: form.documentType + '-' + form.identification.trin(),
+				address: form.address.trin(),
 				state: stateObj,
 				city: cityObj,
 				employePosition: employePositionObj

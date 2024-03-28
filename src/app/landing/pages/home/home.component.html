@@ -10,7 +10,7 @@
 				adipiscing elit, sed Diam.
 			</p>
 			<div class="w-36">
-				<button class="btn btn-lg btn-secundary__success">Contáctanos</button>
+				<button class="btn btn-lg btn-secundary__success" (click)="scrollToSection('#contactanos')">Contáctanos</button>
 			</div>
 		</div>
 	</div>
@@ -84,12 +84,12 @@
 		<p class="text-left font-poppins-regular text-base mb-9">Lorem ipsum dolor sit amet, adipiscing
 			elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore.</p>
 			<div class="w-24">
-				<button class="btn btn-lg btn-primary__success">Buscar</button>
+				<button class="btn btn-lg btn-primary btn-primary__success" (click)="goToGatheringCenter()">Buscar</button>
 			</div>
 	</div>
 </div>
 
-<div class="section-6">
+<div class="section-6" id="contactanos">
 	<p class="text-left font-poppins-regular text-4xl pl-4 pt-10 pb-6 md:text-center md:font-poppins-light md:text-6xl md:pl-0 md:pt-12 lg:pl-36 lg:pt-28 lg:pb-20 lg:text-left xl:pl-96">Contáctanos</p>
 	<div class="flex flex-col items-start md:gap-16 lg:flex-row lg:gap-14">
 		<img class="hidden md:block lg:hidden" src="../../../../assets/landing_page_assets/images/jpg/contactanos_768x1024.png" alt="contactanos.png" role="img" />
@@ -115,7 +115,7 @@
 				</div>
 			</div>
 			<div class="w-24 m-auto md:m-0">
-				<button class="btn btn-lg btn-primary__success" [disabled]="landingForm.invalid">Enviar</button>
+				<button class="btn btn-lg btn-primary__success" [disabled]="landingForm.invalid" (click)="sendMessage()">Enviar</button>
 			</div>
 		</form>
 	</div>

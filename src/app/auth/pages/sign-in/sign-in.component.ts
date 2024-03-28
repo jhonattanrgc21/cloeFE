@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ROUTES } from 'src/app/core/constants';
+import { GenerarlService } from 'src/app/shared/services/generarl.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -11,15 +12,17 @@ import { ROUTES } from 'src/app/core/constants';
 export class SignInComponent {
 	loginForm: FormGroup;
 
-	constructor(private _fb: FormBuilder, private _router: Router) {
+	constructor(private _fb: FormBuilder, private _router: Router, private _generalServices: GenerarlService) {
 		this.loginForm = this._fb.group({
-			username: [, [Validators.required, Validators.email]],
-			password: [, [Validators.required, Validators.minLength(8)]],
+			username: [, [Validators.required, this._generalServices.noWhitespaceValidator()]],
+			password: [, [Validators.required, Validators.minLength(8), this._generalServices.noWhitespaceValidator()]],
 		});
 	}
 
 	login(): void{
-		console.log('paso por aqui');
+		let input = this.loginForm.value;
+		input.username = input.username.trin();
+		input.password = input.password.trin();
 		this._router.navigateByUrl(ROUTES.summary);
 	}
 
