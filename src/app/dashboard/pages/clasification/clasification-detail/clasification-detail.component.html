@@ -10,34 +10,35 @@
 	<div class="flex flex-col gap-4">
     <div class="grid grid-cols-2">
         <p class="font-poppins-medium text-sm text-[#00000099]">Marca</p>
-        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.make}}</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.clasification.make}}</p>
     </div>
     <div class="grid grid-cols-2">
         <p class="font-poppins-medium text-sm text-[#00000099]">Modelo</p>
-        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.model}}</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.clasification.model}}</p>
     </div>
     <div class="grid grid-cols-2">
         <p class="font-poppins-medium text-sm text-[#00000099]">Línea</p>
-        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.lineType.name}}</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.clasification.lineType.name}}</p>
     </div>
     <div class="grid grid-cols-2">
         <p class="font-poppins-medium text-sm text-[#00000099]">Categoría</p>
-        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.category.name}}</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.clasification.category.name}}</p>
     </div>
     <div class="grid grid-cols-2">
         <p class="font-poppins-medium text-sm text-[#00000099]">Información adicional</p>
-        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.information}}</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.clasification.information}}</p>
     </div>
 	</div>
 
-	<div class="mt-7 flex justify-between items-center">
-		<div class="w-24">
-			<button class="btn btn-md btn-outline btn-outline__danger" (click)="onClose('delete')">Eliminar</button>
-		</div>
+	<ng-container *ngIf="!data.disableActions">
+		<div class="mt-7 flex justify-between items-center">
+			<div class="w-24">
+				<button class="btn btn-md btn-outline btn-outline__danger" (click)="onClose('delete')">Eliminar</button>
+			</div>
 
-		<div class="w-24">
-			<button class="btn btn-md btn-primary btn-primary__success" (click)="onClose('edit')">Editar</button>
+			<div class="w-24">
+				<button class="btn btn-md btn-primary btn-primary__success" (click)="onClose('edit')">Editar</button>
+			</div>
 		</div>
-	</div>
-
+	</ng-container>
 </div>

@@ -60,8 +60,8 @@ export class EditClasificationComponent {
 		this.title = data?.id ? 'Editar clasificación de RAEE': 'Clasificar RAEE';
     this.clasificationForm = this._fb.group({
 			id: [data?.id],
-			make: [data?.make, Validators.required, this._generalService.noWhitespaceValidator()],
-			model: [data?.model, Validators.required, this._generalService.noWhitespaceValidator()],
+			make: [data?.make, [Validators.required, this._generalService.noWhitespaceValidator()]],
+			model: [data?.model, [Validators.required, this._generalService.noWhitespaceValidator()]],
 			lineType: [data?.lineType.id, Validators.required],
 			category: [data?.category.id, Validators.required],
 			information: [data?.information],
@@ -74,18 +74,18 @@ export class EditClasificationComponent {
 	}
 
 	onSaveClasification(){
-		const form = this.clasificationForm.value;
+		let form = this.clasificationForm.value;
 		const lineType = this.lineTypes.find(lineType => lineType.id == form.lineType);
 		const category = this.categorties.find(category => category.id == form.category);
 
 		if (lineType && category) {
 			const clasification: any = {
 				id: form.id,
-				make: form.make.trin(),
-				model: form.model.trin(),
+				make: form.make.trim(),
+				model: form.model.trim(),
 				lineType: lineType,
 				category: category,
-				information: form.information.trin(),
+				information: form.information? form.information.trim(): null,
 			};
 			this.onClose(clasification);
 		}

@@ -100,7 +100,10 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 			width: viewportSize.width < 768 ? '380px' : '479px',
 			height: 'auto',
 			autoFocus: false,
-			data: clasification,
+			data: {
+				clasification,
+				disableActions: false
+			}
 		});
 
 		dialogRef.afterClosed().subscribe((result: any) => {
@@ -159,6 +162,8 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 					categoryId: clasification.category.id,
 					information: clasification.information,
 				};
+
+				clasification.status = 'Clasificado';
 
 				this._clasificationService.addClasification(clasification);
 				this._cdr.detectChanges();

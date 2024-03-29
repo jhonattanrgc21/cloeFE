@@ -1,0 +1,24 @@
+.separation{
+	@apply w-screen md:w-full my-4 px-4 py-6 bg-white rounded shadow-lg shadow-[#004D4014];
+
+	.btn-download{
+		.svg-download-default {
+			display: block;
+		}
+
+		.svg-download-hover {
+			display: none;
+		}
+
+
+		&:hover .svg-download-default {
+			display: none;
+		}
+
+		&:hover .svg-download-hover {
+			display: block;
+		}
+
+	}
+
+}

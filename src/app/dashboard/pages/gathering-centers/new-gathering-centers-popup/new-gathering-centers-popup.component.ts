@@ -107,8 +107,8 @@ export class NewGatheringCentersPopupComponent {
 		if (managerObj && stateObj && cityObj) {
 			const gatheringCenter: GatheringCenter = {
 				id: form.id,
-				address: form.address.trin(),
-				description: form.description.trin(),
+				address: form.address.trim(),
+				description: form.description.trim(),
 				manager: managerObj,
 				state: stateObj,
 				city: cityObj

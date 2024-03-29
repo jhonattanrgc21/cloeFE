@@ -120,11 +120,11 @@ export class EditUserPopupComponent {
 		if (stateObj && cityObj && employePositionObj) {
 			const user: any = {
 				id: form.id,
-				firstName: form.firstName.trin(),
-				lastName: form.lastName.trin(),
-				email: form.email.trin(),
+				firstName: form.firstName.trim(),
+				lastName: form.lastName.trim(),
+				email: form.email.trim(),
 				identification: form.documentType + '-' + form.identification.trin(),
-				address: form.address.trin(),
+				address: form.address.trim(),
 				state: stateObj,
 				city: cityObj,
 				employePosition: employePositionObj
