@@ -17,6 +17,7 @@ import { SharedModule } from '../shared/shared.module';
 import { EditUserPopupComponent } from './pages/users/edit-user-popup/edit-user-popup.component';
 import { EditClasificationComponent } from './pages/clasification/edit-clasification/edit-clasification.component';
 import { ClasificationDetailComponent } from './pages/clasification/clasification-detail/clasification-detail.component';
+import { ClasificationTableComponent } from './pages/separation/clasification-table/clasification-table.component';
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -31,6 +32,7 @@ import { ClasificationDetailComponent } from './pages/clasification/clasificatio
     EditUserPopupComponent,
     EditClasificationComponent,
     ClasificationDetailComponent,
+    ClasificationTableComponent,
   ],
   imports: [
     CommonModule,

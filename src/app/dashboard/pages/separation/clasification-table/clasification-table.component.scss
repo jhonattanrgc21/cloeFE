@@ -1,0 +1,17 @@
+.btn-download {
+	.svg-download-default {
+		display: block;
+	}
+
+	.svg-download-hover {
+		display: none;
+	}
+
+	&:hover .svg-download-default {
+		display: none;
+	}
+
+	&:hover .svg-download-hover {
+		display: block;
+	}
+}
