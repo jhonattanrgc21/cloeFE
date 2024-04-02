@@ -24,7 +24,7 @@ export class ForgotPasswordComponent {
 
 	sentMessage(){
 		let input = this.form.value;
-		input.email = input.email.trin();
+		input.email = input.email.trim();
 		this.isSentMessage = true;
 	}
 }

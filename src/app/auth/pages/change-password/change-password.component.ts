@@ -28,8 +28,8 @@ export class ChangePasswordComponent {
 
 	savePassword() {
 		const changePassword = this.form.value;
-		changePassword.password = changePassword.password.trin();
-		changePassword.confirmPassword = changePassword.confirmPassword.trin();
+		changePassword.password = changePassword.password.trim();
+		changePassword.confirmPassword = changePassword.confirmPassword.trim();
 		this.isSavePassword = true;
 	}
 

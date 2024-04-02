@@ -21,8 +21,8 @@ export class SignInComponent {
 
 	login(): void{
 		let input = this.loginForm.value;
-		input.username = input.username.trin();
-		input.password = input.password.trin();
+		input.username = input.username.trim();
+		input.password = input.password.trim();
 		this._router.navigateByUrl(ROUTES.summary);
 	}
 

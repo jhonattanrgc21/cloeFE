@@ -57,10 +57,10 @@ export class HomeComponent {
 
 	sendMessage() {
 		let input = this.landingForm.value;
-		input.name = input.name.trin();
-		input.phone = input.phone.trin();
-		input.email = input.email.trin();
-		input.city = input.city.trin();
-		input.message = input.message.trin();
+		input.name = input.name.trim();
+		input.phone = input.phone.trim();
+		input.email = input.email.trim();
+		input.city = input.city.trim();
+		input.message = input.message.trim();
 	}
 }

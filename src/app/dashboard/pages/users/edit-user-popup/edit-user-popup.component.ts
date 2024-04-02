@@ -123,7 +123,7 @@ export class EditUserPopupComponent {
 				firstName: form.firstName.trim(),
 				lastName: form.lastName.trim(),
 				email: form.email.trim(),
-				identification: form.documentType + '-' + form.identification.trin(),
+				identification: form.documentType + '-' + form.identification.trim(),
 				address: form.address.trim(),
 				state: stateObj,
 				city: cityObj,
