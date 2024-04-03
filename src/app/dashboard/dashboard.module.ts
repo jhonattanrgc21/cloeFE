@@ -18,6 +18,8 @@ import { EditUserPopupComponent } from './pages/users/edit-user-popup/edit-user-
 import { EditClasificationComponent } from './pages/clasification/edit-clasification/edit-clasification.component';
 import { ClasificationDetailComponent } from './pages/clasification/clasification-detail/clasification-detail.component';
 import { ClasificationTableComponent } from './pages/separation/clasification-table/clasification-table.component';
+import { UserDetailPopupComponent } from './pages/users/user-detail-popup/user-detail-popup.component';
+
 @NgModule({
   declarations: [
     DashboardComponent,
@@ -33,6 +35,7 @@ import { ClasificationTableComponent } from './pages/separation/clasification-ta
     EditClasificationComponent,
     ClasificationDetailComponent,
     ClasificationTableComponent,
+    UserDetailPopupComponent,
   ],
   imports: [
     CommonModule,

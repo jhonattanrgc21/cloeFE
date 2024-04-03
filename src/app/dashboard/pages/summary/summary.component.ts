@@ -124,12 +124,7 @@ export class SummaryComponent  implements OnInit , AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-
-		this.dataSource.filterPredicate = (data: RegisteredUsers, filter: string) => {
-			const searchData = `${data.name} ${data.employePosition} ${data.identification} ${data.address} ${data.status}`.toLowerCase();
-			return searchData.includes(filter.trim().toLowerCase());
-		};
-
+		
 		this.dataSource.filterPredicate = (data: RegisteredUsers, filter: string) => {
 			const searchData = `${data.name} ${data.employePosition} ${data.identification} ${data.address}`.toLowerCase();
 			const statusMatch = data.status.toLowerCase() === filter.trim().toLowerCase();
@@ -144,5 +139,5 @@ export class SummaryComponent  implements OnInit , AfterViewInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-	
+
 }

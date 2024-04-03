@@ -8,6 +8,7 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { UsersService } from '../../services/users.service';
 import { EditUserPopupComponent } from './edit-user-popup/edit-user-popup.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
+import { UserDetailPopupComponent } from './user-detail-popup/user-detail-popup.component';
 
 @Component({
 	selector: 'app-users',
@@ -22,9 +23,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		'lastName',
 		'identification',
 		'employePosition',
-		'state',
-		'city',
-		'address',
+		'status',
 		'actions',
 	];
 	dataSource = new MatTableDataSource<any>(this.userList);
@@ -57,11 +56,10 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			filter: string
 		) => {
 			const searchData =
-				`${data.firstName} ${data.lastName} ${data.identification} ${data.employePosition} ${data.state.name} ${data.city.name} ${data.address}`.toLowerCase();
-			const otherColumnsMatch = searchData.includes(
-				filter.trim().toLowerCase()
-			);
-			return otherColumnsMatch;
+				`${data.firstName} ${data.lastName} ${data.identification} ${data.employePosition}`.toLowerCase();
+			const statusMatch = data.status.toLowerCase() === filter.trim().toLowerCase();
+			const otherColumnsMatch = searchData.includes(filter.trim().toLowerCase());
+			return statusMatch || otherColumnsMatch;
 		};
 	}
 
@@ -136,6 +134,8 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 					employePositionId: user.employePosition.id
 				};
 
+				if(!user.id) user.status = 'Activo'
+
 				this._usersServices.addUser(user);
 				this._cdr.detectChanges();
 				this._alertService.setAlert({
@@ -171,6 +171,23 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
+	openDialogUserDetail(user?: any): void {
+		const viewportSize = this._viewportRuler.getViewportSize();
+		const dialogRef = this._dialog.open(UserDetailPopupComponent, {
+			width: viewportSize.width < 768 ? '380px' : '479px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				user,
+				disableActions: false
+			}
+		});
+
+		dialogRef.afterClosed().subscribe((result: any) => {
+			if (result == 'edit') this.openDialogEditUser(user);
+			if (result == 'delete') this.openDiaglogDisabletUser(user);
+		});
+	}
 
 	ngOnDestroy(): void {
 		if (this.userListSubscription) {

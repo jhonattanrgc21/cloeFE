@@ -28,7 +28,8 @@ export class UsersService {
 		const index = currentList.findIndex(
 			(item) => item.id === user.id
 		);
-		currentList.splice(index, 1);
+		user.status = 'Inactivo';
+		currentList[index] = user;
 		this.userListSubject.next(currentList);
 	}
 }

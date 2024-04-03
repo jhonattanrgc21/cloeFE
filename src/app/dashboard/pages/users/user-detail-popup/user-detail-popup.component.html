@@ -1,0 +1,52 @@
+<div class="p-6">
+	<div class="mb-6 flex justify-between items-center">
+		<p class="font-poppins-medium text-lg text-[#0B132B]">Detalle de usuario</p>
+		<button class="relative" matTooltip="Cerrar" (click)="onClose()">
+			<img src="../../../../../assets/svg/icono_x_24x24.svg" class="w-6 h-6" alt="">
+			<div class="absolute top-0 left-0 w-full h-full bg-zinc-500 opacity-0 rounded-full transition-opacity duration-300 ease-in-out hover:opacity-50"></div>
+		</button>
+	</div>
+
+	<div class="flex flex-col gap-4">
+    <div class="grid grid-cols-2">
+        <p class="font-poppins-medium text-sm text-[#00000099]">Nombre</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.user.firstName + ' ' + data.user.lastName}}</p>
+    </div>
+    <div class="grid grid-cols-2">
+        <p class="font-poppins-medium text-sm text-[#00000099]">Cédula</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.user.identification}}</p>
+    </div>
+    <div class="grid grid-cols-2">
+        <p class="font-poppins-medium text-sm text-[#00000099]">Correo electrónico</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.user.email}}</p>
+    </div>
+    <div class="grid grid-cols-2">
+        <p class="font-poppins-medium text-sm text-[#00000099]">Cargo</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.user.employePosition.name}}</p>
+    </div>
+		<div class="grid grid-cols-2">
+			<p class="font-poppins-medium text-sm text-[#00000099]">Estado</p>
+			<p class="font-poppins-regular text-sm text-[#000000DE]">{{data.user.state.name}}</p>
+		</div>
+		<div class="grid grid-cols-2">
+			<p class="font-poppins-medium text-sm text-[#00000099]">Municipio</p>
+			<p class="font-poppins-regular text-sm text-[#000000DE]">{{data.user.city.name}}</p>
+		</div>
+    <div class="grid grid-cols-2">
+        <p class="font-poppins-medium text-sm text-[#00000099]">Dirección</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.user.address}}</p>
+    </div>
+	</div>
+
+	<ng-container *ngIf="!data.disableActions">
+		<div class="mt-7 flex justify-between items-center">
+			<div class="w-24">
+				<button class="btn btn-md btn-outline btn-outline__danger" (click)="onClose('delete')">Eliminar</button>
+			</div>
+
+			<div class="w-24">
+				<button class="btn btn-md btn-primary btn-primary__success" (click)="onClose('edit')">Editar</button>
+			</div>
+		</div>
+	</ng-container>
+</div>
