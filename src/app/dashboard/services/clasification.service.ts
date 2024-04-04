@@ -32,4 +32,14 @@ export class ClasificationService {
 		currentList.splice(index, 1);
 		this.clasificationListSubject.next(currentList);
 	}
+
+	removeSeparation(raee: any): any{
+		const currentList = this.clasificationListSubject.getValue();
+		const index = currentList.findIndex(
+			(item) => item.id === raee.id
+		);
+		raee.status = 'Clasificado'
+		currentList[index] = raee;
+		this.clasificationListSubject.next(currentList);
+	}
 }

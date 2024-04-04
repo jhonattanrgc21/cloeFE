@@ -1,11 +1,13 @@
 import { ViewportRuler } from '@angular/cdk/scrolling';
-import { ChangeDetectorRef, Component, Input, ViewChild, OnInit, AfterViewInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, ViewChild, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ClasificationDetailComponent } from '../../clasification/clasification-detail/clasification-detail.component';
 import { DownloadPopupComponent } from 'src/app/shared/components/download-popup/download-popup.component';
+import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
+import { ClasificationService } from 'src/app/dashboard/services/clasification.service';
 
 @Component({
 	selector: 'app-clasification-table',
@@ -14,11 +16,14 @@ import { DownloadPopupComponent } from 'src/app/shared/components/download-popup
 })
 export class ClasificationTableComponent implements OnInit, AfterViewInit {
 	@Input() data: any[] = [];
+	@Output() clasificationSelected: any = new EventEmitter<any>();
+	@Output() separationSelected: any = new EventEmitter<any>();
 	displayedColumns: string[] = [
 		'make',
 		'model',
 		'lineType',
 		'category',
+		'status',
 		'actions',
 	];
 	dataSource = new MatTableDataSource<any>(this.data);
@@ -28,7 +33,8 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 		private _dialog: MatDialog,
 		private _viewportRuler: ViewportRuler,
 		private _cdr: ChangeDetectorRef,
-		private _alertService: AlertService
+		private _alertService: AlertService,
+		private _clasificationService: ClasificationService,
 	) {}
 
 
@@ -66,7 +72,7 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	openDialogClasificationDetail(clasification?: any): void {
+	openDialogClasificationDetail(clasification: any): void {
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(ClasificationDetailComponent, {
 			width: viewportSize.width < 768 ? '380px' : '479px',
@@ -92,6 +98,42 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 				this._alertService.setAlert({
 					isActive: true,
 					message: 'Excelente, el reporte se ha descargado con éxito.',
+				});
+			}
+		});
+	}
+
+	newSeparation(clasification: any){
+		this.clasificationSelected.emit(clasification);
+	}
+
+	openSeparationDetail(separation: any) {
+	}
+
+	openEditSeparation(separation: any){
+		this.separationSelected.emit(separation);
+	}
+
+	openDiaglogDisabletSeparation(clasification: any){
+		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
+			width: '380px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				icon: './../../../../../../assets/svg/icono_sidebar_separar_rojo_24x24.svg',
+				title: 'Eliminar separación de RAEE',
+				subtitle: '¿Seguro de que deseas eliminar este separación de RAEE?',
+				type: 'delete',
+			},
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				this._clasificationService.removeSeparation(clasification);
+				this._cdr.detectChanges();
+				this._alertService.setAlert({
+					isActive: true,
+					message: 'Excelente, la separación de RAEE se ha eliminado con éxito.',
 				});
 			}
 		});

@@ -1,18 +1,35 @@
 <section class="separation">
 
-	<p class="text-[#0B132B] w-full font-poppins-medium text-base">RAEE registrados</p>
+	<ng-container *ngIf="!isActiveSeparationView ; else  separationView" >
+		<p class="text-[#0B132B] w-full font-poppins-medium text-base">RAEE registrados</p>
 
-	<div class="mt-4 table-container">
-		<mat-tab-group >
-			<mat-tab label="Todos">
-				<app-clasification-table [data]="clasificationAllList"></app-clasification-table>
-			</mat-tab>
-			<mat-tab label="Clasificados">
-				<app-clasification-table [data]="clasificationList"></app-clasification-table>
-			</mat-tab>
-			<mat-tab label="Separados">
-				<app-clasification-table [data]="separationList"></app-clasification-table>
-			</mat-tab>
-		</mat-tab-group>
-	</div>
+		<div class="mt-4 table-container">
+			<mat-tab-group >
+				<mat-tab label="Todos">
+					<app-clasification-table [data]="clasificationAllList" (clasificationSelected)="newSeparation($event)" (separationSelected)="editSeparation($event)"></app-clasification-table>
+				</mat-tab>
+				<mat-tab label="Clasificados">
+					<app-clasification-table [data]="clasificationList" (clasificationSelected)="newSeparation($event)" (separationSelected)="editSeparation($event)"></app-clasification-table>
+				</mat-tab>
+				<mat-tab label="Separados">
+					<app-clasification-table [data]="separationList" (clasificationSelected)="newSeparation($event)" (separationSelected)="editSeparation($event)"></app-clasification-table>
+				</mat-tab>
+			</mat-tab-group>
+		</div>
+	</ng-container>
+
+	<ng-template #separationView>
+		<p class="text-[#0B132B] w-full font-poppins-medium text-base">RAEE seleccionado: {{ raeeSelected.make + ' - ' + raeeSelected.model }}</p>
+		<p class="mt-3 text-[#0B132B] w-full font-poppins-medium text-sm">1. Añade los componentes</p>
+
+		<div class="mt-6 flex items-center justify-center gap-6">
+			<div class="w-24">
+				<button class="btn btn-md btn-secundary btn-secundary__success" (click)="cancelSeparation()">Cancelar</button>
+			</div>
+
+			<div class="w-24">
+				<button class="btn btn-md btn-primary btn-primary__success" (click)="''" [disabled]="''">Guardar</button>
+			</div>
+		</div>
+	</ng-template>
 </section>

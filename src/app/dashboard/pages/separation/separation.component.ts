@@ -12,6 +12,8 @@ import { MatTabGroup } from '@angular/material/tabs';
 	styleUrls: ['./separation.component.scss'],
 })
 export class SeparationComponent implements OnInit, OnDestroy {
+	isActiveSeparationView: boolean = false;
+	raeeSelected: any;
 	clasificationAllList: any[] = [];
 	clasificationList: any[] = [];
 	separationList: any[] = [];
@@ -41,10 +43,27 @@ export class SeparationComponent implements OnInit, OnDestroy {
 			);
 	}
 
+	newSeparation(raee: any){
+		this.isActiveSeparationView = true;
+		this.raeeSelected = raee;
+		console.log('Clasificacion seleccionada: ', raee)
+	}
+
+	editSeparation(raee: any){
+		this.isActiveSeparationView = true;
+		this.raeeSelected = raee;
+	}
+
+	cancelSeparation(){
+		this.isActiveSeparationView = false;
+		this.raeeSelected = null;
+	}
+
 	ngOnDestroy(): void {
 		if (this.clasificationListSubscription) {
 			this._alertService.setAlert({ isActive: false, message: '' });
 			this.clasificationListSubscription.unsubscribe();
 		}
 	}
+
 }
