@@ -24,10 +24,11 @@ export class GatheringCentersService {
 		this.gatheringCenterListSubject.next(currentList);
 	}
 
-	removeGatheringCenter(gatheringCenter: GatheringCenter): void {
+	modifyStatusGatheringCenter(gatheringCenter: GatheringCenter): void {
 		const currentList = this.gatheringCenterListSubject.getValue();
 		const index = currentList.findIndex((item) => item.id === gatheringCenter.id);
-		currentList.splice(index, 1);
+		gatheringCenter.status = gatheringCenter.status == 'Inactivo' ? 'Activo' : 'Inactivo';
+		currentList[index] = gatheringCenter;
 		this.gatheringCenterListSubject.next(currentList);
 	}
 }

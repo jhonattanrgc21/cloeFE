@@ -103,6 +103,7 @@ export class NewGatheringCentersPopupComponent {
 		const managerObj = this.managers.find(manager => manager.id == form.manager);
 		const stateObj = this.states.find(state => state.id == form.state);
 		const cityObj = this.cities.find(city => city.id == form.city);
+		const status: string = this.data? this.data.status: 'Activo';
 
 		if (managerObj && stateObj && cityObj) {
 			const gatheringCenter: GatheringCenter = {
@@ -111,7 +112,8 @@ export class NewGatheringCentersPopupComponent {
 				description: form.description.trim(),
 				manager: managerObj,
 				state: stateObj,
-				city: cityObj
+				city: cityObj,
+				status
 			};
 			this.onClose(gatheringCenter);
 		}

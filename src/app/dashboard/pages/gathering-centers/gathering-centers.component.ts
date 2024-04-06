@@ -29,6 +29,7 @@ export class GatheringCentersComponent
 		'state',
 		'city',
 		'address',
+		'status',
 		'actions',
 	];
 	dataSource = new MatTableDataSource<GatheringCenter>(
@@ -151,19 +152,43 @@ export class GatheringCentersComponent
 			autoFocus: false,
 			data: {
 				icon: './../../../../../assets/svg/icono_sidebar_centros_acopios_rojo_24x24.svg',
-				title: 'Eliminar centro de acopio',
-				subtitle: '¿Seguro de que deseas eliminar este centro de acopio?',
+				title: 'Desactivar centro de acopio',
+				subtitle: '¿Seguro de que deseas desactivar este centro de acopio?',
 				type: 'delete',
 			},
 		});
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				this._gatheringCenterService.removeGatheringCenter(center);
+				this._gatheringCenterService.modifyStatusGatheringCenter(center);
 				this._cdr.detectChanges();
 				this._alertService.setAlert({
 					isActive: true,
-					message: 'Excelente, el centro de acopio se ha eliminado con éxito.',
+					message: 'Excelente, el centro de acopio se ha desactivado con éxito.',
+				});
+			}
+		});
+	}
+	openEnabletGatheringCenter(center: GatheringCenter) {
+		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
+			width: '380px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				icon: './../../../../../assets/svg/icono_sidebar_centros_acopios_verde_24x24.svg',
+				title: 'Activar centro de acopio',
+				subtitle: '¿Seguro de que deseas activar este centro de acopio?',
+				type: 'edit',
+			},
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				this._gatheringCenterService.modifyStatusGatheringCenter(center);
+				this._cdr.detectChanges();
+				this._alertService.setAlert({
+					isActive: true,
+					message: 'Excelente, el centro de acopio se ha activado con éxito.',
 				});
 			}
 		});

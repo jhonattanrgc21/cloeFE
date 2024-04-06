@@ -41,13 +41,28 @@
 					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{element.address}} </td>
 				</ng-container>
 
+				<ng-container matColumnDef="status">
+					<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium"> Estatus </th>
+					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> <span class="py-1 px-3 rounded-full"
+							[ngClass]="{
+										'text-success-500 bg-success-50 ': element.status === 'Activo',
+										'text-[#FA8873] bg-[#FEF0ED]': element.status === 'Inactivo'
+									}">{{ element.status }}</span> </td>
+				</ng-container>
 
 				<ng-container matColumnDef="actions">
 					<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium"> Acciones </th>
 					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-medium">
 						<div class="flex gap-1 items-center md:gap-4">
 							<img matTooltip="Editar" (click)="openDialogNewGatheringCenter(element)" src="../../../../assets/svg/icono_editar_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
-							<img matTooltip="Eliminar" (click)="openDisabletGatheringCenter(element)" src="../../../../assets/svg/icono_basura_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
+
+							<ng-container *ngIf="element.status === 'Activo'; else enableGatheringCenter">
+								<img matTooltip="Desactivar" (click)="openDisabletGatheringCenter(element)" src="../../../../assets/svg/block.svg" class="w-6 h-6 cursor-pointer" alt="">
+							</ng-container>
+
+							<ng-template #enableGatheringCenter>
+								<img matTooltip="Activar" (click)="openEnabletGatheringCenter(element)" src="../../../../assets/svg/check_circle.svg" class="w-6 h-6 cursor-pointer" alt="">
+							</ng-template>
 						</div>
 					</td>
 				</ng-container>
