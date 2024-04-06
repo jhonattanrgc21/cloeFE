@@ -18,7 +18,7 @@ export class EditUserPopupComponent {
 	employePositions: EmployePosition[] = [
 		{
 			id: 1,
-			name: 'administrador'
+			name: 'Administrador'
 		},
 		{
 			id: 2,

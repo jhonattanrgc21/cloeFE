@@ -23,12 +23,12 @@ export class UsersService {
 		this.userListSubject.next(currentList);
 	}
 
-	removeUser(user: any): void {
+	modifyStatusUser(user: any): void {
 		const currentList = this.userListSubject.getValue();
 		const index = currentList.findIndex(
 			(item) => item.id === user.id
 		);
-		user.status = 'Inactivo';
+		user.status = user.status == 'Inactivo' ? 'Activo' : 'Inactivo';
 		currentList[index] = user;
 		this.userListSubject.next(currentList);
 	}

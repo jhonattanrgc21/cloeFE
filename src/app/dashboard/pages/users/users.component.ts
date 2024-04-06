@@ -153,19 +153,44 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			autoFocus: false,
 			data: {
 				icon: './../../../../../assets/svg/icono_sidebar_usuarios_rojo_24x24.svg',
-				title: 'Eliminar usuario',
-				subtitle: '¿Seguro de que deseas eliminar este usuario?',
+				title: 'Desactivar usuario',
+				subtitle: '¿Seguro de que deseas desactivar este usuario?',
 				type: 'delete',
 			},
 		});
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				this._usersServices.removeUser(user);
+				this._usersServices.modifyStatusUser(user);
 				this._cdr.detectChanges();
 				this._alertService.setAlert({
 					isActive: true,
-					message: 'Excelente, el usuario se ha eliminado con éxito.',
+					message: 'Excelente, el usuario se ha desactivado con éxito.',
+				});
+			}
+		});
+	}
+
+	openDiaglogEnableUser(user: any) {
+		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
+			width: '380px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				icon: './../../../../../assets/svg/icono_sidebar_usuarios_verde_24x24.svg',
+				title: 'Activar usuario',
+				subtitle: '¿Seguro de que deseas activar este usuario?',
+				type: 'edit',
+			},
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				this._usersServices.modifyStatusUser(user);
+				this._cdr.detectChanges();
+				this._alertService.setAlert({
+					isActive: true,
+					message: 'Excelente, el usuario se ha activado con éxito.',
 				});
 			}
 		});

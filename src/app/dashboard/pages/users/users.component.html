@@ -57,7 +57,14 @@
 						<div class="flex gap-1 items-center md:gap-4">
 							<img matTooltip="Ver" (click)="openDialogUserDetail(element)" src="../../../../assets/svg/icono_visibilidad_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
 							<img matTooltip="Editar" (click)="openDialogEditUser(element)" src="../../../../assets/svg/icono_editar_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
-							<img matTooltip="Eliminar" (click)="openDiaglogDisabletUser(element)" src="../../../../assets/svg/icono_basura_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
+
+							<ng-container *ngIf="element.status === 'Activo'; else enableUser">
+								<img matTooltip="Desactivar" (click)="openDiaglogDisabletUser(element)" src="../../../../assets/svg/person_cancel.svg" class="w-6 h-6 cursor-pointer" alt="">
+							</ng-container>
+
+							<ng-template #enableUser>
+								<img matTooltip="Activar" (click)="openDiaglogEnableUser(element)" src="../../../../assets/svg/person_check.svg" class="w-6 h-6 cursor-pointer" alt="">
+							</ng-template>
 						</div>
 					</td>
 				</ng-container>
