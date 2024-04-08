@@ -1,10 +1,12 @@
-<label [for]="forName" class="font-poppins-medium" [ngClass]="{
-	'text-success-500': isInputActive,
-	'text-danger-500': control.invalid && control.touched,
-	'text-disabled': isDisabled
-}" [class.text-success-500]="isInputActive" [class.text-danger-500]="control.invalid && control.touched">
-	{{ label }}
-</label>
+<ng-container *ngIf="label">
+	<label [for]="forName" class="font-poppins-medium" [ngClass]="{
+		'text-success-500': isInputActive,
+		'text-danger-500': control.invalid && control.touched,
+		'text-disabled': isDisabled
+	}" [class.text-success-500]="isInputActive" [class.text-danger-500]="control.invalid && control.touched">
+		{{ label }}
+	</label>
+</ng-container>
 <div class="relative">
   <ng-container *ngIf="typeInput == 'text' || typeInput == 'email' || typeInput == 'password'">
     <input
