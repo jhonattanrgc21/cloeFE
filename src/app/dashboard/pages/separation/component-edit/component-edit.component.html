@@ -1,0 +1,42 @@
+<div class="component-edit-popup">
+	<p class="text-[#0B132B] font-poppins-medium text-lg mb-6">{{ title }}</p>
+
+	<form [formGroup]="componentForm" class="flex flex-col gap-4">
+		<app-cloe-input-field formControlName="name" [typeInput]="'text'" [forName]="'nameSeparation'"
+			[placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+
+		<app-cloe-select-search formControlName="materials" [isMultiple]="true" [forName]="'materialsSeparation'"
+			[placeholder]="'Selecciona'" [options]="materialList"></app-cloe-select-search>
+
+		<app-cloe-select-search formControlName="process" [isMultiple]="true" [forName]="'processSeparation'"
+			[placeholder]="'Selecciona'" [options]="processList"></app-cloe-select-search>
+
+		<app-cloe-input-field formControlName="weight" [typeInput]="'text'" [forName]="'weightSeparation'"
+			[placeholder]="'0,00'"></app-cloe-input-field>
+
+		<app-cloe-input-field formControlName="weight" [typeInput]="'text'" [forName]="'weightSeparation'"
+			[placeholder]="'0,00'"></app-cloe-input-field>
+
+		<app-cloe-input-field formControlName="dimensions" [typeInput]="'text'" [forName]="'dimensionsSeparation'"
+			[placeholder]="'2x2x4'"></app-cloe-input-field>
+
+		<label class="inline-flex items-center cursor-pointer">
+			<input formControlName="reutilizable" type="checkbox" value="" class="sr-only peer">
+			<div
+				class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-success-600 peer-checked:bg-success-500">
+			</div>
+		</label>
+
+	</form>
+
+	<div class="mt-6 flex items-center justify-end gap-6">
+		<div class="w-24">
+			<button class="btn btn-md btn-secundary btn-secundary__success" (click)="onClose()">Cancelar</button>
+		</div>
+
+		<div class="w-24">
+			<button class="btn btn-md btn-primary btn-primary__success" (click)="onSaveComponent()"
+				[disabled]="componentForm.invalid">Guardar</button>
+		</div>
+	</div>
+</div>

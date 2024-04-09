@@ -27,109 +27,14 @@
 			raeeSelected.model }}</p>
 		<p class="mt-3 text-[#0B132B] w-full font-poppins-medium text-sm">1. Añade los componentes</p>
 
-		<form [formGroup]="fg" (ngSubmit)="onSubmit()" class="table-container">
-			<mat-table [dataSource]="dataSourcePacks">
-				<ng-container formArrayName="promos">
-
-					<!-- Component Column -->
-					<ng-container matColumnDef="component">
-						<mat-header-cell *matHeaderCellDef>
-							<p class="text-sm font-poppins-medium text-[#000000DE]">Componente</p>
-						</mat-header-cell>
-						<mat-cell *matCellDef="let element;" [formGroup]="element">
-							<div class="py-3">
-								<app-cloe-input-field formControlName="component" [typeInput]="'text'" [forName]="'componentSeparation'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
-							</div>
-						</mat-cell>
-					</ng-container>
-
-					<!-- Materials Column -->
-					<ng-container matColumnDef="materials">
-						<mat-header-cell *matHeaderCellDef>
-							<p class="text-sm font-poppins-medium text-[#000000DE]">Materiales</p>
-						</mat-header-cell>
-						<mat-cell *matCellDef="let element;" [formGroup]="element">
-							<div class="py-3">
-								<app-cloe-select-search  formControlName="materials" [isMultiple]="true" [forName]="'materialsSeparation'" [placeholder]="'Selecciona'" [options]="materialList"></app-cloe-select-search>
-							</div>
-						</mat-cell>
-					</ng-container>
-
-					<!-- Process Column -->
-					<ng-container matColumnDef="process">
-						<mat-header-cell *matHeaderCellDef>
-							<p class="text-sm font-poppins-medium text-[#000000DE]">Materiales</p>
-						</mat-header-cell>
-						<mat-cell *matCellDef="let element;" [formGroup]="element">
-							<div class="py-3">
-								<app-cloe-select-search  formControlName="process" [isMultiple]="true" [forName]="'processSeparation'" [placeholder]="'Selecciona'" [options]="processList"></app-cloe-select-search>
-							</div>
-						</mat-cell>
-					</ng-container>
-
-					<!-- Weight Column -->
-					<ng-container matColumnDef="weight">
-						<mat-header-cell *matHeaderCellDef>
-							<p class="text-sm font-poppins-medium text-[#000000DE]">Peso (g)</p>
-						</mat-header-cell>
-						<mat-cell *matCellDef="let element;" [formGroup]="element">
-							<div class="py-3">
-								<app-cloe-input-field formControlName="weight" [typeInput]="'text'" [forName]="'weightSeparation'" [placeholder]="'0,00'"></app-cloe-input-field>
-							</div>
-						</mat-cell>
-					</ng-container>
-
-					<!-- Dimensiones Column -->
-					<ng-container matColumnDef="dimensions">
-						<mat-header-cell *matHeaderCellDef>
-							<p class="text-sm font-poppins-medium text-[#000000DE]">Dimensiones (cm)</p>
-						</mat-header-cell>
-						<mat-cell *matCellDef="let element;" [formGroup]="element">
-							<div class="py-3">
-								<app-cloe-input-field formControlName="dimensions" [typeInput]="'text'" [forName]="'dimensionsSeparation'" [placeholder]="'2x2x4'"></app-cloe-input-field>
-							</div>
-						</mat-cell>
-					</ng-container>
-
-					<!-- Reutilizable Column -->
-					<ng-container matColumnDef="reutilizable">
-						<mat-header-cell *matHeaderCellDef>
-							<p class="text-sm font-poppins-medium text-[#000000DE]">Reutilizable</p>
-						</mat-header-cell>
-						<mat-cell *matCellDef="let element;" [formGroup]="element">
-							<div class="py-3">
-								<label class="inline-flex items-center cursor-pointer">
-									<input formControlName="reutilizable" type="checkbox" value="" class="sr-only peer">
-									<div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-success-600 peer-checked:bg-success-500"></div>
-								</label>
-							</div>
-						</mat-cell>
-					</ng-container>
-
-					<!-- Delete Column -->
-					<ng-container matColumnDef="actions">
-						<mat-header-cell *matHeaderCellDef></mat-header-cell>
-						<mat-cell *matCellDef="let element; index as i" [formGroup]="element">
-							<button class="relative" matTooltip="Cerrar" (click)="deleteLesson(i)">
-								<img src="../../../../assets/svg/icono_x_24x24.svg" class="w-6 h-6" alt="">
-								<div
-									class="absolute top-0 left-0 w-full h-full bg-zinc-500 opacity-0 rounded-full transition-opacity duration-300 ease-in-out hover:opacity-50">
-								</div>
-							</button>
-						</mat-cell>
-					</ng-container>
-
-					<!-- header titles -->
-					<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-					<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-				</ng-container>
-			</mat-table>
-
-			<div class="mt-4 flex items-center justify-end">
-				<div>
-					<button type="button" class="btn btn-md btn-secundary btn-secundary__success" (click)="addLesson()">Agregar línea</button>
-				</div>
+		<div class="flex items-center justify-end">
+			<div class="md:w-24">
+				<button class="btn btn-primary__success btn-md" (click)="openDialogComponentEdit()">Agregar línea</button>
 			</div>
+		</div>
+
+		<form [formGroup]="fg">
+
 		</form>
 
 		<div class="mt-6 flex items-center justify-center gap-6">

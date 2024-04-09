@@ -20,6 +20,8 @@ import {
 } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { GenerarlService } from 'src/app/shared/services/generarl.service';
+import { ComponentEditComponent } from './component-edit/component-edit.component';
+import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 
 @Component({
 	selector: 'app-separation',
@@ -31,6 +33,7 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	raeeSelected: any;
 	clasificationAllList: any[] = [];
 	clasificationList: any[] = [];
+	componentsList: any[] = [];
 	separationList: any[] = [];
 	materialList: any[] = [
 		{
@@ -85,15 +88,13 @@ export class SeparationComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private _clasificationService: ClasificationService,
+		private _viewportRuler: ViewportRuler,
+		private _dialog: MatDialog,
 		private _cdr: ChangeDetectorRef,
 		private _alertService: AlertService,
 		private _fb: FormBuilder,
 		private _generalService: GenerarlService
-	) {
-		this.fg = this._fb.group({
-			promos: this._fb.array([]),
-		});
-	}
+	) {}
 
 	ngOnInit(): void {
 		this.clasificationListSubscription =
@@ -110,54 +111,89 @@ export class SeparationComponent implements OnInit, OnDestroy {
 			);
 	}
 
-	get promos() {
-		return this.fg.controls['promos'] as FormArray;
-	}
-
-	addLesson(): void {
-		const lessonForm = this._fb.group({
-			component: [
-				'',
-				[Validators.required, this._generalService.noWhitespaceValidator()],
-			],
-			materials: [
-				'',
-				[Validators.required, this._generalService.noWhitespaceValidator()],
-			],
-			process: [
-				'',
-				[Validators.required, this._generalService.noWhitespaceValidator()],
-			],
-			weight: [
-				'',
-				[Validators.required, this._generalService.noWhitespaceValidator()],
-			],
-			dimensions: ['', this._generalService.noWhitespaceValidator()],
-			reutilizable: [
-				false,
-				[Validators.required, this._generalService.noWhitespaceValidator()],
-			],
+	openDialogComponentEdit(component?: any) {
+		const viewportSize = this._viewportRuler.getViewportSize();
+		const dialogRef = this._dialog.open(ComponentEditComponent, {
+			width: viewportSize.width < 768 ? '380px' : '474px',
+			height: '500px',
+			autoFocus: false,
+			data: component,
 		});
 
-		this.promos.push(lessonForm);
-		this.dataSourcePacks = new MatTableDataSource(this.promos.controls);
-
-		this._cdr.detectChanges();
+		dialogRef.afterClosed().subscribe((result: any) => {
+			if (result) this.openDialogConfirmationComponent(result);
+		});
 	}
 
-	deleteLesson(lessonIndex: number): void {
-		this.promos.removeAt(lessonIndex);
-		this.dataSourcePacks = new MatTableDataSource(this.promos.controls);
+	openDialogConfirmationComponent(component: any): void {
+		const title = component.id
+			? 'Editar componente de RAEE'
+			: 'Componente de RAEE';
+		const subtitle = component.id
+			? '¿Seguro de que deseas editar esta componente de RAEE?'
+			: '¿Seguro de que deseas registrar este componente de RAEE?';
+		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
+			width: '380px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				icon: './../../../../../assets/svg/icono_sidebar_separar_verde_24x24.svg',
+				title,
+				subtitle,
+				type: 'edit',
+			},
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				// TODO: agregar peticion al backend para guardar el registro
+				// const json: any = {
+				// 	id: clasification.id,
+				// 	make: clasification.make,
+				// 	model: clasification.model,
+				// 	lineTypeId: clasification.lineType.id,
+				// 	categoryId: clasification.category.id,
+				// 	information: clasification.information,
+				// };
+
+				// clasification.status = 'Clasificado';
+
+				// this._clasificationService.addClasification(clasification);
+				this._cdr.detectChanges();
+			}
+		});
 	}
 
-	onSubmit() {
-		console.log(this.promos.value);
+	openDiaglogRemoveComponent(component: any) {
+		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
+			width: '380px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				icon: './../../../../../assets/svg/icono_sidebar_separar_rojo_24x24.svg',
+				title: 'Eliminar componente de RAEE',
+				subtitle: '¿Seguro de que deseas eliminar este componente de RAEE?',
+				type: 'delete',
+			},
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				// this._clasificationService.removeClasification(clasification);
+				this._cdr.detectChanges();
+			}
+		});
 	}
 
 	newSeparation(raee: any) {
 		this.isActiveSeparationView = true;
 		this.raeeSelected = raee;
-		console.log('Clasificacion seleccionada: ', raee);
+		this.fg = this._fb.group({
+			observation: this._fb.group([
+				,
+				this._generalService.noWhitespaceValidator(),
+			]),
+		});
 	}
 
 	editSeparation(raee: any) {
