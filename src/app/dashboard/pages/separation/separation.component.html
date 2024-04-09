@@ -50,7 +50,19 @@
 						</mat-header-cell>
 						<mat-cell *matCellDef="let element;" [formGroup]="element">
 							<div class="py-3">
-								<app-cloe-input-field formControlName="materials" [typeInput]="'text'" [forName]="'materialsSeparation'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+								<app-cloe-select-search  formControlName="materials" [isMultiple]="true" [forName]="'materialsSeparation'" [placeholder]="'Selecciona'" [options]="materialList"></app-cloe-select-search>
+							</div>
+						</mat-cell>
+					</ng-container>
+
+					<!-- Process Column -->
+					<ng-container matColumnDef="process">
+						<mat-header-cell *matHeaderCellDef>
+							<p class="text-sm font-poppins-medium text-[#000000DE]">Materiales</p>
+						</mat-header-cell>
+						<mat-cell *matCellDef="let element;" [formGroup]="element">
+							<div class="py-3">
+								<app-cloe-select-search  formControlName="process" [isMultiple]="true" [forName]="'processSeparation'" [placeholder]="'Selecciona'" [options]="processList"></app-cloe-select-search>
 							</div>
 						</mat-cell>
 					</ng-container>
@@ -68,13 +80,13 @@
 					</ng-container>
 
 					<!-- Dimensiones Column -->
-					<ng-container matColumnDef="dimensiones">
+					<ng-container matColumnDef="dimensions">
 						<mat-header-cell *matHeaderCellDef>
 							<p class="text-sm font-poppins-medium text-[#000000DE]">Dimensiones (cm)</p>
 						</mat-header-cell>
 						<mat-cell *matCellDef="let element;" [formGroup]="element">
 							<div class="py-3">
-								<app-cloe-input-field formControlName="dimensiones" [typeInput]="'text'" [forName]="'dimensionesSeparation'" [placeholder]="'2x2x4'"></app-cloe-input-field>
+								<app-cloe-input-field formControlName="dimensions" [typeInput]="'text'" [forName]="'dimensionsSeparation'" [placeholder]="'2x2x4'"></app-cloe-input-field>
 							</div>
 						</mat-cell>
 					</ng-container>
@@ -91,9 +103,6 @@
 									<div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-success-600 peer-checked:bg-success-500"></div>
 								</label>
 							</div>
-							<!-- <mat-form-field>
-								<input matInput placeholder="Reutilizable" formControlName="reutilizable" required>
-							</mat-form-field> -->
 						</mat-cell>
 					</ng-container>
 

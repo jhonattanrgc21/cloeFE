@@ -1,5 +1,3 @@
-// app-cloe-select.component.ts
-
 import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, Optional, Self, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 import { ViewChild } from '@angular/core';
@@ -13,11 +11,12 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 export class CloeSelectSearchComponent
 	implements ControlValueAccessor, OnInit, OnChanges
 {
-	@Input() label: string = '';
+	@Input() label?: string;
 	@Input() forName: string = '';
 	@Input() options: any = [];
 	@Input() placeholder: string = '';
 	@Input() isDisabled: boolean = false;
+	@Input() isMultiple: boolean = false;
 
 	control: FormControl = new FormControl();
 	isInputActive: boolean = false;
@@ -39,7 +38,7 @@ export class CloeSelectSearchComponent
 			this.cdr.detectChanges(); // Forzar la detección de cambios en la vista del ng-select
 		}
 	}
-	
+
 	ngOnChanges(changes: SimpleChanges): void {
 		if ('isDisabled' in changes) {
 			this.isDisabled = changes['isDisabled'].currentValue;
