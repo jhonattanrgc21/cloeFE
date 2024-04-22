@@ -12,39 +12,8 @@ export class ComponentEditComponent {
 	title: string = '';
 	componentForm!: FormGroup;
 
-	materialList: any[] = [
-		{
-			id: 1,
-			name: 'Plastico',
-		},
-		{
-			id: 2,
-			name: 'Metal',
-		},
-		{
-			id: 3,
-			name: 'Vidrio',
-		},
-		{
-			id: 4,
-			name: 'Otros',
-		},
-	];
-
-	processList: any[] = [
-		{
-			id: 1,
-			name: 'Proceso 1',
-		},
-		{
-			id: 2,
-			name: 'Proceso 2',
-		},
-		{
-			id: 3,
-			name: 'Proceso 3',
-		},
-	];
+	materialList: any[];
+	processList: any[];
 
 	constructor(
 		public dialogRef: MatDialogRef<ComponentEditComponent>,
@@ -53,6 +22,9 @@ export class ComponentEditComponent {
 		@Inject(MAT_DIALOG_DATA) public data: any
 	) {
 		this.title = data?.id ? 'Editar componente de RAEE' : 'Componente RAEE';
+		this.materialList = data.materialList;
+		this.processList = data.processList;
+
 		this.componentForm = this._fb.group({
 			name: [
 				'',

@@ -117,7 +117,11 @@ export class SeparationComponent implements OnInit, OnDestroy {
 			width: viewportSize.width < 768 ? '380px' : '474px',
 			height: '500px',
 			autoFocus: false,
-			data: component,
+			data: {
+				materialList: this.materialList,
+				processList: this.processList,
+				component
+			}
 		});
 
 		dialogRef.afterClosed().subscribe((result: any) => {
