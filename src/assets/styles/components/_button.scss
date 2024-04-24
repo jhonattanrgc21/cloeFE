@@ -77,7 +77,7 @@
 
 	&-secundary {
 		&__success {
-			@apply bg-success-50 text-success-500 border-success-50;
+			@apply bg-success-50 text-success-500 border-success-200;
 
 			&:not(:disabled):hover {
 				@apply bg-success-200 text-white;
