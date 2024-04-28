@@ -3,6 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription, filter, map } from 'rxjs';
 import { Alert } from '../shared/interfaces/alert.interface';
+import { ViewportRuler } from '@angular/cdk/scrolling';
 
 @Component({
 	selector: 'app-dashboard',
@@ -15,7 +16,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	alertObj!: Alert;
 	private alertSubscription!: Subscription;
 
-	constructor(private router: Router, private activatedRoute: ActivatedRoute, private alertService: AlertService,) {
+	constructor(
+		private router: Router,
+		private activatedRoute: ActivatedRoute,
+		private alertService: AlertService,
+		private _viewportRuler: ViewportRuler,
+	) {
 		this.router.events
 			.pipe(
 				filter((event) => event instanceof NavigationEnd),
@@ -34,9 +40,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 			});
 	}
 
-	ngOnInit(): void{
-		this.alertSubscription =
-		this.alertService.alert$.subscribe(
+	ngOnInit(): void {
+		this.alertSubscription = this.alertService.alert$.subscribe(
 			(alert: Alert) => {
 				this.alertObj = alert;
 			}
@@ -67,6 +72,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
 	onSidebarToggle() {
 		this.isSidebarOpen = !this.isSidebarOpen;
+	}
+
+	onSidebarToggle2() {
+		const viewportSize = this._viewportRuler.getViewportSize();
+		if( viewportSize.width < 1024 && this.isSidebarOpen) this.isSidebarOpen = false;
 	}
 
 	ngOnDestroy(): void {
