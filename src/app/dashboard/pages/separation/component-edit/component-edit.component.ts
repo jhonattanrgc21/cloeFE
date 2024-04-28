@@ -26,28 +26,31 @@ export class ComponentEditComponent {
 		this.processList = data.processList;
 
 		this.componentForm = this._fb.group({
+			id: [
+				data?.component?.id,
+			],
 			name: [
-				'',
+				data?.component?.name,
 				[Validators.required, this._generalService.noWhitespaceValidator()],
 			],
 			materials: [
-				[],
+				data?.component?.materials,
 				[Validators.required, this._generalService.noWhitespaceValidator()],
 			],
 			process: [
-				[],
+				data?.component?.process,
 				[Validators.required, this._generalService.noWhitespaceValidator()],
 			],
 			weight: [
-				'',
+				data?.component?.weight,
 				[Validators.required, this._generalService.noWhitespaceValidator()],
 			],
-			dimensions: ['', this._generalService.noWhitespaceValidator()],
+			dimensions: [data?.component?.dimensions, this._generalService.noWhitespaceValidator()],
 			reutilizable: [
-				false,
+				data.component? data.component.reutilizable: false,
 				[Validators.required, this._generalService.noWhitespaceValidator()],
 			],
-			comment: [, this._generalService.noWhitespaceValidator()],
+			comment: [data?.component?.comment, this._generalService.noWhitespaceValidator()],
 		});
 	}
 
@@ -70,7 +73,7 @@ export class ComponentEditComponent {
 				name: form.name.trim(),
 				weight: form.weight.trim(),
 				dimensions: form.dimensions.trim(),
-				reusable: form.reusable,
+				reutilizable: form.reutilizable,
 				materials: form.materials,
 				process: form.process,
 				comment: form.comment ? form.comment.trim() : null,

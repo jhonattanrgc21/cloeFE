@@ -1,5 +1,22 @@
 .separation{
 	@apply w-screen md:w-full my-4 px-4 py-6 bg-white rounded shadow-lg shadow-[#004D4014];
 
+	.btn-add{
+		.svg-add-default {
+			display: block;
+		}
 
+		.svg-add-hover {
+			display: none;
+		}
+
+		&:hover .svg-add-default {
+			display: none;
+		}
+
+		&:hover .svg-add-hover {
+			display: block;
+		}
+	}
 }
+

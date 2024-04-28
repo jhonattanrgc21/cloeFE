@@ -1,3 +1,4 @@
+import { SeparationService } from './../../services/separation.service';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 import {
 	ChangeDetectorRef,
@@ -31,6 +32,7 @@ import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmati
 export class SeparationComponent implements OnInit, OnDestroy {
 	isActiveSeparationView: boolean = false;
 	raeeSelected: any;
+	separationRaeeList: any[] = [];
 	clasificationAllList: any[] = [];
 	clasificationList: any[] = [];
 	componentsList: any[] = [];
@@ -70,14 +72,15 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	];
 
 	private clasificationListSubscription!: Subscription;
+	private separationListSubscription!: Subscription;
 	@ViewChild(MatTabGroup) matTabGroup: any;
 
 	title = 'form-array';
 
 	fg!: FormGroup;
-	dataSourcePacks!: MatTableDataSource<any>;
+	dataSource =  new MatTableDataSource<any>(this.componentsList);
 	displayedColumns = [
-		'component',
+		'name',
 		'materials',
 		'process',
 		'weight',
@@ -88,6 +91,7 @@ export class SeparationComponent implements OnInit, OnDestroy {
 
 	constructor(
 		private _clasificationService: ClasificationService,
+		private _separationService: SeparationService,
 		private _viewportRuler: ViewportRuler,
 		private _dialog: MatDialog,
 		private _cdr: ChangeDetectorRef,
@@ -109,6 +113,15 @@ export class SeparationComponent implements OnInit, OnDestroy {
 					);
 				}
 			);
+
+		this.separationListSubscription =
+			this._separationService.separationList$.subscribe(
+				(separationsRaee: any[]) => {
+					this.separationRaeeList = separationsRaee;
+				}
+			);
+
+		this.dataSource.data = this.componentsList;
 	}
 
 	openDialogComponentEdit(component?: any) {
@@ -120,8 +133,8 @@ export class SeparationComponent implements OnInit, OnDestroy {
 			data: {
 				materialList: this.materialList,
 				processList: this.processList,
-				component
-			}
+				component,
+			},
 		});
 
 		dialogRef.afterClosed().subscribe((result: any) => {
@@ -145,24 +158,23 @@ export class SeparationComponent implements OnInit, OnDestroy {
 				title,
 				subtitle,
 				type: 'edit',
+				component,
 			},
 		});
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				// TODO: agregar peticion al backend para guardar el registro
-				// const json: any = {
-				// 	id: clasification.id,
-				// 	make: clasification.make,
-				// 	model: clasification.model,
-				// 	lineTypeId: clasification.lineType.id,
-				// 	categoryId: clasification.category.id,
-				// 	information: clasification.information,
-				// };
+				if (!component.id) component.id = this.componentsList.length + 1;
 
-				// clasification.status = 'Clasificado';
+				const index = this.componentsList.findIndex(
+					(item) => item.id === component.id
+				);
 
-				// this._clasificationService.addClasification(clasification);
+				if (index !== -1) this.componentsList[index] = component;
+				else this.componentsList.push(component);
+
+				this.dataSource.data = this.componentsList;
+
 				this._cdr.detectChanges();
 			}
 		});
@@ -183,7 +195,12 @@ export class SeparationComponent implements OnInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				// this._clasificationService.removeClasification(clasification);
+				const index = this.componentsList.findIndex(
+					(item) => item.id === component.id
+				);
+				this.componentsList.splice(index, 1);
+
+				this.dataSource.data = this.componentsList;
 				this._cdr.detectChanges();
 			}
 		});
@@ -192,12 +209,27 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	newSeparation(raee: any) {
 		this.isActiveSeparationView = true;
 		this.raeeSelected = raee;
-		this.fg = this._fb.group({
-			observation: this._fb.group([
-				,
-				this._generalService.noWhitespaceValidator(),
-			]),
-		});
+
+		let separationObj = this.separationRaeeList.find(
+			(separation) => separation.raeeId == raee.id
+		);
+		if (separationObj) {
+			this.fg = this._fb.group({
+				observation: [
+					separationObj.observation,
+					this._generalService.noWhitespaceValidator(),
+				],
+			});
+			this.componentsList = separationObj.components;
+			this.dataSource.data = this.componentsList;
+		} else {
+			this.fg = this._fb.group({
+				observation: [
+					,
+					this._generalService.noWhitespaceValidator(),
+				],
+			});
+		}
 	}
 
 	editSeparation(raee: any) {
@@ -208,12 +240,27 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	cancelSeparation() {
 		this.isActiveSeparationView = false;
 		this.raeeSelected = null;
+		this.componentsList = [];
+		this.dataSource.data = 	this.componentsList;
+	}
+
+	getNames(list: any[], ids: number[]) {
+		// Filtrar los objetos que tengan un id contenido en la lista de ids
+		const objetosFiltrados = list.filter((item) => ids.includes(item.id));
+		// Obtener los nombres de los objetos filtrados y unirlos con coma
+		const nombres = objetosFiltrados.map((objeto) => objeto.name).join(', ');
+		return nombres;
 	}
 
 	ngOnDestroy(): void {
 		if (this.clasificationListSubscription) {
 			this._alertService.setAlert({ isActive: false, message: '' });
 			this.clasificationListSubscription.unsubscribe();
+		}
+
+		if (this.separationListSubscription) {
+			this._alertService.setAlert({ isActive: false, message: '' });
+			this.separationListSubscription.unsubscribe();
 		}
 	}
 }

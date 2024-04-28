@@ -1,3 +1,4 @@
+import { ClasificationService } from './clasification.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -7,24 +8,27 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class SeparationService {
 	private separationListSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 	separationList$: Observable<any[]> = this.separationListSubject.asObservable();
-	private separationObjSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
-	separationObj$: Observable<any> = this.separationObjSubject.asObservable();
 
-  constructor() { }
+  constructor(private _clasificationService: ClasificationService) { }
 
-	findByRaeeId(raeeId: number){
+	addSeparation(separation: any){
+		const currentList = this.separationListSubject.getValue();
+		const index = currentList.findIndex(
+			(item) => item.id === separation.raeeId
+		);
 
+		this.separationListSubject.next(currentList);
+		if (index !== -1) currentList[index] = separation;
+		else currentList.push(separation);
 	}
 
-	findAll(){
-
-	}
-
-	updated(separation: any){
-
-	}
-
-	delete(raeeId: number){
-		
+	removeSeparation(raeeId: number){
+		const currentList = this.separationListSubject.getValue();
+		const index = currentList.findIndex(
+			(item) => item.id === raeeId
+		);
+		currentList.splice(index, 1);
+		this.separationListSubject.next(currentList);
+		this._clasificationService.modifyStatus(raeeId, 'Clasificado')
 	}
 }

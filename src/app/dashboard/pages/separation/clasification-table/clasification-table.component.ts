@@ -129,7 +129,7 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				this._clasificationService.removeSeparation(clasification);
+				this._clasificationService.modifyStatus(clasification, 'Clasificado');
 				this._cdr.detectChanges();
 				this._alertService.setAlert({
 					isActive: true,
