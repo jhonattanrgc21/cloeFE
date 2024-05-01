@@ -8,6 +8,7 @@ import { ClasificationDetailComponent } from '../../clasification/clasification-
 import { DownloadPopupComponent } from 'src/app/shared/components/download-popup/download-popup.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 import { ClasificationService } from 'src/app/dashboard/services/clasification.service';
+import { SeparationService } from 'src/app/dashboard/services/separation.service';
 
 @Component({
 	selector: 'app-clasification-table',
@@ -35,6 +36,7 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 		private _cdr: ChangeDetectorRef,
 		private _alertService: AlertService,
 		private _clasificationService: ClasificationService,
+		private _separationService: SeparationService
 	) {}
 
 
@@ -129,7 +131,7 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				this._clasificationService.modifyStatus(clasification, 'Clasificado');
+				this._separationService.removeSeparation(clasification.raeeId);
 				this._cdr.detectChanges();
 				this._alertService.setAlert({
 					isActive: true,

@@ -12,6 +12,7 @@ export class CloeInputFieldComponent implements ControlValueAccessor, OnInit, On
 	@Input() forName: string = '';
 	@Input() typeInput: 'text' | 'email' | 'password' | 'textarea' | 'select' = 'text';
 	@Input() placeholder: string = '';
+	@Input() rows: string = '10';
 	@Input() isDisabled: boolean = false;
 	@Input() options: string[] = [];
 

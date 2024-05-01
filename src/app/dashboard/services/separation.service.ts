@@ -1,6 +1,7 @@
 import { ClasificationService } from './clasification.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { Separation } from '../interfaces/separation.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +12,17 @@ export class SeparationService {
 
   constructor(private _clasificationService: ClasificationService) { }
 
-	addSeparation(separation: any){
+	addSeparation(separation: Separation){
 		const currentList = this.separationListSubject.getValue();
 		const index = currentList.findIndex(
-			(item) => item.id === separation.raeeId
+			(item) => item.raeeId === separation.raeeId
 		);
 
-		this.separationListSubject.next(currentList);
 		if (index !== -1) currentList[index] = separation;
 		else currentList.push(separation);
+
+		this.separationListSubject.next(currentList);
+		this._clasificationService.modifyStatus(separation.raeeId, 'Separado')
 	}
 
 	removeSeparation(raeeId: number){

@@ -12,17 +12,12 @@ import { Subscription } from 'rxjs';
 import { ClasificationService } from '../../services/clasification.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { MatTabGroup } from '@angular/material/tabs';
-import {
-	FormArray,
-	FormBuilder,
-	FormControl,
-	FormGroup,
-	Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { GenerarlService } from 'src/app/shared/services/generarl.service';
 import { ComponentEditComponent } from './component-edit/component-edit.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
+import { Separation } from '../../interfaces/separation.interface';
 
 @Component({
 	selector: 'app-separation',
@@ -71,6 +66,8 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		},
 	];
 
+	separation!: Separation;
+
 	private clasificationListSubscription!: Subscription;
 	private separationListSubscription!: Subscription;
 	@ViewChild(MatTabGroup) matTabGroup: any;
@@ -78,13 +75,14 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	title = 'form-array';
 
 	fg!: FormGroup;
-	dataSource =  new MatTableDataSource<any>(this.componentsList);
+	dataSource = new MatTableDataSource<any>(this.componentsList);
 	displayedColumns = [
 		'name',
 		'materials',
 		'process',
 		'weight',
 		'dimensions',
+		'comment',
 		'reutilizable',
 		'actions',
 	];
@@ -164,15 +162,26 @@ export class SeparationComponent implements OnInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
+				// TODO: conversar esta validacion con Jesus
 				if (!component.id) component.id = this.componentsList.length + 1;
 
 				const index = this.componentsList.findIndex(
 					(item) => item.id === component.id
 				);
 
-				if (index !== -1) this.componentsList[index] = component;
-				else this.componentsList.push(component);
+				let message = '';
+				if (index !== -1) {
+					this.componentsList[index] = component;
+					message = 'Excelente, el componente se ha registrado con éxito.';
+				} else {
+					this.componentsList.push(component);
+					message = 'Excelente, el componente se ha editado con éxito.';
+				}
 
+				this._alertService.setAlert({
+					isActive: true,
+					message,
+				});
 				this.dataSource.data = this.componentsList;
 
 				this._cdr.detectChanges();
@@ -199,6 +208,10 @@ export class SeparationComponent implements OnInit, OnDestroy {
 					(item) => item.id === component.id
 				);
 				this.componentsList.splice(index, 1);
+				this._alertService.setAlert({
+					isActive: true,
+					message: 'Excelente, el componente se ha eliminado con éxito.',
+				});
 
 				this.dataSource.data = this.componentsList;
 				this._cdr.detectChanges();
@@ -210,24 +223,27 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		this.isActiveSeparationView = true;
 		this.raeeSelected = raee;
 
-		let separationObj = this.separationRaeeList.find(
+		this.separation = this.separationRaeeList.find(
 			(separation) => separation.raeeId == raee.id
 		);
-		if (separationObj) {
+		if (this.separation) {
 			this.fg = this._fb.group({
 				observation: [
-					separationObj.observation,
+					this.separation.observation,
 					this._generalService.noWhitespaceValidator(),
 				],
 			});
-			this.componentsList = separationObj.components;
+			this.componentsList = this.separation.components;
 			this.dataSource.data = this.componentsList;
 		} else {
+			this.separation = {
+				raeeId: raee.id,
+				components: [],
+				observation: '',
+			};
+			this.separation.raeeId = raee.id;
 			this.fg = this._fb.group({
-				observation: [
-					,
-					this._generalService.noWhitespaceValidator(),
-				],
+				observation: [, this._generalService.noWhitespaceValidator()],
 			});
 		}
 	}
@@ -237,17 +253,70 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		this.raeeSelected = raee;
 	}
 
-	cancelSeparation() {
-		this.isActiveSeparationView = false;
-		this.raeeSelected = null;
-		this.componentsList = [];
-		this.dataSource.data = 	this.componentsList;
+	openDialogCancelSeparation() {
+		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
+			width: '380px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				icon: './../../../../../assets/svg/icono_sidebar_separar_rojo_24x24.svg',
+				title: 'Cancelar separación del RAEE',
+				subtitle: '¿Seguro de que deseas cancelar la separación del RAEE?',
+				type: 'delete',
+			},
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				this.isActiveSeparationView = false;
+				this.raeeSelected = null;
+				this.componentsList = [];
+				this.dataSource.data = this.componentsList;
+				this._alertService.setAlert({ isActive: false, message: '' });
+				this._cdr.detectChanges();
+			}
+		});
+	}
+
+	openDialogConfirmationSeparation() {
+		const title = this.separation.id
+			? 'Editar separación de RAEE'
+			: 'Separar RAEE';
+		const subtitle = this.separation.id
+			? '¿Seguro de que deseas editar la separación de este RAEE?'
+			: '¿Seguro de que deseas separar este RAEE?';
+		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
+			width: '380px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				icon: './../../../../../assets/svg/icono_sidebar_separar_verde_24x24.svg',
+				title,
+				subtitle,
+				type: 'edit',
+			},
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				this.separation.components = this.componentsList;
+				this.separation.observation = this.fg.value.observation;
+				this._separationService.addSeparation(this.separation);
+				this._alertService.setAlert({
+					isActive: true,
+					message: 'Excelente, el RAEE se ha separado con éxito.',
+				});
+				this._cdr.detectChanges();
+				this.isActiveSeparationView = false;
+				this.raeeSelected = null;
+				this.componentsList = [];
+				this.dataSource.data = this.componentsList;
+			}
+		});
 	}
 
 	getNames(list: any[], ids: number[]) {
-		// Filtrar los objetos que tengan un id contenido en la lista de ids
 		const objetosFiltrados = list.filter((item) => ids.includes(item.id));
-		// Obtener los nombres de los objetos filtrados y unirlos con coma
 		const nombres = objetosFiltrados.map((objeto) => objeto.name).join(', ');
 		return nombres;
 	}
