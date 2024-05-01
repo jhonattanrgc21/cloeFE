@@ -7,7 +7,6 @@ import { AlertService } from 'src/app/shared/services/alert.service';
 import { ClasificationDetailComponent } from '../../clasification/clasification-detail/clasification-detail.component';
 import { DownloadPopupComponent } from 'src/app/shared/components/download-popup/download-popup.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
-import { ClasificationService } from 'src/app/dashboard/services/clasification.service';
 import { SeparationService } from 'src/app/dashboard/services/separation.service';
 
 @Component({
@@ -18,7 +17,6 @@ import { SeparationService } from 'src/app/dashboard/services/separation.service
 export class ClasificationTableComponent implements OnInit, AfterViewInit {
 	@Input() data: any[] = [];
 	@Output() clasificationSelected: any = new EventEmitter<any>();
-	@Output() separationSelected: any = new EventEmitter<any>();
 	displayedColumns: string[] = [
 		'make',
 		'model',
@@ -35,7 +33,6 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 		private _viewportRuler: ViewportRuler,
 		private _cdr: ChangeDetectorRef,
 		private _alertService: AlertService,
-		private _clasificationService: ClasificationService,
 		private _separationService: SeparationService
 	) {}
 
@@ -110,10 +107,6 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 	}
 
 	openSeparationDetail(separation: any) {
-	}
-
-	openEditSeparation(separation: any){
-		this.separationSelected.emit(separation);
 	}
 
 	openDiaglogDisabletSeparation(clasification: any){

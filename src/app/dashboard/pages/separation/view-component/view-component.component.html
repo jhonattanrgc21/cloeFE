@@ -1,0 +1,52 @@
+<div class="p-6">
+	<div class="mb-6 flex justify-between items-center">
+		<p class="font-poppins-medium text-lg text-[#0B132B]">Detalle del componente</p>
+		<button class="relative" matTooltip="Cerrar" (click)="onClose()">
+			<img src="../../../../../assets/svg/icono_x_24x24.svg" class="w-6 h-6" alt="">
+			<div class="absolute top-0 left-0 w-full h-full bg-zinc-500 opacity-0 rounded-full transition-opacity duration-300 ease-in-out hover:opacity-50"></div>
+		</button>
+	</div>
+
+	<div class="flex flex-col gap-4">
+    <div class="grid grid-cols-2">
+        <p class="font-poppins-medium text-sm text-[#00000099]">Componente</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.name}}</p>
+    </div>
+    <div class="grid grid-cols-2">
+        <p class="font-poppins-medium text-sm text-[#00000099]">Materiales</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.materials}}</p>
+    </div>
+    <div class="grid grid-cols-2">
+        <p class="font-poppins-medium text-sm text-[#00000099]">Procesos</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.process}}</p>
+    </div>
+    <div class="grid grid-cols-2">
+        <p class="font-poppins-medium text-sm text-[#00000099]">Peso (g)</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.weight}}</p>
+    </div>
+		<div class="grid grid-cols-2">
+			<p class="font-poppins-medium text-sm text-[#00000099]">Dimensiones (cm)</p>
+			<p class="font-poppins-regular text-sm text-[#000000DE]">{{data.dimensions}}</p>
+		</div>
+		<div class="grid grid-cols-2">
+			<p class="font-poppins-medium text-sm text-[#00000099]">Reutilizable</p>
+			<p class="font-poppins-regular text-sm text-[#000000DE]">{{data.reutilizable ? 'Si':'No'}}</p>
+		</div>
+		<div class="grid grid-cols-2">
+			<p class="font-poppins-medium text-sm text-[#00000099]">Observación</p>
+			<p class="font-poppins-regular text-sm text-[#000000DE]">{{data.comment}}</p>
+		</div>
+	</div>
+
+	<ng-container *ngIf="!data.disableActions">
+		<div class="mt-7 flex justify-between items-center">
+			<div class="w-24">
+				<button class="btn btn-md btn-outline btn-outline__danger" (click)="onClose('delete')">Eliminar</button>
+			</div>
+
+			<div class="w-24">
+				<button class="btn btn-md btn-primary btn-primary__success" (click)="onClose('edit')">Editar</button>
+			</div>
+		</div>
+	</ng-container>
+</div>

@@ -6,17 +6,13 @@
 		<div class="mt-4 table-container">
 			<mat-tab-group>
 				<mat-tab label="Todos">
-					<app-clasification-table [data]="clasificationAllList"
-						(clasificationSelected)="newSeparation($event)"
-						(separationSelected)="editSeparation($event)"></app-clasification-table>
+					<app-clasification-table [data]="clasificationAllList" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
 				</mat-tab>
 				<mat-tab label="Clasificados">
-					<app-clasification-table [data]="clasificationList" (clasificationSelected)="newSeparation($event)"
-						(separationSelected)="editSeparation($event)"></app-clasification-table>
+					<app-clasification-table [data]="clasificationList" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
 				</mat-tab>
 				<mat-tab label="Separados">
-					<app-clasification-table [data]="separationList" (clasificationSelected)="newSeparation($event)"
-						(separationSelected)="editSeparation($event)"></app-clasification-table>
+					<app-clasification-table [data]="separationList" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
 				</mat-tab>
 			</mat-tab-group>
 		</div>
@@ -36,16 +32,6 @@
 							<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{element.name}} </td>
 						</ng-container>
 
-						<ng-container matColumnDef="materials">
-							<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium">Materiales</th>
-							<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{ getNames(materialList, element.materials) }} </td>
-						</ng-container>
-
-						<ng-container matColumnDef="process">
-							<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium">Procesos</th>
-							<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{getNames(processList, element.process)}} </td>
-						</ng-container>
-
 						<ng-container matColumnDef="weight">
 							<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium">Peso (g)</th>
 							<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{element.weight}} </td>
@@ -54,11 +40,6 @@
 						<ng-container matColumnDef="dimensions">
 							<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium">Dimensiones (cm)</th>
 							<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{element.dimensions}} </td>
-						</ng-container>
-
-						<ng-container matColumnDef="comment">
-							<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium">Observación</th>
-							<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{element.comment}} </td>
 						</ng-container>
 
 						<ng-container matColumnDef="reutilizable">
@@ -70,6 +51,7 @@
 							<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium"> Acciones </th>
 							<td mat-cell *matCellDef="let element" class="text-sm font-poppins-medium">
 								<div class="flex gap-1 items-center md:gap-4">
+									<img matTooltip="Ver" (click)="openDialogComponentDetail(element)" src="../../../../assets/svg/icono_visibilidad_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
 									<img matTooltip="Editar" (click)="openDialogComponentEdit(element)" src="../../../../assets/svg/icono_editar_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
 									<img matTooltip="Eliminar" (click)="openDiaglogRemoveComponent(element)" src="../../../../assets/svg/icono_basura_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
 								</div>

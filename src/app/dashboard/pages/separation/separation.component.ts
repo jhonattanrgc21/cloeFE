@@ -18,6 +18,7 @@ import { GenerarlService } from 'src/app/shared/services/generarl.service';
 import { ComponentEditComponent } from './component-edit/component-edit.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 import { Separation } from '../../interfaces/separation.interface';
+import { ViewComponentComponent } from './view-component/view-component.component';
 
 @Component({
 	selector: 'app-separation',
@@ -78,11 +79,8 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	dataSource = new MatTableDataSource<any>(this.componentsList);
 	displayedColumns = [
 		'name',
-		'materials',
-		'process',
 		'weight',
 		'dimensions',
-		'comment',
 		'reutilizable',
 		'actions',
 	];
@@ -219,7 +217,7 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	newSeparation(raee: any) {
+	editSeparation(raee: any) {
 		this.isActiveSeparationView = true;
 		this.raeeSelected = raee;
 
@@ -248,10 +246,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	editSeparation(raee: any) {
-		this.isActiveSeparationView = true;
-		this.raeeSelected = raee;
-	}
 
 	openDialogCancelSeparation() {
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
@@ -312,6 +306,29 @@ export class SeparationComponent implements OnInit, OnDestroy {
 				this.componentsList = [];
 				this.dataSource.data = this.componentsList;
 			}
+		});
+	}
+
+	openDialogComponentDetail(component: any){
+		const viewportSize = this._viewportRuler.getViewportSize();
+		const dialogRef = this._dialog.open(ViewComponentComponent, {
+			width: viewportSize.width < 768 ? '380px' : '479px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				name: component,
+				materials: this.getNames(this.materialList, component.materials),
+				process: this.getNames(this.processList, component.process),
+				weight: component.weight,
+				dimensions: component.dimensions,
+				reutilizable: component.reutilizable,
+				comment: component.comment?? ''
+			}
+		});
+
+		dialogRef.afterClosed().subscribe((result: any) => {
+			if (result == 'edit') this.openDialogComponentEdit(component);
+			if (result == 'delete') this.openDiaglogRemoveComponent(component);
 		});
 	}
 
