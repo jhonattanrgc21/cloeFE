@@ -11,8 +11,8 @@
 		<app-cloe-select-search formControlName="process" [label]="'Procesos'" [isMultiple]="true" [forName]="'processSeparation'"
 			[placeholder]="'Selecciona'" [options]="processList"></app-cloe-select-search>
 
-		<app-cloe-input-field formControlName="weight" [label]="'Peso (g)'" [typeInput]="'text'" [forName]="'weightSeparation'"
-			[placeholder]="'0,00'"></app-cloe-input-field>
+		<app-cloe-input-field formControlName="weight" [mask]="'separator.2'" [label]="'Peso (g)'" [typeInput]="'text'" [forName]="'weightSeparation'"
+			[placeholder]="'0.00'"></app-cloe-input-field>
 
 		<app-cloe-input-field formControlName="dimensions" [label]="'Dimensiones (cm)'" [typeInput]="'text'" [forName]="'dimensionsSeparation'"
 			[placeholder]="'2x2x4'"></app-cloe-input-field>

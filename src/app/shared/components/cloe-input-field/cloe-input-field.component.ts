@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, Optional, Self, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, Optional, Self, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 
 @Component({
@@ -6,16 +6,18 @@ import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 	templateUrl: './cloe-input-field.component.html',
 	styleUrls: ['./cloe-input-field.component.scss'],
 })
-export class CloeInputFieldComponent implements ControlValueAccessor, OnInit, OnChanges {
-
+export class CloeInputFieldComponent
+	implements ControlValueAccessor, OnInit, OnChanges
+{
 	@Input() label?: string;
 	@Input() forName: string = '';
-	@Input() typeInput: 'text' | 'email' | 'password' | 'textarea' | 'select' = 'text';
+	@Input() typeInput: 'text' | 'email' | 'password' | 'textarea' | 'select' =
+		'text';
 	@Input() placeholder: string = '';
 	@Input() rows: string = '10';
 	@Input() isDisabled: boolean = false;
 	@Input() options: string[] = [];
-
+  @Input() mask: string = "";
 	control: FormControl = new FormControl(null);
 	isInputActive: boolean = false;
 	showPassword: boolean = false;
@@ -37,14 +39,11 @@ export class CloeInputFieldComponent implements ControlValueAccessor, OnInit, On
 		}
 	}
 
-	writeValue(obj: any): void {
-	}
+	writeValue(obj: any): void {}
 
-	registerOnChange(fn: any): void {
-	}
+	registerOnChange(fn: any): void {}
 
-	registerOnTouched(fn: any): void {
-	}
+	registerOnTouched(fn: any): void {}
 
 	setDisabledState(isDisabled: boolean): void {
 		this.isDisabled = isDisabled;
@@ -62,5 +61,4 @@ export class CloeInputFieldComponent implements ControlValueAccessor, OnInit, On
 	togglePasswordVisibility() {
 		this.showPassword = !this.showPassword;
 	}
-
 }

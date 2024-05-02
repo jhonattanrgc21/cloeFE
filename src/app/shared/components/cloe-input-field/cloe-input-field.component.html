@@ -18,7 +18,8 @@
 				'border-danger-500': control.invalid && (control.dirty || control.touched),
 				'ring-danger-500': control.invalid && (control.dirty || control.touched),
 			}"
-
+			[mask]="mask"
+			[allowNegativeNumbers]="false"
       [id]="forName"
       [placeholder]="placeholder"
       [disabled]="isDisabled"

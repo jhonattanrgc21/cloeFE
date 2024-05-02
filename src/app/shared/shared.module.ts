@@ -8,6 +8,7 @@ import { AlertComponent } from './components/alert/alert.component';
 import { PaginatePipe } from './pipes/paginate.pipe';
 import { ConfirmationPopupComponent } from './components/confirmation-popup/confirmation-popup.component';
 import { DownloadPopupComponent } from './components/download-popup/download-popup.component';
+import { NgxMaskModule } from 'ngx-mask';
 
 @NgModule({
 	declarations: [
@@ -26,6 +27,6 @@ import { DownloadPopupComponent } from './components/download-popup/download-pop
 		ConfirmationPopupComponent,
 		DownloadPopupComponent,
 	],
-	imports: [CommonModule, ReactiveFormsModule, NgSelectModule],
+	imports: [CommonModule, ReactiveFormsModule, NgSelectModule, NgxMaskModule.forChild()],
 })
 export class SharedModule {}

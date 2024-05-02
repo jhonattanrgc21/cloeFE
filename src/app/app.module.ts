@@ -11,6 +11,7 @@ import { LandingModule } from './landing/landing.module';
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { MaterialModule } from './material.module';
+import { NgxMaskModule } from 'ngx-mask'
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { MaterialModule } from './material.module';
     AppRoutingModule,
 		ReactiveFormsModule,
 		BrowserAnimationsModule,
+		NgxMaskModule.forRoot(),
 		NgSelectModule,
 		SharedModule,
 		MaterialModule,
