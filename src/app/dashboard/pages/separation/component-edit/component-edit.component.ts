@@ -25,6 +25,18 @@ export class ComponentEditComponent {
 		this.materialList = data.materialList;
 		this.processList = data.processList;
 
+		let length;
+		let width;
+		let height;
+
+		if(data && data.component){
+			const dimensions = data.component.dimensions.split('x');
+			length = dimensions[0];
+			width = dimensions[1];
+			height = dimensions[2];
+		}
+
+
 		this.componentForm = this._fb.group({
 			id: [
 				data?.component?.id,
@@ -45,7 +57,9 @@ export class ComponentEditComponent {
 				data?.component?.weight,
 				[Validators.required, this._generalService.noWhitespaceValidator()],
 			],
-			dimensions: [data?.component?.dimensions, this._generalService.noWhitespaceValidator()],
+			length: [length, this._generalService.noWhitespaceValidator()],
+			width: [width, this._generalService.noWhitespaceValidator()],
+			height: [height, this._generalService.noWhitespaceValidator()],
 			reutilizable: [
 				data.component? data.component.reutilizable: false,
 				[Validators.required, this._generalService.noWhitespaceValidator()],
@@ -71,8 +85,8 @@ export class ComponentEditComponent {
 			const component: any = {
 				id: form.id,
 				name: form.name.trim(),
-				weight: form.weight.trim(),
-				dimensions: form.dimensions.trim(),
+				weight: form.weight,
+				dimensions: (form.length + 'x' + form.width + 'x' + form.height).replace('.', ','),
 				reutilizable: form.reutilizable,
 				materials: form.materials,
 				process: form.process,
