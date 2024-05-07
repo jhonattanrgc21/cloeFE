@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { emailPattern } from 'src/app/core/constants';
+import { emailPattern } from 'src/app/core/constants/constants';
 
 @Component({
 	selector: 'app-forgot-password',

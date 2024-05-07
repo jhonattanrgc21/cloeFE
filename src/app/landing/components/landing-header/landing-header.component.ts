@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ROUTES } from 'src/app/core/constants';
+import { ROUTES } from 'src/app/core/constants/constants';
 
 @Component({
 	selector: 'app-landing-header',

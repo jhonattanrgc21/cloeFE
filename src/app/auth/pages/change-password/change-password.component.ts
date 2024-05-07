@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ROUTES } from 'src/app/core/constants';
+import { ROUTES } from 'src/app/core/constants/constants';
 import { GenerarlService } from 'src/app/shared/services/generarl.service';
 
 @Component({

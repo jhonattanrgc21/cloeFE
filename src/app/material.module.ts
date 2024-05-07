@@ -6,7 +6,7 @@ import {
 } from '@angular/material/paginator';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MAT_DATE_LOCALE } from '@angular/material/core';
-import { CustomMatPaginatorIntl } from './core/paginator-es';
+import { CustomMatPaginatorIntl } from './core/constants/paginator-es';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTabsModule } from '@angular/material/tabs';

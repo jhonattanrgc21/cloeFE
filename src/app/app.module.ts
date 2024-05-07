@@ -11,12 +11,7 @@ import { LandingModule } from './landing/landing.module';
 import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { MaterialModule } from './material.module';
-import { NgxMaskModule, IConfig  } from 'ngx-mask'
-
-export const customMaskConfig: Partial<IConfig>  = {
-  validation: false,
-  decimalMarker: ',',
-};
+import { CoreModule } from './core/core.module';
 
 @NgModule({
   declarations: [
@@ -27,7 +22,7 @@ export const customMaskConfig: Partial<IConfig>  = {
     AppRoutingModule,
 		ReactiveFormsModule,
 		BrowserAnimationsModule,
-		NgxMaskModule.forRoot(customMaskConfig),
+		CoreModule,
 		NgSelectModule,
 		SharedModule,
 		MaterialModule,
