@@ -31,7 +31,7 @@ export class HttpService {
       httpParams = httpParams.append(p.key, p.value);
     });
 
-    return this.http.post<any>(this.cloeBEUrl + uri, JSON.stringify(body), {params: httpParams})
+    return this.http.post<any>(this.cloeBEUrl + uri, body, {params: httpParams})
       .pipe(takeUntil(this.cancelHttpCall));
   }
 
@@ -41,7 +41,7 @@ export class HttpService {
       httpParams = httpParams.append(p.key, p.value);
     });
 
-    return this.http.put<any>(this.cloeBEUrl + uri, JSON.stringify(body), {params: httpParams})
+    return this.http.put<any>(this.cloeBEUrl + uri, body, {params: httpParams})
       .pipe(takeUntil(this.cancelHttpCall));
   }
 

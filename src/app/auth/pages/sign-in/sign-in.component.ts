@@ -52,10 +52,6 @@ export class SignInComponent implements OnDestroy {
 				this._router.navigateByUrl(ROUTES.summary);
 			}
 			else this.errorMessage = res.message;
-			// else this._alertService.setAlert({
-			// 	isActive: true,
-			// 	message: res.message,
-			// });
 		});
 
 	}

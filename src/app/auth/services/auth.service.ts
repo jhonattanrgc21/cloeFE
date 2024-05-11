@@ -57,9 +57,7 @@ export class AuthService {
 					}
 					this.storageService.setCurrentSession(response.token, response.role, response.user_id);
 				}
-			})/*,
-			map(response => response.success),
-			catchError((err) => of(err.error.message))*/
+			})
 		);
 	}
 
@@ -75,9 +73,7 @@ export class AuthService {
 					}
 					this.storageService.removeCurrentSession();
 				}
-			})/*,
-			map(response => response.success),
-			catchError((err) => of(err.error.message))*/
+			})
 		)
 	}
 
@@ -93,9 +89,7 @@ export class AuthService {
 					}
 					this.storageService.setCurrentSession(response.token, response.role, response.user_id);
 				}
-			})/*,
-			/*map(response => response.success),
-			catchError((err) => of(err.error.message))*/
+			})
 		);
 	}
 

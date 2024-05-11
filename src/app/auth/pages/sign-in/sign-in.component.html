@@ -10,7 +10,12 @@
 
 		<app-cloe-input-field [label]="'Contraseña'" formControlName="password" [typeInput]="'password'" [forName]="'passwordLogin'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 
-		<p *ngIf="errorMessage != ''" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">{{errorMessage}}</p>
+		<ng-container *ngIf="errorMessage != ''">
+			<div class="flex items-center">
+				<img src="../../../../assets/svg/error.svg"  class="w-5 h-5" alt="">
+				<p class="font-poppins-regular mt-0.5 ml-2 text-sm text-danger-500">{{errorMessage}}</p>
+			</div>
+		</ng-container>
 
 		<div class="mt-1 flex items-center">
 			<input type="checkbox" class="h-5 w-5 text-success-400 rounded transition duration-150 appearance-none ease-in-out focus:outline-none focus:ring-transparent mr-3">
