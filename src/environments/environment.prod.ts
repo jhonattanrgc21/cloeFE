@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  url: 'https://cloeapi-production.up.railway.app/api',
+  url: 'https://cloeapi-production.up.railway.app/api/',
 };

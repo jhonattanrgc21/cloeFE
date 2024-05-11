@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -14,9 +14,6 @@ export class HttpService {
 
 
 	get(uri: string, params: any[] = []): Observable<any> {
-    const headers = new HttpHeaders()
-      .append('Accept', 'application/json');
-
     let httpParams = new HttpParams();
     params.forEach(p => {
       if (p.value !== null) {
@@ -24,35 +21,27 @@ export class HttpService {
       }
     });
 
-    return this.http.get<any>(this.cloeBEUrl + uri, {headers, params: httpParams})
+    return this.http.get<any>(this.cloeBEUrl + uri, {params: httpParams})
       .pipe(takeUntil(this.cancelHttpCall));
   }
 
-	post(service: 'canales' | 'marchamos' | 'incomex', uri: string, body: any = {}, params: any[] = []): Observable<any> {
-    const headers = new HttpHeaders()
-      .append('Accept', 'application/json')
-      .append('Content-Type', 'application/json');
-
+	post(uri: string, body: any = {}, params: any[] = []): Observable<any> {
     let httpParams = new HttpParams();
     params.forEach(p => {
       httpParams = httpParams.append(p.key, p.value);
     });
 
-    return this.http.post<any>(this.cancelHttpCall + uri, JSON.stringify(body), {headers, params: httpParams})
+    return this.http.post<any>(this.cloeBEUrl + uri, JSON.stringify(body), {params: httpParams})
       .pipe(takeUntil(this.cancelHttpCall));
   }
 
   put(uri: string, body: any = {}, params:any[] = []): Observable<any> {
-    const headers = new HttpHeaders()
-      .append('Accept', 'application/json')
-      .append('Content-Type', 'application/json');
-
     let httpParams = new HttpParams();
     params.forEach(p => {
       httpParams = httpParams.append(p.key, p.value);
     });
 
-    return this.http.put<any>(this.cloeBEUrl + uri, JSON.stringify(body), {headers, params: httpParams})
+    return this.http.put<any>(this.cloeBEUrl + uri, JSON.stringify(body), {params: httpParams})
       .pipe(takeUntil(this.cancelHttpCall));
   }
 

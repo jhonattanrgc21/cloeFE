@@ -10,10 +10,13 @@
 
 		<app-cloe-input-field [label]="'Contraseña'" formControlName="password" [typeInput]="'password'" [forName]="'passwordLogin'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 
+		<p *ngIf="errorMessage != ''" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">{{errorMessage}}</p>
+
 		<div class="mt-1 flex items-center">
 			<input type="checkbox" class="h-5 w-5 text-success-400 rounded transition duration-150 appearance-none ease-in-out focus:outline-none focus:ring-transparent mr-3">
 			<label for="remember" class="font-poppins-regular text-gray-600 m-0">Recordar este dispositivo</label>
 		</div>
+
 
 		<button (click)="login()" class="mt-2 btn btn-lg btn-primary__success" [disabled]="loginForm.invalid">Iniciar sesión</button>
 
