@@ -4,6 +4,9 @@ import { Injectable } from '@angular/core';
 import { catchError, map, of, tap } from 'rxjs';
 import { HttpService } from 'src/app/core/services/http.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { ForgotPassword } from '../interfaces/forgot-password.interface';
+import { HttpHeaders } from '@angular/common/http';
+import { ResetPassword } from '../interfaces/reset-password.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +16,8 @@ export class AuthService {
 	private logInUrl: string = 'auth/login';
 	private logOutUrl: string = 'auth/logout';
 	private refreshTokenUrl: string = 'auth/refresh-token';
+	private forgotPasswordUrl: string = 'auth/forgot-password';
+	private resetPasswordUrl: string = 'auth/reset-password';
 	private currentUser!: CurrentUser;
 
   constructor(
@@ -45,8 +50,8 @@ export class AuthService {
 	}
 
 
-	login(input: Login){
-		return this.httpService.post(this.logInUrl, input).pipe(
+	login(json: Login){
+		return this.httpService.post(this.logInUrl, json).pipe(
 			tap(response =>{
 				if(response.success){
 					this.currentUser = {
@@ -91,6 +96,16 @@ export class AuthService {
 				}
 			})
 		);
+	}
+
+	forgotPassword(json: ForgotPassword){
+		return this.httpService.post(this.forgotPasswordUrl, json);
+	}
+
+	resetPassword(token: string, json: ResetPassword) {
+		token = token.split(' ')[1];
+		this.storageService.setCurrentToken(token);
+		return this.httpService.post(this.resetPasswordUrl, json);
 	}
 
 	isTokenExpired(): boolean {
