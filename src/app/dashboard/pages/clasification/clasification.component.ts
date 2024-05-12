@@ -1,9 +1,9 @@
 import { ViewportRuler } from '@angular/cdk/scrolling';
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
 import { ClasificationService } from '../../services/clasification.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { EditClasificationComponent } from './edit-clasification/edit-clasification.component';
@@ -18,7 +18,7 @@ import { DownloadPopupComponent } from 'src/app/shared/components/download-popup
 })
 export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy {
 	clasificationList: any[] = [];
-	private clasificationListSubscription!: Subscription;
+	private _clasificationListSubscription!: Subscription;
 	displayedColumns: string[] = [
 		'make',
 		'model',
@@ -38,7 +38,7 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 	) {}
 
 	ngOnInit(): void {
-		this.clasificationListSubscription =
+		this._clasificationListSubscription =
 		this._clasificationService.clasificationList$.subscribe(
 			(clasifications: any[]) => {
 				this.clasificationList = clasifications;
@@ -202,9 +202,9 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 
 
 	ngOnDestroy(): void {
-		if (this.clasificationListSubscription) {
+		if (this._clasificationListSubscription) {
 			this._alertService.setAlert({ isActive: false, message: '' });
-			this.clasificationListSubscription.unsubscribe();
+			this._clasificationListSubscription.unsubscribe();
 		}
 	}
 }

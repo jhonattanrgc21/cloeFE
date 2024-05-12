@@ -24,7 +24,7 @@ export class CloeSelectSearchComponent
 
 	constructor(
 		@Optional() @Self() private ngControl: NgControl,
-		private cdr: ChangeDetectorRef
+		private _cdr: ChangeDetectorRef
 	) {
 		if (this.ngControl != null) {
 			this.ngControl.valueAccessor = this;
@@ -35,7 +35,7 @@ export class CloeSelectSearchComponent
 		this.control = this.ngControl.control as FormControl;
 		if (this.control.value) {
 			this.control.setValue(this.control.value); // Establecer el valor del FormControl
-			this.cdr.detectChanges(); // Forzar la detección de cambios en la vista del ng-select
+			this._cdr.detectChanges(); // Forzar la detección de cambios en la vista del ng-select
 		}
 	}
 
@@ -45,7 +45,7 @@ export class CloeSelectSearchComponent
 		}
 
 		if ('options' in changes && changes['options'].currentValue) {
-			this.cdr.detectChanges(); // Actualizar la vista cuando cambian las opciones
+			this._cdr.detectChanges(); // Actualizar la vista cuando cambian las opciones
 		}
 	}
 
@@ -57,7 +57,7 @@ export class CloeSelectSearchComponent
 
 	setDisabledState(isDisabled: boolean): void {
 		this.isDisabled = isDisabled;
-		this.cdr.detectChanges();
+		this._cdr.detectChanges();
 	}
 
 	onInputFocus() {

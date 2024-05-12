@@ -1,9 +1,9 @@
-import { AlertService } from './../shared/services/alert.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
-import { Subscription, filter, map } from 'rxjs';
-import { Alert } from '../shared/interfaces/alert.interface';
 import { ViewportRuler } from '@angular/cdk/scrolling';
+import { Subscription, filter, map } from 'rxjs';
+import { AlertService } from './../shared/services/alert.service';
+import { Alert } from '../shared/interfaces/alert.interface';
 
 @Component({
 	selector: 'app-dashboard',
@@ -14,18 +14,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	isSidebarOpen: boolean = false;
 	rutaActual: string = '';
 	alertObj!: Alert;
-	private alertSubscription!: Subscription;
+	private _alertSubscription!: Subscription;
 
 	constructor(
-		private router: Router,
-		private activatedRoute: ActivatedRoute,
-		private alertService: AlertService,
+		private _router: Router,
+		private _activatedRoute: ActivatedRoute,
+		private _alertService: AlertService,
 		private _viewportRuler: ViewportRuler,
 	) {
-		this.router.events
+		this._router.events
 			.pipe(
 				filter((event) => event instanceof NavigationEnd),
-				map(() => this.activatedRoute),
+				map(() => this._activatedRoute),
 				map((route) => {
 					while (route.firstChild) {
 						route = route.firstChild;
@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		this.alertSubscription = this.alertService.alert$.subscribe(
+		this._alertSubscription = this._alertService.alert$.subscribe(
 			(alert: Alert) => {
 				this.alertObj = alert;
 			}
@@ -80,8 +80,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		if (this.alertSubscription) {
-			this.alertSubscription.unsubscribe();
+		if (this._alertSubscription) {
+			this._alertSubscription.unsubscribe();
 		}
 	}
 }

@@ -13,12 +13,12 @@ export class HomeComponent {
 	landingForm: FormGroup;
 
 	constructor(
-		private fb: FormBuilder,
+		private _fb: FormBuilder,
 		private _router: Router,
-		private elementRef: ElementRef,
+		private _elementRef: ElementRef,
 		private _generalService: GenerarlService
 	) {
-		this.landingForm = this.fb.group({
+		this.landingForm = this._fb.group({
 			name: [
 				,
 				[Validators.required, this._generalService.noWhitespaceValidator()],
@@ -51,7 +51,7 @@ export class HomeComponent {
 	}
 
 	scrollToSection(sectionId: string) {
-		const section = this.elementRef.nativeElement.querySelector(sectionId);
+		const section = this._elementRef.nativeElement.querySelector(sectionId);
 		section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	}
 

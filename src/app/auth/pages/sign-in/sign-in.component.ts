@@ -1,11 +1,11 @@
-import { Login } from './../../interfaces/login.interfce';
-import { AuthService } from 'src/app/auth/services/auth.service';
 import { Component, OnDestroy } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ROUTES } from 'src/app/core/constants/constants';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/auth/services/auth.service';
 import { GenerarlService } from 'src/app/shared/services/generarl.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
+import { Login } from './../../interfaces/login.interfce';
+import { ROUTES } from 'src/app/core/constants/constants';
 
 @Component({
 	selector: 'app-sign-in',

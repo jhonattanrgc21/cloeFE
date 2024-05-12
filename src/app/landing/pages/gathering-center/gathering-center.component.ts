@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { PageEvent } from '@angular/material/paginator';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { PageEvent } from '@angular/material/paginator';
 import { State } from '../../interfaces/states.interface';
 import { City } from '../../interfaces/cities.interface';
 import { GatheringCenter } from '../../interfaces/gathering-center.interface';
@@ -182,8 +182,8 @@ export class GatheringCenterComponent implements OnInit {
 	pageSize: number = 6;
 	pageSizeOptions: number[] = [6, 12, 18, 30, 60];
 
-	constructor(private fb: FormBuilder, private router: Router) {
-		this.locationForm = this.fb.group({
+	constructor(private _fb: FormBuilder) {
+		this.locationForm = this._fb.group({
 			city: [],
 			state: [],
 		});

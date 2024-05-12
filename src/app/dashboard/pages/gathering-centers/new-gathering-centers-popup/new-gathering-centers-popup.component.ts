@@ -1,7 +1,7 @@
-import { Manager, GatheringCenter } from './../../../interfaces/gathering-center.interface';
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Manager, GatheringCenter } from './../../../interfaces/gathering-center.interface';
 import { City } from 'src/app/landing/interfaces/cities.interface';
 import { State } from 'src/app/landing/interfaces/states.interface';
 import { GenerarlService } from 'src/app/shared/services/generarl.service';

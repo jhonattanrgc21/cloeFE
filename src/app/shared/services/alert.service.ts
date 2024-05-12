@@ -15,14 +15,5 @@ export class AlertService {
 	setAlert(alertObj: Alert): void {
 		this.alertSubject.next(alertObj);
 	}
-
-	// getMessage(): string {
-	//   return this.message;
-	// }
-
-
-	// isOpened(): boolean {
-	//   return this.isOpen;
-	// }
 }
 

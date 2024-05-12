@@ -1,16 +1,16 @@
-import { AlertService } from './../../../shared/services/alert.service';
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewportRuler } from '@angular/cdk/scrolling';
+import { AlertService } from './../../../shared/services/alert.service';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NewGatheringCentersPopupComponent } from './new-gathering-centers-popup/new-gathering-centers-popup.component';
 import {
 	GatheringCenter,
 	RegisterGatheringCenter,
 } from '../../interfaces/gathering-center.interface';
 import { GatheringCentersService } from '../../services/gatherin-centers.service';
-import { Subscription } from 'rxjs';
-import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 
 @Component({
@@ -22,7 +22,7 @@ export class GatheringCentersComponent
 	implements OnInit, AfterViewInit, OnDestroy
 {
 	gatheringCenterList: GatheringCenter[] = [];
-	private gatheringCenterListSubscription!: Subscription;
+	private _gatheringCenterListSubscription!: Subscription;
 
 	displayedColumns: string[] = [
 		'manager',
@@ -46,7 +46,7 @@ export class GatheringCentersComponent
 	) {}
 
 	ngOnInit(): void {
-		this.gatheringCenterListSubscription =
+		this._gatheringCenterListSubscription =
 			this._gatheringCenterService.gatheringCenterList$.subscribe(
 				(centers: GatheringCenter[]) => {
 					this.gatheringCenterList = centers;
@@ -195,9 +195,9 @@ export class GatheringCentersComponent
 	}
 
 	ngOnDestroy(): void {
-		if (this.gatheringCenterListSubscription) {
+		if (this._gatheringCenterListSubscription) {
 			this._alertService.setAlert({ isActive: false, message: '' });
-			this.gatheringCenterListSubscription.unsubscribe();
+			this._gatheringCenterListSubscription.unsubscribe();
 		}
 	}
 }

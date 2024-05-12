@@ -1,19 +1,19 @@
-import { ClasificationService } from './clasification.service';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { ClasificationService } from './clasification.service';
 import { Separation } from '../interfaces/separation.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SeparationService {
-	private separationListSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-	separationList$: Observable<any[]> = this.separationListSubject.asObservable();
+	private _separationListSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+	separationList$: Observable<any[]> = this._separationListSubject.asObservable();
 
   constructor(private _clasificationService: ClasificationService) { }
 
 	addSeparation(separation: Separation){
-		const currentList = this.separationListSubject.getValue();
+		const currentList = this._separationListSubject.getValue();
 		const index = currentList.findIndex(
 			(item) => item.raeeId === separation.raeeId
 		);
@@ -21,17 +21,17 @@ export class SeparationService {
 		if (index !== -1) currentList[index] = separation;
 		else currentList.push(separation);
 
-		this.separationListSubject.next(currentList);
+		this._separationListSubject.next(currentList);
 		this._clasificationService.modifyStatus(separation.raeeId, 'Separado')
 	}
 
 	removeSeparation(raeeId: number){
-		const currentList = this.separationListSubject.getValue();
+		const currentList = this._separationListSubject.getValue();
 		const index = currentList.findIndex(
 			(item) => item.id === raeeId
 		);
 		currentList.splice(index, 1);
-		this.separationListSubject.next(currentList);
+		this._separationListSubject.next(currentList);
 		this._clasificationService.modifyStatus(raeeId, 'Clasificado')
 	}
 }

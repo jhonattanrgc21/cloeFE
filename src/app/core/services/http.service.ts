@@ -10,48 +10,48 @@ export class HttpService {
   cancelHttpCall: Subject<void> = new Subject<void>();
 	cloeBEUrl = environment.url;
 
-  constructor(private http: HttpClient) { }
+  constructor(private _http: HttpClient) { }
 
 
 	get(uri: string, params: any[] = []): Observable<any> {
-    let httpParams = new HttpParams();
+    let _httpParams = new HttpParams();
     params.forEach(p => {
       if (p.value !== null) {
-        httpParams = httpParams.append(p.key, p.value);
+        _httpParams = _httpParams.append(p.key, p.value);
       }
     });
 
-    return this.http.get<any>(this.cloeBEUrl + uri, {params: httpParams})
+    return this._http.get<any>(this.cloeBEUrl + uri, {params: _httpParams})
       .pipe(takeUntil(this.cancelHttpCall));
   }
 
 	post(uri: string, body: any = {}, params: any[] = []): Observable<any> {
-    let httpParams = new HttpParams();
+    let _httpParams = new HttpParams();
     params.forEach(p => {
-      httpParams = httpParams.append(p.key, p.value);
+      _httpParams = _httpParams.append(p.key, p.value);
     });
 
-    return this.http.post<any>(this.cloeBEUrl + uri, body, {params: httpParams})
+    return this._http.post<any>(this.cloeBEUrl + uri, body, {params: _httpParams})
       .pipe(takeUntil(this.cancelHttpCall));
   }
 
   put(uri: string, body: any = {}, params:any[] = []): Observable<any> {
-    let httpParams = new HttpParams();
+    let _httpParams = new HttpParams();
     params.forEach(p => {
-      httpParams = httpParams.append(p.key, p.value);
+      _httpParams = _httpParams.append(p.key, p.value);
     });
 
-    return this.http.put<any>(this.cloeBEUrl + uri, body, {params: httpParams})
+    return this._http.put<any>(this.cloeBEUrl + uri, body, {params: _httpParams})
       .pipe(takeUntil(this.cancelHttpCall));
   }
 
   delete(uri: string, params: any[] = []): Observable<any> {
-    let httpParams = new HttpParams();
+    let _httpParams = new HttpParams();
     params.forEach(p => {
-      httpParams = httpParams.append(p.key, p.value);
+      _httpParams = _httpParams.append(p.key, p.value);
     });
 
-    return this.http.delete<any>(this.cloeBEUrl + uri, {params: httpParams})
+    return this._http.delete<any>(this.cloeBEUrl + uri, {params: _httpParams})
       .pipe(takeUntil(this.cancelHttpCall));
   }
 

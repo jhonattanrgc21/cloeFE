@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ROUTES } from 'src/app/core/constants/constants';
 import { GenerarlService } from 'src/app/shared/services/generarl.service';
+import { ROUTES } from 'src/app/core/constants/constants';
 import { ResetPassword } from '../../interfaces/reset-password.interface';
 import { AuthService } from '../../services/auth.service';
 

@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnInit, Optional, Self, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnChanges, OnInit, Optional, Self, SimpleChanges } from '@angular/core';
 import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 
 @Component({
@@ -6,9 +6,7 @@ import { ControlValueAccessor, FormControl, NgControl } from '@angular/forms';
 	templateUrl: './cloe-input-field.component.html',
 	styleUrls: ['./cloe-input-field.component.scss'],
 })
-export class CloeInputFieldComponent
-	implements ControlValueAccessor, OnInit, OnChanges
-{
+export class CloeInputFieldComponent implements ControlValueAccessor, OnInit, OnChanges{
 	@Input() label?: string;
 	@Input() forName: string = '';
 	@Input() typeInput: 'text' | 'email' | 'password' | 'textarea' | 'select' =
@@ -17,13 +15,15 @@ export class CloeInputFieldComponent
 	@Input() rows: string = '10';
 	@Input() isDisabled: boolean = false;
 	@Input() options: string[] = [];
-  @Input() mask: string = "";
+	@Input() mask: string = '';
 	control: FormControl = new FormControl(null);
 	isInputActive: boolean = false;
 	showPassword: boolean = false;
 
-	constructor(@Optional() @Self() private ngControl: NgControl, private cdr: ChangeDetectorRef) {
-
+	constructor(
+		@Optional() @Self() private ngControl: NgControl,
+		private _cdr: ChangeDetectorRef
+	) {
 		if (this.ngControl != null) {
 			this.ngControl.valueAccessor = this;
 		}
@@ -47,7 +47,7 @@ export class CloeInputFieldComponent
 
 	setDisabledState(isDisabled: boolean): void {
 		this.isDisabled = isDisabled;
-		this.cdr.detectChanges();
+		this._cdr.detectChanges();
 	}
 
 	onInputFocus() {

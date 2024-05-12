@@ -10,7 +10,6 @@ import { Chart, ChartType } from 'chart.js/auto';
   styleUrls: ['./summary.component.scss']
 })
 export class SummaryComponent  implements OnInit , AfterViewInit {
-
   displayedColumns: string[] = ['name', 'employePosition', 'identification', 'address', 'status'];
   registeredUsers: RegisteredUsers[] = [
     {
@@ -124,7 +123,7 @@ export class SummaryComponent  implements OnInit , AfterViewInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-		
+
 		this.dataSource.filterPredicate = (data: RegisteredUsers, filter: string) => {
 			const searchData = `${data.name} ${data.employePosition} ${data.identification} ${data.address}`.toLowerCase();
 			const statusMatch = data.status.toLowerCase() === filter.trim().toLowerCase();

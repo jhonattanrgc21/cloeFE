@@ -17,7 +17,7 @@ import { UserDetailPopupComponent } from './user-detail-popup/user-detail-popup.
 })
 export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	userList: any[] = [];
-	private userListSubscription!: Subscription;
+	private _userListSubscription!: Subscription;
 	displayedColumns: string[] = [
 		'firstName',
 		'lastName',
@@ -38,7 +38,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	) {}
 
 	ngOnInit(): void {
-		this.userListSubscription =
+		this._userListSubscription =
 		this._usersServices.userList$.subscribe(
 			(users: any[]) => {
 				this.userList = users;
@@ -215,9 +215,9 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		if (this.userListSubscription) {
+		if (this._userListSubscription) {
 			this._alertService.setAlert({ isActive: false, message: '' });
-			this.userListSubscription.unsubscribe();
+			this._userListSubscription.unsubscribe();
 		}
 	}
 }

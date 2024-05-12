@@ -1,11 +1,10 @@
-import { CurrentUser } from './../interfaces/current-user.interface';
-import { Login } from './../interfaces/login.interfce';
 import { Injectable } from '@angular/core';
-import { catchError, map, of, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { HttpService } from 'src/app/core/services/http.service';
 import { StorageService } from 'src/app/core/services/storage.service';
+import { Login } from './../interfaces/login.interfce';
+import { CurrentUser } from './../interfaces/current-user.interface';
 import { ForgotPassword } from '../interfaces/forgot-password.interface';
-import { HttpHeaders } from '@angular/common/http';
 import { ResetPassword } from '../interfaces/reset-password.interface';
 
 @Injectable({
@@ -13,19 +12,19 @@ import { ResetPassword } from '../interfaces/reset-password.interface';
 })
 export class AuthService {
 
-	private logInUrl: string = 'auth/login';
-	private logOutUrl: string = 'auth/logout';
-	private refreshTokenUrl: string = 'auth/refresh-token';
-	private forgotPasswordUrl: string = 'auth/forgot-password';
-	private resetPasswordUrl: string = 'auth/reset-password';
-	private currentUser!: CurrentUser;
+	private _logInUrl: string = 'auth/login';
+	private _logOutUrl: string = 'auth/logout';
+	private _refreshTokenUrl: string = 'auth/refresh-token';
+	private _forgotPasswordUrl: string = 'auth/forgot-password';
+	private _resetPasswordUrl: string = 'auth/reset-password';
+	private _currentUser!: CurrentUser;
 
   constructor(
-		private storageService: StorageService,
-		private httpService: HttpService
+		private _storageService: StorageService,
+		private _httpService: HttpService
 	) { }
 
-	private parseJwt(token: string): any {
+	private _parseJwt(token: string): any {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
@@ -34,84 +33,84 @@ export class AuthService {
   }
 
 	get currentToken(): string{
-		return this.currentUser? this.currentUser.token: '';
+		return this._currentUser? this._currentUser.token: '';
 	}
 
 	get currentRole(): string{
-		return this.currentUser? this.currentUser.role: '';
+		return this._currentUser? this._currentUser.role: '';
 	}
 
 	get currentFullName(): string{
-		return this.currentUser? this.currentUser.fullName: '';
+		return this._currentUser? this._currentUser.fullName: '';
 	}
 
 	get currentUuid(): string{
-		return this.currentUser? this.currentUser.uuid: '';
+		return this._currentUser? this._currentUser.uuid: '';
 	}
 
 	login(json: Login){
-		return this.httpService.post(this.logInUrl, json).pipe(
+		return this._httpService.post(this._logInUrl, json).pipe(
 			tap(response =>{
 				if(response.success){
-					this.currentUser = {
+					this._currentUser = {
 						token: response.token,
 						role: response.role,
 						uuid: response.user_id,
 						fullName: response.full_name
 					}
-					this.storageService.setCurrentSession(this.currentUser);
+					this._storageService.setCurrentSession(this._currentUser);
 				}
 			})
 		);
 	}
 
 	logout(){
-		return this.httpService.post(this.logOutUrl, {}).pipe(
+		return this._httpService.post(this._logOutUrl, {}).pipe(
 			tap(response => {
 				if(response.success){
-					this.currentUser = {
+					this._currentUser = {
 						token: '',
 						role: '',
 						uuid: '',
 						fullName: ''
 					}
-					this.storageService.removeCurrentSession();
+					this._storageService.removeCurrentSession();
 				}
 			})
 		)
 	}
 
 	refreshToken(){
-		return this.httpService.post(this.refreshTokenUrl, {}).pipe(
+		return this._httpService.post(this._refreshTokenUrl, {}).pipe(
 			tap(response =>{
 				if(response.success){
-					this.currentUser = {
+					this._currentUser = {
 						token: response.token,
 						role: response.role,
 						uuid: response.user_id,
 						fullName: response.full_name
 					}
-					this.storageService.setCurrentSession(this.currentUser);
+					this._storageService.setCurrentSession(this._currentUser);
 				}
 			})
 		);
 	}
 
 	forgotPassword(json: ForgotPassword){
-		return this.httpService.post(this.forgotPasswordUrl, json);
+		return this._httpService.post(this._forgotPasswordUrl, json);
 	}
 
 	resetPassword(token: string, json: ResetPassword) {
 		token = token.split(' ')[1];
-		this.storageService.setCurrentToken(token);
-		return this.httpService.post(this.resetPasswordUrl, json);
+		this._storageService.setCurrentToken(token);
+		return this._httpService.post(this._resetPasswordUrl, json);
 	}
 
 	isTokenExpired(): boolean {
-    const accessToken = this.storageService.getCurrentToken();
+    const accessToken = this._storageService.getCurrentToken();
     if (!accessToken) return true;
 
-    const tokenPayload = this.parseJwt(accessToken);
+    const tokenPayload = this._parseJwt(accessToken);
     const expirationDate = new Date(tokenPayload.exp * 1000);
 
     return expirationDate <= new Date();

@@ -1,8 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
-import { emailPattern } from 'src/app/core/constants/constants';
 import { AuthService } from '../../services/auth.service';
+import { emailPattern } from 'src/app/core/constants/constants';
 
 @Component({
 	selector: 'app-forgot-password',
@@ -15,11 +14,10 @@ export class ForgotPasswordComponent {
 	errorMessage: string = '';
 
 	constructor(
-		private fb: FormBuilder,
-		private router: Router,
-		private authService: AuthService
+		private _fb: FormBuilder,
+		private _authService: AuthService
 	) {
-		this.form = this.fb.group({
+		this.form = this._fb.group({
 			email: [
 				,
 				[
@@ -40,7 +38,7 @@ export class ForgotPasswordComponent {
 	sentMessage() {
 		let json = this.form.value;
 		json.email = json.email.trim();
-		this.authService.forgotPassword(json).subscribe((res) => {
+		this._authService.forgotPassword(json).subscribe((res) => {
 			if (res.success) {
 				this.isSentMessage = true;
 				this.errorMessage = '';

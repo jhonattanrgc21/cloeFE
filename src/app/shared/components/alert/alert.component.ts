@@ -12,7 +12,7 @@ export class AlertComponent implements OnInit {
 
   isVisible: boolean = true;
 
-	constructor(private alertService: AlertService){}
+	constructor(private _alertService: AlertService){}
 
 	ngOnInit(): void {
     setTimeout(() => {
@@ -21,7 +21,7 @@ export class AlertComponent implements OnInit {
   }
 
 	closeAlert(): void {
-		this.alertService.setAlert({isActive: false, message: ''})
+		this._alertService.setAlert({isActive: false, message: ''})
     this.isVisible = false;
   }
 }
