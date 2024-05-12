@@ -49,7 +49,6 @@ export class AuthService {
 		return this.currentUser? this.currentUser.uuid: '';
 	}
 
-
 	login(json: Login){
 		return this.httpService.post(this.logInUrl, json).pipe(
 			tap(response =>{
@@ -58,9 +57,9 @@ export class AuthService {
 						token: response.token,
 						role: response.role,
 						uuid: response.user_id,
-						fullName: ''
+						fullName: response.full_name
 					}
-					this.storageService.setCurrentSession(response.token, response.role, response.user_id);
+					this.storageService.setCurrentSession(this.currentUser);
 				}
 			})
 		);
@@ -90,9 +89,9 @@ export class AuthService {
 						token: response.token,
 						role: response.role,
 						uuid: response.user_id,
-						fullName: ''
+						fullName: response.full_name
 					}
-					this.storageService.setCurrentSession(response.token, response.role, response.user_id);
+					this.storageService.setCurrentSession(this.currentUser);
 				}
 			})
 		);

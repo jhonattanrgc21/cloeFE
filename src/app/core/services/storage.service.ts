@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CurrentUser } from 'src/app/auth/interfaces/current-user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -7,15 +8,17 @@ export class StorageService {
 
   constructor() { }
 
-	setCurrentSession(token: string, role: string, uuid: string): void {
-		this.setCurrentToken(token);
-		this.setCurrentRole(role);
-		this.setUuid(uuid);
+	setCurrentSession(currentUser: CurrentUser): void {
+		this.setCurrentToken(currentUser.token);
+		this.setCurrentRole(currentUser.role);
+		this.setCurrentFullName(currentUser.fullName);
+		this.setUuid(currentUser.uuid);
   }
 
   removeCurrentSession(): void {
 		this.clearCurrentToken();
 		this.clearCurrentRole();
+		this.clearCurrentFullName();
 		this.clearUuid();
   }
 
@@ -43,6 +46,19 @@ export class StorageService {
   clearCurrentRole(): void {
     localStorage.removeItem('cloe-role');
   }
+
+	getCurrentFullName(): string {
+    return localStorage.getItem('cloe-FullName') ?? '';
+  }
+
+  setCurrentFullName(fullName: string): void {
+    localStorage.setItem('cloe-FullName', fullName);
+  }
+
+  clearCurrentFullName(): void {
+    localStorage.removeItem('cloe-FullName');
+  }
+
 
   getUuid(): string {
     return localStorage.getItem('cloe-uuid')?? '';
