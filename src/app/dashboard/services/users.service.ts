@@ -1,18 +1,40 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { User, UserEdit, UserRegister } from '../interfaces/users.interface';
+import { HttpService } from 'src/app/core/services/http.service';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class UsersService {
-	private _userListSubject: BehaviorSubject<any[]> =
-		new BehaviorSubject<any[]>([]);
-	userList$: Observable<any[]> =
-		this._userListSubject.asObservable();
+	private _userListSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+	userList$: Observable<any[]> = this._userListSubject.asObservable();
+	private _getUsersUrl: string = 'users/index?';
+	private _createUserUrl: string = 'users/register';
+	private _updateUserUrl: string = 'users/update';
+	
+	constructor(private _httpService: HttpService) {}
 
-	constructor() {}
+	getUsers(page: number, pageSize: number){
+		return this._httpService.get(`${this._getUsersUrl}${page}&limit=${pageSize}`).pipe(
+		  tap(response => {
+			if(response.success) this._userListSubject.next(response.data);
+			else this._userListSubject.next([]);
+		  })
+		);
+	  }
+	
 
-	addUser(user: any): void {
+	createUser(json: UserRegister){
+		return this._httpService.post(this._createUserUrl, json);
+	}
+
+	updateUser(json: UserEdit){
+		delete json.id;
+		return this._httpService.put(this._updateUserUrl + '/' + json.id, json);
+	}
+
+	addUser(user: User): void {
 		const currentList = this._userListSubject.getValue();
 		const index = currentList.findIndex(
 			(item) => item.id === user.id
@@ -23,12 +45,12 @@ export class UsersService {
 		this._userListSubject.next(currentList);
 	}
 
-	modifyStatusUser(user: any): void {
+	modifyStatusUser(user: User): void {
 		const currentList = this._userListSubject.getValue();
 		const index = currentList.findIndex(
 			(item) => item.id === user.id
 		);
-		user.status = user.status == 'Inactivo' ? 'Activo' : 'Inactivo';
+		user.active = user.active == 1 ? 0 : 1;
 		currentList[index] = user;
 		this._userListSubject.next(currentList);
 	}

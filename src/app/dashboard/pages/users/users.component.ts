@@ -9,6 +9,7 @@ import { UsersService } from '../../services/users.service';
 import { EditUserPopupComponent } from './edit-user-popup/edit-user-popup.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 import { UserDetailPopupComponent } from './user-detail-popup/user-detail-popup.component';
+import { User, UserEdit, UserRegister } from '../../interfaces/users.interface';
 
 @Component({
 	selector: 'app-users',
@@ -16,7 +17,7 @@ import { UserDetailPopupComponent } from './user-detail-popup/user-detail-popup.
 	styleUrls: ['./users.component.scss'],
 })
 export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
-	userList: any[] = [];
+	userList: User[] = [];
 	private _userListSubscription!: Subscription;
 	displayedColumns: string[] = [
 		'firstName',
@@ -26,8 +27,11 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		'status',
 		'actions',
 	];
-	dataSource = new MatTableDataSource<any>(this.userList);
+	dataSource = new MatTableDataSource<User>(this.userList);
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
+	totalItems = 0; // Variable para el total de elementos
+  	itemsPerPage = 5; // Variable para los elementos por página
+
 
 	constructor(
 		private _dialog: MatDialog,
@@ -37,10 +41,30 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		private _alertService: AlertService
 	) {}
 
+	private _handleUserResponse(res: any, message: string ,actionType: 'add' | 'modifyStatus'): void {
+		let isActive = true;
+		if (res.success) {
+			if(actionType == 'add') this._usersServices.addUser(res.data);
+			else this._usersServices.modifyStatusUser(res.data);
+		} else {
+			isActive = false;
+			message = res.message;
+		}
+	
+		this._cdr.detectChanges();
+		this._alertService.setAlert({
+			isActive,
+			message,
+		});
+	}
+	
+
 	ngOnInit(): void {
+		this.loadUsers(1, this.itemsPerPage); // Carga inicial de usuarios
+
 		this._userListSubscription =
 		this._usersServices.userList$.subscribe(
-			(users: any[]) => {
+			(users: User[]) => {
 				this.userList = users;
 				this.dataSource.data = users;
 				this.waitForPaginator();
@@ -48,8 +72,12 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		);
 	}
 
+	
 	ngAfterViewInit(): void {
-		this.dataSource.paginator = this.paginator;
+		//this.dataSource.paginator = this.paginator;
+		this.paginator.page.subscribe(() => { // Subscripción a los cambios del paginador
+			this.loadUsers(this.paginator.pageIndex + 1, this.paginator.pageSize);
+		  });
 
 		this.dataSource.filterPredicate = (
 			data: any,
@@ -74,12 +102,21 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
+	loadUsers(page: number, pageSize: number): void { // Método para cargar usuarios paginados
+		this._usersServices.getUsers(page, pageSize).subscribe(response => {
+		  this.totalItems = response.meta.total;
+		  this.itemsPerPage = response.meta.itemsPerPage;
+		  this.paginator.length = this.totalItems;
+		  this.paginator.pageSize = this.itemsPerPage;
+		});
+	  }
+
 	applyFilter(event: Event) {
 		const filterValue = (event.target as HTMLInputElement).value;
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	openDialogEditUser(user?: any): void {
+	openDialogEditUser(user?: User): void {
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(EditUserPopupComponent, {
 			width: viewportSize.width < 768 ? '380px' : '474px',
@@ -93,18 +130,12 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
-	openDialogConfirmationUser(
-		user: any
-	): void {
-		const title = user.id
-			? 'Editar usuario'
-			: 'Registrar usuario';
-		const subtitle = user.id
-			? '¿Seguro de que deseas editar este usuario?'
-			: '¿Seguro de que deseas registrar este usuario?';
-		const description = user.id
-			? ''
-			: 'Se enviará un correo electrónico al usuario desde el cual podrá establecer su contraseña para acceder al sistema.';
+	openDialogConfirmationUser(userEdit: UserEdit): void {
+		const isEdit = !!userEdit.id;
+		const title = isEdit ? 'Editar usuario' : 'Registrar usuario';
+		const subtitle = isEdit ? '¿Seguro de que deseas editar este usuario?' : '¿Seguro de que deseas registrar este usuario?';
+		const description = isEdit ? '' : 'Se enviará un correo electrónico al usuario desde el cual podrá establecer su contraseña para acceder al sistema.';
+		
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
 			height: 'auto',
@@ -114,39 +145,22 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 				title,
 				subtitle,
 				description,
-				type: 'edit',
+				type: isEdit ? 'edit' : 'register',
 			},
 		});
-
-		dialogRef.afterClosed().subscribe((result) => {
+	
+		dialogRef.afterClosed().subscribe(result => {
 			if (result) {
-				// TODO: agregar peticion al backend para guardar el registro
-				const json: any = {
-
-					id: user.id,
-					firstName: user.firstName,
-					lastName: user.lastName,
-					email: user.email,
-					identification: user.identification,
-					address: user.address,
-					stateId: user.state.id,
-					cityId: user.city.id,
-					employePositionId: user.employePosition.id
-				};
-
-				if(!user.id) user.status = 'Activo'
-
-				this._usersServices.addUser(user);
-				this._cdr.detectChanges();
-				this._alertService.setAlert({
-					isActive: true,
-					message: 'Excelente, el usuario se ha guardado con éxito.',
-				});
+				const action$ = isEdit
+					? this._usersServices.updateUser(userEdit)
+					: this._usersServices.createUser(userEdit as UserRegister);
+	
+				action$.subscribe(res => this._handleUserResponse(res, 'Excelente, el usuario se ha guardado con éxito.', 'add'));
 			}
 		});
 	}
 
-	openDiaglogDisabletUser(user: any) {
+	openDiaglogDisabletUser(user: User) {
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
 			height: 'auto',
@@ -161,17 +175,18 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				this._usersServices.modifyStatusUser(user);
-				this._cdr.detectChanges();
-				this._alertService.setAlert({
-					isActive: true,
-					message: 'Excelente, el usuario se ha desactivado con éxito.',
-				});
+				const userEdit: UserEdit = {
+					id: user.id,
+					active: 0
+				};
+
+				const action$ = this._usersServices.updateUser(userEdit)
+				action$.subscribe(res => this._handleUserResponse(res, 'Excelente, el usuario se ha desactivado con éxito.','modifyStatus'));
 			}
 		});
 	}
 
-	openDiaglogEnableUser(user: any) {
+	openDiaglogEnableUser(user: User) {
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
 			height: 'auto',
@@ -186,17 +201,18 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				this._usersServices.modifyStatusUser(user);
-				this._cdr.detectChanges();
-				this._alertService.setAlert({
-					isActive: true,
-					message: 'Excelente, el usuario se ha activado con éxito.',
-				});
+				const userEdit: UserEdit = {
+					id: user.id,
+					active: 1
+				};
+
+				const action$ = this._usersServices.updateUser(userEdit)
+				action$.subscribe(res => this._handleUserResponse(res, 'Excelente, el usuario se ha activado con éxito.','modifyStatus'));
 			}
 		});
 	}
 
-	openDialogUserDetail(user?: any): void {
+	openDialogUserDetail(user: User) {
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(UserDetailPopupComponent, {
 			width: viewportSize.width < 768 ? '380px' : '479px',
@@ -214,7 +230,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
-	ngOnDestroy(): void {
+	ngOnDestroy() {
 		if (this._userListSubscription) {
 			this._alertService.setAlert({ isActive: false, message: '' });
 			this._userListSubscription.unsubscribe();

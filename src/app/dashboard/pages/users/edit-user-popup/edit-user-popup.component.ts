@@ -5,6 +5,7 @@ import { EmployePosition } from './../../../interfaces/employe-position.interfac
 import { City } from 'src/app/landing/interfaces/cities.interface';
 import { State } from 'src/app/landing/interfaces/states.interface';
 import { GenerarlService } from 'src/app/shared/services/generarl.service';
+import { UserEdit } from 'src/app/dashboard/interfaces/users.interface';
 
 @Component({
   selector: 'app-edit-user-popup',
@@ -13,6 +14,13 @@ import { GenerarlService } from 'src/app/shared/services/generarl.service';
 })
 export class EditUserPopupComponent {
 	title: string = '';
+	documentType?: string;
+	documentNumber?: string;
+	employePosition?: number;
+	state?: number;
+	city?: number;
+	address?: number;
+
 	userForm!: FormGroup;
 
 	employePositions: EmployePosition[] = [
@@ -91,18 +99,29 @@ export class EditUserPopupComponent {
 		private _generalService: GenerarlService,
 		@Inject(MAT_DIALOG_DATA) public data: any
 	) {
-		this.title = data?.id ? 'Editar usuario': 'Registrar usuario';
-    this.userForm = this._fb.group({
+		if(!data.id) this.title = 'Registrar usuario';
+		else{
+			this.title = 'Editar usuario';
+			const document = data?.cedula.split('-');
+			this.documentType = document[0];
+			this.documentNumber = document[1];
+			this.employePosition = this.employePositions.find(item => item.name.toLowerCase() ==  data.role.toLowerCase())?.id;
+			this.state = this.states.find(item => item.name.toLowerCase() ==  data.estado.toLowerCase())?.id;
+			this.city = this.cities.find(item => item.name.toLowerCase() ==  data.municipio.toLowerCase())?.id;
+			this.address = data.address;
+		}
+
+    	this.userForm = this._fb.group({
 			id: [data?.id],
-			firstName: [data?.firstName, [Validators.required, this._generalService.noWhitespaceValidator()]],
+			firstName: [data?.name, [Validators.required, this._generalService.noWhitespaceValidator()]],
 			lastName: [data?.lastName, [Validators.required, this._generalService.noWhitespaceValidator()]],
 			email: [data?.email, [Validators.required, this._generalService.noWhitespaceValidator()]],
-			documentType: [data?.identification.split('-')[0], Validators.required],
-			identification: [data?.identification.split('-')[1], [Validators.required, this._generalService.noWhitespaceValidator()]],
-			employePosition: [data?.employePosition.id, Validators.required],
-			state: [data?.state.id, Validators.required],
-			city: [data?.city.id, Validators.required],
-			address: [data?.address, [Validators.required, this._generalService.noWhitespaceValidator()]],
+			documentType: [this.documentType, Validators.required],
+			identification: [this.documentNumber, [Validators.required, this._generalService.noWhitespaceValidator()]],
+			employePosition: [this.employePosition, Validators.required],
+			state: [this.state, Validators.required],
+			city: [this.city, Validators.required],
+			address: [this.address, [Validators.required, this._generalService.noWhitespaceValidator()]],
 		});
 
 	}
@@ -118,16 +137,17 @@ export class EditUserPopupComponent {
 		const employePositionObj = this.employePositions.find(employePosition => employePosition.id == form.employePosition);
 
 		if (stateObj && cityObj && employePositionObj) {
-			const user: any = {
+			const user: UserEdit = {
 				id: form.id,
-				firstName: form.firstName.trim(),
-				lastName: form.lastName.trim(),
+				name: form.firstName.trim(),
+				lastname: form.lastName.trim(),
 				email: form.email.trim(),
-				identification: form.documentType + '-' + form.identification.trim(),
+				role: employePositionObj.name,
+				ci_type: form.documentType,
+				ci_number: form.identification.trim(),
 				address: form.address.trim(),
-				state: stateObj,
-				city: cityObj,
-				employePosition: employePositionObj
+				estado_id: stateObj.id,
+				municipio_id: cityObj.id,
 			};
 			this.onClose(user);
 		}
