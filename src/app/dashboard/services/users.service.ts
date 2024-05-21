@@ -9,10 +9,10 @@ import { HttpService } from 'src/app/core/services/http.service';
 export class UsersService {
 	private _userListSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
 	userList$: Observable<any[]> = this._userListSubject.asObservable();
-	private _getUsersUrl: string = 'users/index?';
+	private _getUsersUrl: string = 'users/index?page=';
 	private _createUserUrl: string = 'users/register';
 	private _updateUserUrl: string = 'users/update';
-	
+
 	constructor(private _httpService: HttpService) {}
 
 	getUsers(page: number, pageSize: number){
@@ -23,7 +23,7 @@ export class UsersService {
 		  })
 		);
 	  }
-	
+
 
 	createUser(json: UserRegister){
 		return this._httpService.post(this._createUserUrl, json);

@@ -1,3 +1,4 @@
+import { StorageService } from './../services/storage.service';
 import { Injectable } from '@angular/core';
 import {
   HttpRequest,
@@ -21,10 +22,12 @@ export class AuthInterceptor implements HttpInterceptor {
 		private authService: AuthService,
 		private spinnerService: SpinnerService,
 		private router: Router,
+		private storageService: StorageService
 	) {}
 
 	private _getHeaders(){
-		const token = this.authService.currentToken;
+		//const token = this.authService.currentToken;
+		const token = this.storageService.getCurrentToken();
 		return {
 			Accept: 'application/json',
 			Authorization: `Bearer ${token}`,
@@ -36,16 +39,19 @@ export class AuthInterceptor implements HttpInterceptor {
     let request = req;
 
 		this.spinnerService.show();
-    if (this.authService.currentToken && this.authService.currentToken != '') {
-      request = req.clone({
-        setHeaders: this._getHeaders()
-      });
-    }
-		
+		request = req.clone({
+			setHeaders: this._getHeaders()
+		});
+    // if (this.authService.currentToken && this.authService.currentToken != '') {
+    //   request = req.clone({
+    //     setHeaders: this._getHeaders()
+    //   });
+    // }
+
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         // Si la respuesta es 401 (No autorizado), intentar refrescar el token
-        if (error.status === 401 && this.authService.isTokenExpired()) {
+        if (error.status === 401) {
           return this.authService.refreshToken().pipe(
             switchMap(() => {
               // Si el token se actualiza con éxito, reintentar la solicitud original con el nuevo token

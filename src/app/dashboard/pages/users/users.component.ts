@@ -3,7 +3,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChi
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription } from 'rxjs';
+import { Subscription, filter, first } from 'rxjs';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { UsersService } from '../../services/users.service';
 import { EditUserPopupComponent } from './edit-user-popup/edit-user-popup.component';
@@ -28,10 +28,10 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		'actions',
 	];
 	dataSource = new MatTableDataSource<User>(this.userList);
-	@ViewChild(MatPaginator) paginator!: MatPaginator;
-	totalItems = 0; // Variable para el total de elementos
-  	itemsPerPage = 5; // Variable para los elementos por página
-
+	@ViewChild('userPaginator') paginator!: MatPaginator;
+	totalItems: number = 0;
+  itemsPerPage = 5; // Default value, can be overridden by the response
+  currentPage = 1;
 
 	constructor(
 		private _dialog: MatDialog,
@@ -41,85 +41,79 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		private _alertService: AlertService
 	) {}
 
-	private _handleUserResponse(res: any, message: string ,actionType: 'add' | 'modifyStatus'): void {
-		let isActive = true;
+	private _handleUserResponse(
+		res: any,
+		message: string,
+		actionType: 'add' | 'modifyStatus'
+	): void {
+		let isActive: boolean = true;
+		let type: string = 'success';
 		if (res.success) {
-			if(actionType == 'add') this._usersServices.addUser(res.data);
+			if (actionType == 'add') this._usersServices.addUser(res.data);
 			else this._usersServices.modifyStatusUser(res.data);
 		} else {
 			isActive = false;
 			message = res.message;
+			type = 'error';
 		}
-	
+
 		this._cdr.detectChanges();
 		this._alertService.setAlert({
 			isActive,
 			message,
 		});
 	}
-	
 
 	ngOnInit(): void {
-		this.loadUsers(1, this.itemsPerPage); // Carga inicial de usuarios
-
-		this._userListSubscription =
-		this._usersServices.userList$.subscribe(
+		this.loadUsers(1, this.itemsPerPage);
+		this._userListSubscription = this._usersServices.userList$.subscribe(
 			(users: User[]) => {
 				this.userList = users;
 				this.dataSource.data = users;
-				this.waitForPaginator();
+				this._cdr.detectChanges();
 			}
 		);
 	}
 
-	
 	ngAfterViewInit(): void {
-		//this.dataSource.paginator = this.paginator;
-		this.paginator.page.subscribe(() => { // Subscripción a los cambios del paginador
-			this.loadUsers(this.paginator.pageIndex + 1, this.paginator.pageSize);
-		  });
+		setTimeout(() => this.setUpPaginator(), 1000);
+	}
 
-		this.dataSource.filterPredicate = (
-			data: any,
-			filter: string
-		) => {
-			const searchData =
-				`${data.firstName} ${data.lastName} ${data.identification} ${data.employePosition}`.toLowerCase();
+	setUpPaginator(): void {
+		this._cdr.detectChanges();
+
+		this.paginator.length = this.totalItems;
+		this.paginator.pageSize = this.itemsPerPage;
+		this.paginator.pageIndex = this.currentPage - 1;
+		this.paginator.page.subscribe(() => {
+			this.currentPage = this.paginator.pageIndex + 1;
+			this.loadUsers(this.currentPage, this.paginator.pageSize);
+			this.paginator.length = this.totalItems;
+			this.paginator.pageSize = this.itemsPerPage;
+			this.paginator.pageIndex = this.currentPage - 1;
+		});
+
+
+		this.dataSource.filterPredicate = (data: any, filter: string) => {
+			const searchData = `${data.firstName} ${data.lastName} ${data.identification} ${data.employePosition}`.toLowerCase();
 			const statusMatch = data.status.toLowerCase() === filter.trim().toLowerCase();
 			const otherColumnsMatch = searchData.includes(filter.trim().toLowerCase());
 			return statusMatch || otherColumnsMatch;
 		};
-	}
+  }
 
-	waitForPaginator(): void {
-		if (!this.paginator) {
-			setTimeout(() => {
-				this.waitForPaginator();
-			}, 100);
-		} else {
+
+	loadUsers(page: number, pageSize: number): void {
+		this._usersServices.getUsers(page, pageSize).subscribe((response) => {
+			this.totalItems = response.meta.total;
+      this.itemsPerPage = response.meta.itemsPerPage;
+      this.currentPage = response.meta.currentPage;
+			this.userList = response.data; // Actualiza la lista de usuarios
+			this.dataSource.data = this.userList; // Asignar los datos al dataSource
 			this.dataSource.paginator = this.paginator;
-			this.paginator.page.subscribe(() => {
-				this.loadUsers(this.paginator.pageIndex + 1, this.paginator.pageSize);
-			});
-			this._userListSubscription = this._usersServices.userList$.subscribe(
-				(users: User[]) => {
-					this.userList = users;
-					this.dataSource.data = users;
-					this.waitForPaginator();
-				}
-			);
 			this._cdr.detectChanges();
-		}
-	}
-
-	loadUsers(page: number, pageSize: number): void { // Método para cargar usuarios paginados
-		this._usersServices.getUsers(page, pageSize).subscribe(response => {
-		  this.totalItems = response.meta.total;
-		  this.itemsPerPage = response.meta.itemsPerPage;
-		  this.paginator.length = this.totalItems;
-		  this.paginator.pageSize = this.itemsPerPage;
 		});
-	  }
+	}
 
 	applyFilter(event: Event) {
 		const filterValue = (event.target as HTMLInputElement).value;
@@ -143,9 +137,13 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	openDialogConfirmationUser(userEdit: UserEdit): void {
 		const isEdit = !!userEdit.id;
 		const title = isEdit ? 'Editar usuario' : 'Registrar usuario';
-		const subtitle = isEdit ? '¿Seguro de que deseas editar este usuario?' : '¿Seguro de que deseas registrar este usuario?';
-		const description = isEdit ? '' : 'Se enviará un correo electrónico al usuario desde el cual podrá establecer su contraseña para acceder al sistema.';
-		
+		const subtitle = isEdit
+			? '¿Seguro de que deseas editar este usuario?'
+			: '¿Seguro de que deseas registrar este usuario?';
+		const description = isEdit
+			? ''
+			: 'Se enviará un correo electrónico al usuario desde el cual podrá establecer su contraseña para acceder al sistema.';
+
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
 			height: 'auto',
@@ -158,14 +156,20 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 				type: isEdit ? 'edit' : 'register',
 			},
 		});
-	
-		dialogRef.afterClosed().subscribe(result => {
+
+		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				const action$ = isEdit
 					? this._usersServices.updateUser(userEdit)
 					: this._usersServices.createUser(userEdit as UserRegister);
-	
-				action$.subscribe(res => this._handleUserResponse(res, 'Excelente, el usuario se ha guardado con éxito.', 'add'));
+
+				action$.subscribe((res) =>
+					this._handleUserResponse(
+						res,
+						'Excelente, el usuario se ha guardado con éxito.',
+						'add'
+					)
+				);
 			}
 		});
 	}
@@ -187,11 +191,17 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (result) {
 				const userEdit: UserEdit = {
 					id: user.id,
-					active: 0
+					active: 0,
 				};
 
-				const action$ = this._usersServices.updateUser(userEdit)
-				action$.subscribe(res => this._handleUserResponse(res, 'Excelente, el usuario se ha desactivado con éxito.','modifyStatus'));
+				const action$ = this._usersServices.updateUser(userEdit);
+				action$.subscribe((res) =>
+					this._handleUserResponse(
+						res,
+						'Excelente, el usuario se ha desactivado con éxito.',
+						'modifyStatus'
+					)
+				);
 			}
 		});
 	}
@@ -213,11 +223,17 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (result) {
 				const userEdit: UserEdit = {
 					id: user.id,
-					active: 1
+					active: 1,
 				};
 
-				const action$ = this._usersServices.updateUser(userEdit)
-				action$.subscribe(res => this._handleUserResponse(res, 'Excelente, el usuario se ha activado con éxito.','modifyStatus'));
+				const action$ = this._usersServices.updateUser(userEdit);
+				action$.subscribe((res) =>
+					this._handleUserResponse(
+						res,
+						'Excelente, el usuario se ha activado con éxito.',
+						'modifyStatus'
+					)
+				);
 			}
 		});
 	}
@@ -230,8 +246,8 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			autoFocus: false,
 			data: {
 				user,
-				disableActions: false
-			}
+				disableActions: false,
+			},
 		});
 
 		dialogRef.afterClosed().subscribe((result: any) => {

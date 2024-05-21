@@ -14,9 +14,6 @@ import { UserEdit } from 'src/app/dashboard/interfaces/users.interface';
 })
 export class EditUserPopupComponent {
 	title: string = '';
-	documentType?: string;
-	documentNumber?: string;
-	employePosition?: number;
 	state?: number;
 	city?: number;
 	address?: number;
@@ -102,10 +99,6 @@ export class EditUserPopupComponent {
 		if(!data.id) this.title = 'Registrar usuario';
 		else{
 			this.title = 'Editar usuario';
-			const document = data?.cedula.split('-');
-			this.documentType = document[0];
-			this.documentNumber = document[1];
-			this.employePosition = this.employePositions.find(item => item.name.toLowerCase() ==  data.role.toLowerCase())?.id;
 			this.state = this.states.find(item => item.name.toLowerCase() ==  data.estado.toLowerCase())?.id;
 			this.city = this.cities.find(item => item.name.toLowerCase() ==  data.municipio.toLowerCase())?.id;
 			this.address = data.address;
@@ -114,11 +107,11 @@ export class EditUserPopupComponent {
     	this.userForm = this._fb.group({
 			id: [data?.id],
 			firstName: [data?.name, [Validators.required, this._generalService.noWhitespaceValidator()]],
-			lastName: [data?.lastName, [Validators.required, this._generalService.noWhitespaceValidator()]],
+			lastName: [data?.lastname, [Validators.required, this._generalService.noWhitespaceValidator()]],
 			email: [data?.email, [Validators.required, this._generalService.noWhitespaceValidator()]],
-			documentType: [this.documentType, Validators.required],
-			identification: [this.documentNumber, [Validators.required, this._generalService.noWhitespaceValidator()]],
-			employePosition: [this.employePosition, Validators.required],
+			documentType: [data?.cedula_type, Validators.required],
+			identification: [data?.cedula_number, [Validators.required, this._generalService.noWhitespaceValidator()]],
+			employePosition: [data?.role, Validators.required],
 			state: [this.state, Validators.required],
 			city: [this.city, Validators.required],
 			address: [this.address, [Validators.required, this._generalService.noWhitespaceValidator()]],
