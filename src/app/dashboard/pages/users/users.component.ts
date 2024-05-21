@@ -98,6 +98,16 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			}, 100);
 		} else {
 			this.dataSource.paginator = this.paginator;
+			this.paginator.page.subscribe(() => {
+				this.loadUsers(this.paginator.pageIndex + 1, this.paginator.pageSize);
+			});
+			this._userListSubscription = this._usersServices.userList$.subscribe(
+				(users: User[]) => {
+					this.userList = users;
+					this.dataSource.data = users;
+					this.waitForPaginator();
+				}
+			);
 			this._cdr.detectChanges();
 		}
 	}
