@@ -1,7 +1,7 @@
 import { ViewportRuler } from '@angular/cdk/scrolling';
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subscription, filter, first } from 'rxjs';
 import { AlertService } from 'src/app/shared/services/alert.service';
@@ -30,8 +30,19 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	dataSource = new MatTableDataSource<User>(this.userList);
 	@ViewChild('userPaginator') paginator!: MatPaginator;
 	totalItems: number = 0;
-  itemsPerPage = 5; // Default value, can be overridden by the response
-  currentPage = 1;
+	itemsPerPage = 5; // Default value, can be overridden by the response
+	currentPage = 1;
+	length = 50;
+	pageSize = 10;
+	pageIndex = 1;
+	pageSizeOptions = [5, 10, 25];
+
+	hidePageSize = false;
+	showPageSizeOptions = true;
+	showFirstLastButtons = true;
+	disabled = false;
+
+	pageEvent: PageEvent= new PageEvent;
 
 	constructor(
 		private _dialog: MatDialog,
@@ -64,8 +75,28 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		});
 	}
 
+	handlePageEvent(e: PageEvent) {
+		// console.log(e)
+		this.pageEvent = e;
+		this.length = e.length;
+		this.pageSize = e.pageSize;
+		this.pageIndex = e.pageIndex;
+		if(e.previousPageIndex! < e.pageIndex){
+			this.loadUsers(this.currentPage + 1, this.pageSize);	
+		}else{
+			this.loadUsers(this.currentPage - 1, this.pageSize);
+		}
+	}
+
+	setPageSizeOptions(setPageSizeOptionsInput: string) {
+		if (setPageSizeOptionsInput) {
+		  this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
+		  
+		}
+	}
+
 	ngOnInit(): void {
-		this.loadUsers(1, this.itemsPerPage);
+		this.loadUsers(this.currentPage, this.itemsPerPage);
 		this._userListSubscription = this._usersServices.userList$.subscribe(
 			(users: User[]) => {
 				this.userList = users;
@@ -80,18 +111,19 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	setUpPaginator(): void {
+		
 		this._cdr.detectChanges();
 
-		this.paginator.length = this.totalItems;
-		this.paginator.pageSize = this.itemsPerPage;
-		this.paginator.pageIndex = this.currentPage - 1;
-		this.paginator.page.subscribe(() => {
-			this.currentPage = this.paginator.pageIndex + 1;
-			this.loadUsers(this.currentPage, this.paginator.pageSize);
-			this.paginator.length = this.totalItems;
-			this.paginator.pageSize = this.itemsPerPage;
-			this.paginator.pageIndex = this.currentPage - 1;
-		});
+		this.length = this.totalItems;
+		this.pageSize = this.itemsPerPage;
+		this.pageIndex = this.currentPage - 1;
+		// this.page.subscribe(() => {
+		// 	this.currentPage = this.pageIndex + 1;
+		// 	this.loadUsers(this.currentPage, this.pageSize);
+		// 	this.length = this.totalItems;
+		// 	this.pageSize = this.itemsPerPage;
+		// 	this.pageIndex = this.currentPage - 1;
+		// });
 
 
 		this.dataSource.filterPredicate = (data: any, filter: string) => {
@@ -111,9 +143,11 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.userList = response.data; // Actualiza la lista de usuarios
 			this.dataSource.data = this.userList; // Asignar los datos al dataSource
 			this.dataSource.paginator = this.paginator;
-			this._cdr.detectChanges();
+			
+			
 		});
 	}
+
 
 	applyFilter(event: Event) {
 		const filterValue = (event.target as HTMLInputElement).value;
