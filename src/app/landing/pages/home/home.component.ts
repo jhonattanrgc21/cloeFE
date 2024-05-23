@@ -2,7 +2,7 @@ import { Component, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ROUTES, emailPattern } from 'src/app/core/constants/constants';
-import { GenerarlService } from 'src/app/shared/services/generarl.service';
+import { GeneralService } from 'src/app/shared/services/general.service';
 
 @Component({
 	selector: 'app-home',
@@ -16,7 +16,7 @@ export class HomeComponent {
 		private _fb: FormBuilder,
 		private _router: Router,
 		private _elementRef: ElementRef,
-		private _generalService: GenerarlService
+		private _generalService: GeneralService
 	) {
 		this.landingForm = this._fb.group({
 			name: [

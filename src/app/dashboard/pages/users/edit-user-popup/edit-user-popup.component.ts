@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { EmployePosition } from './../../../interfaces/employe-position.interface';
 import { City } from 'src/app/landing/interfaces/cities.interface';
 import { State } from 'src/app/landing/interfaces/states.interface';
-import { GenerarlService } from 'src/app/shared/services/generarl.service';
+import { GeneralService } from 'src/app/shared/services/general.service';
 import { UserEdit } from 'src/app/dashboard/interfaces/users.interface';
 
 @Component({
@@ -93,10 +93,10 @@ export class EditUserPopupComponent {
 	constructor(
 		public dialogRef: MatDialogRef<EditUserPopupComponent>,
 		private _fb: FormBuilder,
-		private _generalService: GenerarlService,
+		private _generalService: GeneralService,
 		@Inject(MAT_DIALOG_DATA) public data: any
 	) {
-		if(!data.id) this.title = 'Registrar usuario';
+		if(!data) this.title = 'Registrar usuario';
 		else{
 			this.title = 'Editar usuario';
 			this.state = this.states.find(item => item.name.toLowerCase() ==  data.estado.toLowerCase())?.id;

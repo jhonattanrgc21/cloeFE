@@ -6,10 +6,10 @@
 
 			<div class="w-full flex flex-col gap-6 md:w-auto md:flex-row md:justify-end md:items-center md:gap-4">
 				<div class="relative">
-					<input type="text" autocomplete="off" (keyup)="applyFilter($event)" placeholder="Buscar" class=" text-sm font-poppins-regular rounded-md w-full md:w-80 py-3 px-4 pr-10 border border-[#0000001F] focus:border-success-500 focus:ring-1 focus:ring-success-500 outline-none">
+					<input type="text" autocomplete="off" (keyup)="applyFilter($event)" placeholder="Buscar"
+						class=" text-sm font-poppins-regular rounded-md w-full md:w-80 py-3 px-4 pr-10 border border-[#0000001F] focus:border-success-500 focus:ring-1 focus:ring-success-500 outline-none">
 					<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-						<img class="w-6 h-6" src="../../../../assets/svg/icono_busqueda_24x24.svg"
-						alt="ventajas.png" role="img" />
+						<img class="w-6 h-6" src="../../../../assets/svg/icono_busqueda_24x24.svg" alt="ventajas.png" role="img" />
 					</div>
 				</div>
 
@@ -33,7 +33,8 @@
 
 				<ng-container matColumnDef="identification">
 					<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium">Cédula</th>
-					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{element.cedula_type + '-' + element.cedula_number}} </td>
+					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{element.cedula_type + '-' +
+						element.cedula_number}} </td>
 				</ng-container>
 
 				<ng-container matColumnDef="employePosition">
@@ -43,8 +44,8 @@
 
 				<ng-container matColumnDef="status">
 					<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium"> Estatus </th>
-					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> <span class="py-1 px-3 rounded-full"
-							[ngClass]="{
+					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> <span
+							class="py-1 px-3 rounded-full" [ngClass]="{
 										'text-success-500 bg-success-50 ': element.active == 1,
 										'text-[#FA8873] bg-[#FEF0ED]': element.active == 0
 									}">{{ element.active == 1 ? 'Activo': 'Inactivo' }}</span> </td>
@@ -55,15 +56,19 @@
 					<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium"> Acciones </th>
 					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-medium">
 						<div class="flex gap-1 items-center md:gap-4">
-							<img matTooltip="Ver" (click)="openDialogUserDetail(element)" src="../../../../assets/svg/icono_visibilidad_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
-							<img matTooltip="Editar" (click)="openDialogEditUser(element)" src="../../../../assets/svg/icono_editar_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
+							<img matTooltip="Ver" (click)="openDialogUserDetail(element)"
+								src="../../../../assets/svg/icono_visibilidad_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
+							<img matTooltip="Editar" (click)="openDialogEditUser(element)"
+								src="../../../../assets/svg/icono_editar_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
 
 							<ng-container *ngIf="element.active == 1; else enableUser">
-								<img matTooltip="Desactivar" (click)="openDiaglogDisabletUser(element)" src="../../../../assets/svg/person_cancel.svg" class="w-6 h-6 cursor-pointer" alt="">
+								<img matTooltip="Desactivar" (click)="openDiaglogDisabletUser(element)"
+									src="../../../../assets/svg/person_cancel.svg" class="w-6 h-6 cursor-pointer" alt="">
 							</ng-container>
 
 							<ng-template #enableUser>
-								<img matTooltip="Activar" (click)="openDiaglogEnableUser(element)" src="../../../../assets/svg/person_check.svg" class="w-6 h-6 cursor-pointer" alt="">
+								<img matTooltip="Activar" (click)="openDiaglogEnableUser(element)"
+									src="../../../../assets/svg/person_check.svg" class="w-6 h-6 cursor-pointer" alt="">
 							</ng-template>
 						</div>
 					</td>
@@ -73,24 +78,10 @@
 				<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 			</table>
 
-			<!-- <mat-paginator class="py-3" #userPaginator    [length]="totalItems"
-			[pageSize]="itemsPerPage"
-			[pageIndex]="currentPage"
-			[pageSizeOptions]="[5, 10, 20]"
-		
-				showFirstLastButtons aria-label="Select page of gatheringCenterList elements">
-			</mat-paginator> -->
-			<mat-paginator #paginator
-               class="demo-paginator"
-               (page)="handlePageEvent($event)"
-               [length]="length"
-               [pageSize]="pageSize"
-               [disabled]="disabled"
-               [showFirstLastButtons]="showFirstLastButtons"
-               [pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []"
-               [hidePageSize]="hidePageSize"
-               [pageIndex]="pageIndex"
-               aria-label="Select page">
+			<mat-paginator #paginator class="demo-paginator" (page)="handlePageEvent($event)" [length]="length"
+				[pageSize]="pageSize" [disabled]="disabled" [showFirstLastButtons]="showFirstLastButtons"
+				[pageSizeOptions]="showPageSizeOptions ? pageSizeOptions : []" [hidePageSize]="hidePageSize"
+				[pageIndex]="pageIndex" aria-label="Select page">
 			</mat-paginator>
 		</div>
 	</ng-container>
@@ -101,7 +92,9 @@
 			<div class="pt-10 md:pt-24 lg:pt-16 xl:pt-24 flex flex-col items-center justify-center">
 				<img src="./../../../../assets/svg/icono_sidebar_usuarios_verde_24x24.svg" alt="" class="w-12 h-12">
 				<p class="text-[#0B132B] font-poppins-medium text-lg pt-4">Aún no has registrado usuarios</p>
-				<p class="text-[#00000099] font-poppins-regular text-base pt-2 text-center">Puedes <span class="text-[#000000DE]">registrar y gestionar</span> tus usuarios <span class="text-[#000000DE]">desde aquí.</span> </p>
+				<p class="text-[#00000099] font-poppins-regular text-base pt-2 text-center">Puedes <span
+						class="text-[#000000DE]">registrar y gestionar</span> tus usuarios <span class="text-[#000000DE]">desde
+						aquí.</span> </p>
 
 				<div class="w-24 mt-6">
 					<button class="btn btn-primary__success btn-md" (click)="openDialogEditUser()">Registrar</button>

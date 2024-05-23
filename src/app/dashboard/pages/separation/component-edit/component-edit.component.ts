@@ -1,7 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GenerarlService } from 'src/app/shared/services/generarl.service';
+import { GeneralService } from 'src/app/shared/services/general.service';
 
 @Component({
 	selector: 'app-component-edit',
@@ -18,7 +18,7 @@ export class ComponentEditComponent {
 	constructor(
 		public dialogRef: MatDialogRef<ComponentEditComponent>,
 		private _fb: FormBuilder,
-		private _generalService: GenerarlService,
+		private _generalService: GeneralService,
 		@Inject(MAT_DIALOG_DATA) public data: any
 	) {
 		this.title = data?.id ? 'Editar componente de RAEE' : 'Componente RAEE';

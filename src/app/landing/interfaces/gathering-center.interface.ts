@@ -7,3 +7,13 @@ export interface GatheringCenter{
 	state: State;
 	address: string;
 }
+
+export interface GatheringCenterCard {
+	centro_id:   number;
+	estado:      string;
+	municipio:   string;
+	address:     string;
+	name:        string;
+	description: string;
+	active:      string;
+}

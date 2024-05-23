@@ -1,5 +1,12 @@
 import { ViewportRuler } from '@angular/cdk/scrolling';
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import {
+	AfterViewInit,
+	ChangeDetectorRef,
+	Component,
+	OnDestroy,
+	OnInit,
+	ViewChild,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -32,8 +39,8 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	totalItems: number = 0;
 	itemsPerPage = 5; // Default value, can be overridden by the response
 	currentPage = 1;
-	length = 50;
-	pageSize = 10;
+	length = 0;
+	pageSize = 5;
 	pageIndex = 1;
 	pageSizeOptions = [5, 10, 25];
 
@@ -42,7 +49,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	showFirstLastButtons = true;
 	disabled = false;
 
-	pageEvent: PageEvent= new PageEvent;
+	pageEvent: PageEvent = new PageEvent();
 
 	constructor(
 		private _dialog: MatDialog,
@@ -76,22 +83,22 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	handlePageEvent(e: PageEvent) {
-		// console.log(e)
 		this.pageEvent = e;
 		this.length = e.length;
 		this.pageSize = e.pageSize;
 		this.pageIndex = e.pageIndex;
-		if(e.previousPageIndex! < e.pageIndex){
-			this.loadUsers(this.currentPage + 1, this.pageSize);	
-		}else{
+		if (e.previousPageIndex! < e.pageIndex) {
+			this.loadUsers(this.currentPage + 1, this.pageSize);
+		} else {
 			this.loadUsers(this.currentPage - 1, this.pageSize);
 		}
 	}
 
 	setPageSizeOptions(setPageSizeOptionsInput: string) {
 		if (setPageSizeOptionsInput) {
-		  this.pageSizeOptions = setPageSizeOptionsInput.split(',').map(str => +str);
-		  
+			this.pageSizeOptions = setPageSizeOptionsInput
+				.split(',')
+				.map((str) => +str);
 		}
 	}
 
@@ -111,43 +118,34 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	setUpPaginator(): void {
-		
 		this._cdr.detectChanges();
 
 		this.length = this.totalItems;
 		this.pageSize = this.itemsPerPage;
 		this.pageIndex = this.currentPage - 1;
-		// this.page.subscribe(() => {
-		// 	this.currentPage = this.pageIndex + 1;
-		// 	this.loadUsers(this.currentPage, this.pageSize);
-		// 	this.length = this.totalItems;
-		// 	this.pageSize = this.itemsPerPage;
-		// 	this.pageIndex = this.currentPage - 1;
-		// });
-
 
 		this.dataSource.filterPredicate = (data: any, filter: string) => {
-			const searchData = `${data.firstName} ${data.lastName} ${data.identification} ${data.employePosition}`.toLowerCase();
-			const statusMatch = data.status.toLowerCase() === filter.trim().toLowerCase();
-			const otherColumnsMatch = searchData.includes(filter.trim().toLowerCase());
+			const searchData =
+				`${data.firstName} ${data.lastName} ${data.identification} ${data.employePosition}`.toLowerCase();
+			const statusMatch =
+				data.status.toLowerCase() === filter.trim().toLowerCase();
+			const otherColumnsMatch = searchData.includes(
+				filter.trim().toLowerCase()
+			);
 			return statusMatch || otherColumnsMatch;
 		};
-  }
-
+	}
 
 	loadUsers(page: number, pageSize: number): void {
 		this._usersServices.getUsers(page, pageSize).subscribe((response) => {
 			this.totalItems = response.meta.total;
-      this.itemsPerPage = response.meta.itemsPerPage;
-      this.currentPage = response.meta.currentPage;
-			this.userList = response.data; // Actualiza la lista de usuarios
-			this.dataSource.data = this.userList; // Asignar los datos al dataSource
+			this.itemsPerPage = response.meta.itemsPerPage;
+			this.currentPage = response.meta.currentPage;
+			this.userList = response.data;
+			this.dataSource.data = this.userList;
 			this.dataSource.paginator = this.paginator;
-			
-			
 		});
 	}
-
 
 	applyFilter(event: Event) {
 		const filterValue = (event.target as HTMLInputElement).value;

@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/auth/services/auth.service';
-import { GenerarlService } from 'src/app/shared/services/generarl.service';
+import { GeneralService } from 'src/app/shared/services/general.service';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { Login } from './../../interfaces/login.interfce';
 import { ROUTES } from 'src/app/core/constants/constants';
@@ -19,7 +19,7 @@ export class SignInComponent implements OnDestroy {
 	constructor(
 		private _fb: FormBuilder,
 		private _router: Router,
-		private _generalServices: GenerarlService,
+		private _generalServices: GeneralService,
 		private _authService: AuthService,
 		private _alertService: AlertService
 	) {

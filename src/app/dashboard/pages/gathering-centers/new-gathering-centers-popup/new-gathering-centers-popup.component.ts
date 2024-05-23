@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Manager, GatheringCenter } from './../../../interfaces/gathering-center.interface';
 import { City } from 'src/app/landing/interfaces/cities.interface';
 import { State } from 'src/app/landing/interfaces/states.interface';
-import { GenerarlService } from 'src/app/shared/services/generarl.service';
+import { GeneralService } from 'src/app/shared/services/general.service';
 
 @Component({
 	selector: 'app-new-gathering-centers-popup',
@@ -79,7 +79,7 @@ export class NewGatheringCentersPopupComponent {
 	constructor(
 		public dialogRef: MatDialogRef<NewGatheringCentersPopupComponent>,
 		private _fb: FormBuilder,
-		private _generalService: GenerarlService,
+		private _generalService: GeneralService,
 		@Inject(MAT_DIALOG_DATA) public data: GatheringCenter
 	) {
 		this.title = data?.id ? 'Editar centro de acopio': 'Registrar centro de acopio';

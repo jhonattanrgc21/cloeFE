@@ -13,7 +13,7 @@ import { ClasificationService } from '../../services/clasification.service';
 import { MatTabGroup } from '@angular/material/tabs';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/shared/services/alert.service';
-import { GenerarlService } from 'src/app/shared/services/generarl.service';
+import { GeneralService } from 'src/app/shared/services/general.service';
 import { ComponentEditComponent } from './component-edit/component-edit.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 import { Separation } from '../../interfaces/separation.interface';
@@ -93,7 +93,7 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		private _cdr: ChangeDetectorRef,
 		private _alertService: AlertService,
 		private _fb: FormBuilder,
-		private _generalService: GenerarlService
+		private _generalService: GeneralService
 	) {}
 
 	ngOnInit(): void {

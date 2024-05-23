@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { GenerarlService } from 'src/app/shared/services/generarl.service';
+import { GeneralService } from 'src/app/shared/services/general.service';
 import { ROUTES } from 'src/app/core/constants/constants';
 import { ResetPassword } from '../../interfaces/reset-password.interface';
 import { AuthService } from '../../services/auth.service';
@@ -22,7 +22,7 @@ export class ChangePasswordComponent implements OnInit {
 		private _fb: FormBuilder,
 		private _router: Router,
 		private _activatedRoute: ActivatedRoute,
-		private _generalService: GenerarlService,
+		private _generalService: GeneralService,
 		private _authService: AuthService
 	) {
 		this.form = this._fb.group({
