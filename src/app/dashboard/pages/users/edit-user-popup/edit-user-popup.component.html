@@ -10,8 +10,8 @@
 		<ng-container *ngIf="!data">
 			<app-cloe-select-search  formControlName="employePosition" [forName]="'employePositionUser'" [label]="'Cargo'" [placeholder]="'Selecciona'" [options]="employePositions"></app-cloe-select-search>
 		</ng-container>
-		<app-cloe-select-search  formControlName="state" [forName]="'stateGatheringCenters'" [label]="'Estado'" [placeholder]="'Selecciona'" [options]="states"></app-cloe-select-search>
-		<app-cloe-select-search  formControlName="city" [forName]="'cityGatheringCenters'" [label]="'Municipio'" [placeholder]="'Selecciona'" [options]="cities"></app-cloe-select-search>
+		<app-cloe-select-search  formControlName="state" [forName]="'stateGatheringCenters'" [label]="'Estado'" [placeholder]="'Selecciona'" [options]="statesList"></app-cloe-select-search>
+		<app-cloe-select-search  formControlName="city" [forName]="'cityGatheringCenters'" [label]="'Ciudad'" [placeholder]="'Selecciona'" [options]="citiesList"></app-cloe-select-search>
 		<app-cloe-input-field [label]="'Dirección'" formControlName="address" [typeInput]="'text'" [forName]="'addressGatheringCenters'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 	</form>
 

@@ -22,7 +22,6 @@
 			[allowNegativeNumbers]="false"
       [id]="forName"
       [placeholder]="placeholder"
-      [disabled]="isDisabled"
       [formControl]="control"
       [type]="typeInput === 'password' && !showPassword ? 'password' : 'text'"
       class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
@@ -43,7 +42,6 @@
 
       [id]="forName"
       [placeholder]="placeholder"
-      [disabled]="isDisabled"
       [formControl]="control"
       class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
       (focus)="onInputFocus()"
@@ -71,7 +69,6 @@
 			'ring-danger-500': control.invalid && (control.dirty || control.touched),
 		}"
 		[id]="forName"
-		[disabled]="isDisabled"
 		[formControl]="control"
 		class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
 		(focus)="onInputFocus()"

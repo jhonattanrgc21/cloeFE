@@ -47,23 +47,11 @@ export class GeneralService {
 	getStates(){
 		return this._httpService
 			.get(this._getStatesUrl)
-			.pipe(
-				tap((response) => {
-					if (response.success) this._statesList.next(response.data);
-					else this._statesList.next([]);
-				})
-			);
 	}
 
 	getCities(json: SelectFilter){
 		return this._httpService
 			.post(this._getCitiesUrl, json )
-			.pipe(
-				tap((response) => {
-					if (response.success) this._citiesList.next(response.data);
-					else this._citiesList.next([]);
-				})
-			);
 	}
 
 	getLines(){

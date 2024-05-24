@@ -17,6 +17,8 @@ import { EditUserPopupComponent } from './edit-user-popup/edit-user-popup.compon
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 import { UserDetailPopupComponent } from './user-detail-popup/user-detail-popup.component';
 import { User, UserEdit, UserRegister } from '../../interfaces/users.interface';
+import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
+import { GeneralService } from 'src/app/shared/services/general.service';
 
 @Component({
 	selector: 'app-users',
@@ -25,6 +27,7 @@ import { User, UserEdit, UserRegister } from '../../interfaces/users.interface';
 })
 export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	userList: User[] = [];
+	statesList: SelectionInput[] = [];
 	private _userListSubscription!: Subscription;
 	displayedColumns: string[] = [
 		'firstName',
@@ -43,12 +46,10 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	pageSize = 5;
 	pageIndex = 1;
 	pageSizeOptions = [5, 10, 25];
-
 	hidePageSize = false;
 	showPageSizeOptions = true;
 	showFirstLastButtons = true;
 	disabled = false;
-
 	pageEvent: PageEvent = new PageEvent();
 
 	constructor(
@@ -56,8 +57,9 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		private _viewportRuler: ViewportRuler,
 		private _usersServices: UsersService,
 		private _cdr: ChangeDetectorRef,
-		private _alertService: AlertService
-	) {}
+		private _alertService: AlertService,
+		private _generalService: GeneralService
+	) { }
 
 	private _handleUserResponse(
 		res: any,
@@ -79,6 +81,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		this._alertService.setAlert({
 			isActive,
 			message,
+			type
 		});
 	}
 
@@ -94,14 +97,6 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		}
 	}
 
-	setPageSizeOptions(setPageSizeOptionsInput: string) {
-		if (setPageSizeOptionsInput) {
-			this.pageSizeOptions = setPageSizeOptionsInput
-				.split(',')
-				.map((str) => +str);
-		}
-	}
-
 	ngOnInit(): void {
 		this.loadUsers(this.currentPage, this.itemsPerPage);
 		this._userListSubscription = this._usersServices.userList$.subscribe(
@@ -112,30 +107,26 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			}
 		);
 	}
-
 	ngAfterViewInit(): void {
-		setTimeout(() => this.setUpPaginator(), 1000);
+		setTimeout(() => this.setUpPaginator(), 2000);
 	}
-
 	setUpPaginator(): void {
 		this._cdr.detectChanges();
-
 		this.length = this.totalItems;
 		this.pageSize = this.itemsPerPage;
 		this.pageIndex = this.currentPage - 1;
 
 		this.dataSource.filterPredicate = (data: any, filter: string) => {
 			const searchData =
-				`${data.firstName} ${data.lastName} ${data.identification} ${data.employePosition}`.toLowerCase();
+				`${data.name} ${data.lastname} ${data.cedula_type}-${data.cedula_number} ${data.role}`.toLowerCase();
 			const statusMatch =
-				data.status.toLowerCase() === filter.trim().toLowerCase();
+				(data.active == 1 ? 'Activo' : 'Inactivo').toLowerCase() === filter.trim().toLowerCase();
 			const otherColumnsMatch = searchData.includes(
 				filter.trim().toLowerCase()
 			);
 			return statusMatch || otherColumnsMatch;
 		};
 	}
-
 	loadUsers(page: number, pageSize: number): void {
 		this._usersServices.getUsers(page, pageSize).subscribe((response) => {
 			this.totalItems = response.meta.total;
@@ -153,12 +144,21 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	openDialogEditUser(user?: User): void {
+
+		this._generalService.getStates().subscribe(res => {
+			if (res.success) this.statesList = res.data;
+			else;
+		});
+
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(EditUserPopupComponent, {
 			width: viewportSize.width < 768 ? '380px' : '474px',
 			height: '500px',
 			autoFocus: false,
-			data: user,
+			data: {
+				user,
+				statesList: this.statesList,
+			},
 		});
 
 		dialogRef.afterClosed().subscribe((result: any) => {
@@ -221,11 +221,8 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				const userEdit: UserEdit = {
-					id: user.id,
-					active: 0,
-				};
-
+				let userEdit: UserEdit = user as UserEdit;
+				userEdit.active = 0;
 				const action$ = this._usersServices.updateUser(userEdit);
 				action$.subscribe((res) =>
 					this._handleUserResponse(
@@ -253,10 +250,8 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				const userEdit: UserEdit = {
-					id: user.id,
-					active: 1,
-				};
+				let userEdit: UserEdit = user as UserEdit;
+				userEdit.active = 1;
 
 				const action$ = this._usersServices.updateUser(userEdit);
 				action$.subscribe((res) =>
@@ -289,9 +284,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-		if (this._userListSubscription) {
-			this._alertService.setAlert({ isActive: false, message: '' });
-			this._userListSubscription.unsubscribe();
-		}
+		if (this._userListSubscription) this._userListSubscription.unsubscribe();
+		this._alertService.setAlert({ isActive: false, message: '' });
 	}
 }

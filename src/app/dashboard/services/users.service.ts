@@ -33,8 +33,9 @@ export class UsersService {
 	}
 
 	updateUser(json: UserEdit) {
+		const id = json.id;
 		delete json.id;
-		return this._httpService.put(this._updateUserUrl + '/' + json.id, json);
+		return this._httpService.put(this._updateUserUrl + '/' + id, json);
 	}
 
 	addUser(user: User): void {
