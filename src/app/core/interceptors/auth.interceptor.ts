@@ -19,12 +19,12 @@ export class AuthInterceptor implements HttpInterceptor {
 	cloeUrl = environment.url;
 
   constructor(
-		private authService: AuthService,
-		private spinnerService: SpinnerService,
+		private _authService: AuthService,
+		private _spinnerService: SpinnerService,
 	) {}
 
 	private _getHeaders(){
-		const token = this.authService.currentToken;
+		const token = this._authService.currentToken;
 		return {
 			Authorization: `Bearer ${token}`,
 		};
@@ -33,12 +33,8 @@ export class AuthInterceptor implements HttpInterceptor {
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     let request = req;
 
-		this.spinnerService.show();
-		// request = req.clone({
-		// 	setHeaders: this._getHeaders()
-		// });
-
-    if (this.authService.currentToken && this.authService.currentToken != '') {
+		this._spinnerService.show();
+    if (this._authService.currentToken && this._authService.currentToken != '') {
       request = req.clone({
         setHeaders: this._getHeaders()
       });
@@ -48,7 +44,7 @@ export class AuthInterceptor implements HttpInterceptor {
       catchError((error: HttpErrorResponse) => {
         // Si la respuesta es 401 (No autorizado), intentar refrescar el token
         if (error.status === 401) {
-          return this.authService.refreshToken().pipe(
+          return this._authService.refreshToken().pipe(
             switchMap(() => {
               // Si el token se actualiza con éxito, reintentar la solicitud original con el nuevo token
               request = request.clone({
@@ -58,16 +54,16 @@ export class AuthInterceptor implements HttpInterceptor {
             }),
             catchError((err) => {
               // Si no se puede refrescar el token, redirigir a la página de inicio de sesión
-              this.authService.logout();
+              this._authService.logout();
               return throwError(err);
             }),
-						finalize(() => this.spinnerService.hide())
+						finalize(() => this._spinnerService.hide())
           );
         } else {
           return throwError(error);
         }
       }),
-			finalize(() => this.spinnerService.hide())
+			finalize(() => this._spinnerService.hide())
     );
   }
 
