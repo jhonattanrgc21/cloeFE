@@ -3,6 +3,7 @@ import { AbstractControl, ValidatorFn } from '@angular/forms';
 import { HttpService } from 'src/app/core/services/http.service';
 import { SelectFilter } from '../interfaces/filters.interface';
 import { saveAs } from 'file-saver';
+import { map } from 'rxjs';
 
 @Injectable({
 	providedIn: 'root',
@@ -16,6 +17,7 @@ export class GeneralService {
 	private _getGatheringCentersUrl: string = 'utils/centros';
 	private _getPdfUrl: string = 'users/report-pdf';
 	private _getExcelUrl: string = 'users/report-excel';
+	private _getRolesUrl: string = 'cargos';
 
 	constructor(private _httpService: HttpService) {}
 
@@ -32,6 +34,12 @@ export class GeneralService {
 
 	getCities(json: SelectFilter) {
 		return this._httpService.post(this._getCitiesUrl, json);
+	}
+
+	getRoles() {
+		return this._httpService.get(this._getRolesUrl).pipe(
+			map(response => response.data.map((role: { name: string }) => role.name))
+		);
 	}
 
 	getLines() {

@@ -20,6 +20,8 @@ import { User, UserEdit, UserRegister } from '../../interfaces/users.interface';
 import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
 import { GeneralService } from 'src/app/shared/services/general.service';
 import { DownloadPopupComponent } from 'src/app/shared/components/download-popup/download-popup.component';
+import { SelectFilter } from 'src/app/shared/interfaces/filters.interface';
+import { GatheringCenterCard } from 'src/app/landing/interfaces/gathering-center.interface';
 
 @Component({
 	selector: 'app-users',
@@ -29,6 +31,8 @@ import { DownloadPopupComponent } from 'src/app/shared/components/download-popup
 export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	userList: User[] = [];
 	statesList: SelectionInput[] = [];
+	centersList: SelectionInput[] = [];
+	rolesList: string[] = [];
 	private _userListSubscription!: Subscription;
 	displayedColumns: string[] = [
 		'firstName',
@@ -41,7 +45,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	dataSource = new MatTableDataSource<User>(this.userList);
 	@ViewChild('userPaginator') paginator!: MatPaginator;
 	totalItems: number = 0;
-	itemsPerPage = 5; // Default value, can be overridden by the response
+	itemsPerPage = 5;
 	currentPage = 1;
 	length = 0;
 	pageSize = 5;
@@ -110,10 +114,27 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		this._generalService.getStates().subscribe((res) => {
 			this.statesList = res.success ? res.data : [];
 		});
+
+		this._generalService.getRoles().subscribe((res) => {
+			this.rolesList = res ?? [];
+		});
+
+		const centersFilter: SelectFilter = { filters: { estado_id: null, municipio_id: null } };
+		this._generalService.getGatheringCenters(centersFilter).subscribe(res => {
+			if(!res.success) this.centersList = [];
+			else{
+				const centers: GatheringCenterCard[] = res.data;
+				centers.forEach(center => {
+					this.centersList.push({id: center.centro_id, name: center.name});
+				})
+			}
+		});
 	}
+
 	ngAfterViewInit(): void {
 		setTimeout(() => this.setUpPaginator(), 2000);
 	}
+
 	setUpPaginator(): void {
 		this._cdr.detectChanges();
 		this.length = this.totalItems;
@@ -157,6 +178,8 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			data: {
 				user,
 				statesList: this.statesList,
+				rolesList: this.rolesList,
+				centersList: this.centersList
 			},
 		});
 

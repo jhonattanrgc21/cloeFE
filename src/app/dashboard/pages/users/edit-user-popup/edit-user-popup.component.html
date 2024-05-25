@@ -7,12 +7,13 @@
 		<app-cloe-input-field [label]="'Tipo de documento'" [options]="['V', 'E', 'P', 'J','G']" formControlName="documentType" [typeInput]="'select'" [forName]="'documentTypeUser'" [placeholder]="'Selecciona'"></app-cloe-input-field>
 		<app-cloe-input-field [label]="'Cédula'" formControlName="identification" [typeInput]="'text'" [forName]="'identificationUser'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 		<app-cloe-input-field [label]="'Correo electrónico'" formControlName="email" [typeInput]="'email'" [forName]="'emailUser'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
-		<ng-container *ngIf="!data">
-			<app-cloe-select-search  formControlName="employePosition" [forName]="'employePositionUser'" [label]="'Cargo'" [placeholder]="'Selecciona'" [options]="employePositions"></app-cloe-select-search>
-		</ng-container>
-		<app-cloe-select-search  formControlName="state" [forName]="'stateGatheringCenters'" [label]="'Estado'" [placeholder]="'Selecciona'" [options]="statesList"></app-cloe-select-search>
-		<app-cloe-select-search  formControlName="city" [forName]="'cityGatheringCenters'" [label]="'Ciudad'" [placeholder]="'Selecciona'" [options]="citiesList"></app-cloe-select-search>
+		<app-cloe-input-field [label]="'Cargo'"  [options]="rolesList" formControlName="employePosition" [typeInput]="'select'" [forName]="'employePositionUser'" [placeholder]="'Selecciona'"></app-cloe-input-field>
+		<app-cloe-select-search  formControlName="state" [forName]="'stateUser'" [label]="'Estado'" [placeholder]="'Selecciona'" [options]="statesList"></app-cloe-select-search>
+		<app-cloe-select-search  formControlName="city" [forName]="'cityUser'" [label]="'Ciudad'" [placeholder]="'Selecciona'" [options]="citiesList"></app-cloe-select-search>
 		<app-cloe-input-field [label]="'Dirección'" formControlName="address" [typeInput]="'text'" [forName]="'addressGatheringCenters'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+		<ng-container *ngIf="isViewGatheringCenterInput">
+			<app-cloe-select-search  formControlName="gatheringCenter" [forName]="'gatheringCenterUser'" [label]="'Centro de acopio'" [placeholder]="'Selecciona'" [options]="centersList"></app-cloe-select-search>
+		</ng-container>
 	</form>
 
 	<div class="mt-6 flex items-center justify-end gap-6">
