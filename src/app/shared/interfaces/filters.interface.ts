@@ -3,6 +3,6 @@ export interface SelectFilter {
 }
 
 export interface Filters {
-	estado_id:    number;
-	municipio_id?: number;
+	estado_id:    number | null;
+	municipio_id?: number | null;
 }

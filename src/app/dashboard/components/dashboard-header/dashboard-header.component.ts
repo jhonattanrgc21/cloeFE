@@ -12,11 +12,14 @@ export class DashboardHeaderComponent implements OnInit {
 	role: string = '';
   @Output() sidebarToggled = new EventEmitter<void>();
 
-	constructor(private _authService: AuthService){}
+	constructor(private _authService: AuthService){
+	}
 
 	ngOnInit(): void {
-		this.fullName = this._authService.currentFullName;
-		this.role = this._authService.currentRole;
+		this._authService.getProfileInfo().subscribe(res => {
+			this.fullName = this._authService.currentFullName;
+			this.role = this._authService.currentRole;
+		});
 	}
 
   toggleSidebar() {

@@ -3,7 +3,7 @@ import { tap } from 'rxjs';
 import { HttpService } from 'src/app/core/services/http.service';
 import { StorageService } from 'src/app/core/services/storage.service';
 import { Login } from './../interfaces/login.interfce';
-import { CurrentUser } from './../interfaces/current-user.interface';
+import { UserSession } from './../interfaces/current-user.interface';
 import { ForgotPassword } from '../interfaces/forgot-password.interface';
 import { ResetPassword } from '../interfaces/reset-password.interface';
 
@@ -16,7 +16,8 @@ export class AuthService {
 	private _refreshTokenUrl: string = 'auth/refresh-token';
 	private _forgotPasswordUrl: string = 'auth/forgot-password';
 	private _resetPasswordUrl: string = 'auth/reset-password';
-	private _currentUser!: CurrentUser;
+	private _profileInfoUserUrl: string = 'auth/profile-info';
+	private _currentUser!: UserSession | null | undefined;
 
   constructor(
 		private _storageService: StorageService,
@@ -32,7 +33,8 @@ export class AuthService {
   }
 
 	get currentToken(): string{
-		return this._currentUser? this._currentUser.token: '';
+		const token: string = this._storageService.getCurrentToken();
+		return token ?? '';
 	}
 
 	get currentRole(): string{
@@ -40,25 +42,30 @@ export class AuthService {
 	}
 
 	get currentFullName(): string{
-		return this._currentUser? this._currentUser.fullName: '';
+		return this._currentUser? this._currentUser.name + ' ' + this._currentUser.lastname : '';
 	}
 
-	get currentUuid(): string{
-		return this._currentUser? this._currentUser.uuid: '';
+	get currentUuid(): number{
+		return this._currentUser? this._currentUser.user_id: -1;
+	}
+
+	getProfileInfo(){
+		return this._httpService.get(this._profileInfoUserUrl).pipe(
+			tap(response => {
+				if(response.success){
+					this._currentUser = response.user;
+					this._storageService.setCurrentUser(this._currentUser);
+				}
+				else this._currentUser = null;
+			})
+		);
 	}
 
 	login(json: Login){
 		return this._httpService.post(this._logInUrl, json).pipe(
 			tap(response =>{
 				if(response.success){
-					// TODO:modificar la estructura de _currentUser
-					this._currentUser = {
-						token: response.token,
-						role: response.role,
-						uuid: response.user_id,
-						fullName: response.full_name
-					}
-					this._storageService.setCurrentSession(this._currentUser);
+					this._storageService.setCurrentToken(response.token);
 				}
 			})
 		);
@@ -68,13 +75,7 @@ export class AuthService {
 		return this._httpService.post(this._logOutUrl, {}).pipe(
 			tap(response => {
 				if(response.success){
-					// TODO: modificar la estructura de _currentUser
-					this._currentUser = {
-						token: '',
-						role: '',
-						uuid: '',
-						fullName: ''
-					}
+					this._currentUser = null;
 					this._storageService.removeCurrentSession();
 				}
 			})
@@ -85,14 +86,8 @@ export class AuthService {
 		return this._httpService.post(this._refreshTokenUrl, {}).pipe(
 			tap(response =>{
 				if(response.success){
-						// TODO:modificar la estructura de _currentUser
-					this._currentUser = {
-						token: response.token,
-						role: response.role,
-						uuid: response.user_id,
-						fullName: response.full_name
-					}
-					this._storageService.setCurrentSession(this._currentUser);
+					this._currentUser = response.user;
+					this._storageService.setCurrentSession(response.token, this._currentUser);
 				}
 			})
 		);

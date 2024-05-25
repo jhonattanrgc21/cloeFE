@@ -4,6 +4,7 @@ import { ViewportRuler } from '@angular/cdk/scrolling';
 import { Subscription, filter, map } from 'rxjs';
 import { AlertService } from './../shared/services/alert.service';
 import { Alert } from '../shared/interfaces/alert.interface';
+import { AuthService } from '../auth/services/auth.service';
 
 @Component({
 	selector: 'app-dashboard',
@@ -22,6 +23,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 		private _activatedRoute: ActivatedRoute,
 		private _alertService: AlertService,
 		private _viewportRuler: ViewportRuler,
+		private _authService: AuthService
 	) {
 		this._router.events
 			.pipe(
@@ -42,6 +44,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
+		//this._authService.getProfileInfo().subscribe();
 		this._alertSubscription = this._alertService.alert$.subscribe(
 			(alert: Alert) => {
 				this.alertObj = alert;

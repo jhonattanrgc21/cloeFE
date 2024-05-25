@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CurrentUser } from 'src/app/auth/interfaces/current-user.interface';
+import {  UserSession } from 'src/app/auth/interfaces/current-user.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -8,18 +8,14 @@ export class StorageService {
 
   constructor() { }
 
-	setCurrentSession(currentUser: CurrentUser): void {
-		this.setCurrentToken(currentUser.token);
-		this.setCurrentRole(currentUser.role);
-		this.setCurrentFullName(currentUser.fullName);
-		this.setUuid(currentUser.uuid);
+	setCurrentSession(token: string, currentUser?: UserSession | undefined | null): void {
+		this.setCurrentToken(token);
+		if(currentUser) this.setCurrentUser(currentUser);
   }
 
   removeCurrentSession(): void {
 		this.clearCurrentToken();
-		this.clearCurrentRole();
-		this.clearCurrentFullName();
-		this.clearUuid();
+		this.clearCurrentUser();
   }
 
 
@@ -35,40 +31,18 @@ export class StorageService {
     localStorage.removeItem('cloe-token');
   }
 
-	getCurrentRole(): string | null {
-    return localStorage.getItem('cloe-role');
+	getCurrentUser(): UserSession | null {
+		const user: string | null = localStorage.getItem('cloe-user');
+		const userSession: UserSession | null =  user ? JSON.parse(user): '';
+    return userSession;
   }
 
-  setCurrentRole(role: string): void {
-    localStorage.setItem('cloe-role', role);
+  setCurrentUser(currentUser: UserSession | null | undefined): void {
+    localStorage.setItem('cloe-user', JSON.stringify(currentUser));
   }
 
-  clearCurrentRole(): void {
-    localStorage.removeItem('cloe-role');
+  clearCurrentUser(): void {
+    localStorage.removeItem('cloe-user');
   }
 
-	getCurrentFullName(): string {
-    return localStorage.getItem('cloe-FullName') ?? '';
-  }
-
-  setCurrentFullName(fullName: string): void {
-    localStorage.setItem('cloe-FullName', fullName);
-  }
-
-  clearCurrentFullName(): void {
-    localStorage.removeItem('cloe-FullName');
-  }
-
-
-  getUuid(): string {
-    return localStorage.getItem('cloe-uuid')?? '';
-  }
-
-  setUuid(uuid: string): void {
-    localStorage.setItem('cloe-uuid', uuid);
-  }
-
-  clearUuid(): void {
-    localStorage.removeItem('cloe-uuid');
-  }
 }

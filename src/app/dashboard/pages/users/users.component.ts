@@ -293,8 +293,8 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result){
 
-				if(result == 1)	this._generalService.getDocument('lista-usuarios.pdf','application/pdf');
-				else this._generalService.getDocument('lista-usuarios.xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+				if(result == 1)	this._generalService.getDocument('lista-usuarios.xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+				else this._generalService.getDocument('lista-usuarios.pdf','application/pdf');
 
 				this._alertService.setAlert({
 					isActive: true,

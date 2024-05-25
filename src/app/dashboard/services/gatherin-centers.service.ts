@@ -11,6 +11,10 @@ export class GatheringCentersService {
 	gatheringCenterList$: Observable<GatheringCenter[]> =
 		this._gatheringCenterListSubject.asObservable();
 
+	private _getUsersUrl: string = 'users/index?page=';
+	private _createUserUrl: string = 'users/register';
+	private _updateUserUrl: string = 'users/update';
+
 	constructor() {}
 
 	addGatheringCenter(gatheringCenter: GatheringCenter): void {
@@ -26,8 +30,11 @@ export class GatheringCentersService {
 
 	modifyStatusGatheringCenter(gatheringCenter: GatheringCenter): void {
 		const currentList = this._gatheringCenterListSubject.getValue();
-		const index = currentList.findIndex((item) => item.id === gatheringCenter.id);
-		gatheringCenter.status = gatheringCenter.status == 'Inactivo' ? 'Activo' : 'Inactivo';
+		const index = currentList.findIndex(
+			(item) => item.id === gatheringCenter.id
+		);
+		gatheringCenter.status =
+			gatheringCenter.status == 'Inactivo' ? 'Activo' : 'Inactivo';
 		currentList[index] = gatheringCenter;
 		this._gatheringCenterListSubject.next(currentList);
 	}

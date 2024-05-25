@@ -24,58 +24,6 @@ export class GatheringCenterComponent implements OnInit, OnDestroy {
 	pageSize: number = 6;
 	pageSizeOptions: number[] = [6, 12, 18, 30, 60];
 
-	// constructor(
-	// 	private _fb: FormBuilder,
-	// 	private _generalService: GeneralService
-	// ) {
-
-	// 	this._generalService.getStates().subscribe(res => {
-	// 		if (res.success) this.statesList = res.data;
-	// 		else this.statesList = [];
-	// 	});
-
-	// 	this.locationForm = this._fb.group({
-	// 		city: [],
-	// 		state: [],
-	// 	});
-
-	// 	this.locationForm.get('state')?.valueChanges.subscribe((stateId) => {
-	// 		this.locationForm.get('city')?.reset();
-	// 		const stateSelectionFilter: SelectFilter = {
-	// 			filters: { estado_id: stateId },
-	// 		};
-
-	// 		this._generalService.getGatheringCenters(stateSelectionFilter).subscribe(res => {
-	// 			if (res.success) {
-	// 				this.gatheringCentersList = res.data;
-	// 			} else this.gatheringCentersList = [];
-	// 		})
-
-	// 		this._generalService.getCities(stateSelectionFilter).subscribe((res) => {
-	// 			if (res.success) {
-	// 				this.citiesList = res.data;
-	// 			} else this.citiesList = [];
-	// 		});
-	// 	});
-
-	// 	this.locationForm.get('city')?.valueChanges.subscribe((cityId) => {
-	// 		const stateId = this.locationForm.get('state')?.value;
-	// 		const centersFilter: SelectFilter = {
-	// 			filters: { estado_id: stateId, municipio_id: cityId },
-	// 		};
-	// 		this._generalService.getGatheringCenters(centersFilter).subscribe(res => {
-	// 			if (res.success) {
-	// 				this.gatheringCentersList = res.data;
-	// 			} else this.gatheringCentersList = [];
-	// 		})
-	// 	})
-	// }
-
-	// ngOnInit() {
-
-	// }
-
-
   constructor(
     private _fb: FormBuilder,
     private _generalService: GeneralService
@@ -84,6 +32,10 @@ export class GatheringCenterComponent implements OnInit, OnDestroy {
   }
 
 	ngOnInit(): void {
+		const centersFilter: SelectFilter = { filters: { estado_id: null, municipio_id: null } };
+		this._generalService.getGatheringCenters(centersFilter).subscribe(res => {
+			this.gatheringCentersList = res.success ? res.data : [];
+		});
 		this.loadStates();
 		this.setupValueChangeSubscriptions();
 	}

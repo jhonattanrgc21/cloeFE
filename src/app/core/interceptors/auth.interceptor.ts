@@ -21,13 +21,10 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(
 		private authService: AuthService,
 		private spinnerService: SpinnerService,
-		private router: Router,
-		private storageService: StorageService
 	) {}
 
 	private _getHeaders(){
-		//const token = this.authService.currentToken;
-		const token = this.storageService.getCurrentToken();
+		const token = this.authService.currentToken;
 		return {
 			Authorization: `Bearer ${token}`,
 		};
@@ -37,14 +34,15 @@ export class AuthInterceptor implements HttpInterceptor {
     let request = req;
 
 		this.spinnerService.show();
-		request = req.clone({
-			setHeaders: this._getHeaders()
-		});
-    // if (this.authService.currentToken && this.authService.currentToken != '') {
-    //   request = req.clone({
-    //     setHeaders: this._getHeaders()
-    //   });
-    // }
+		// request = req.clone({
+		// 	setHeaders: this._getHeaders()
+		// });
+
+    if (this.authService.currentToken && this.authService.currentToken != '') {
+      request = req.clone({
+        setHeaders: this._getHeaders()
+      });
+    }
 
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
