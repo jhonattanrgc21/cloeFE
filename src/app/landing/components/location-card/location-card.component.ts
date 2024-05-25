@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { GatheringCenter } from '../../interfaces/gathering-center.interface';
+import { GatheringCenterCard } from '../../interfaces/gathering-center.interface';
 
 @Component({
   selector: 'app-location-card',
@@ -7,5 +7,5 @@ import { GatheringCenter } from '../../interfaces/gathering-center.interface';
   styleUrls: ['./location-card.component.scss']
 })
 export class LocationCardComponent {
-	@Input() gatheringCenter!: GatheringCenter;
+	@Input() gatheringCenter!: GatheringCenterCard;
 }

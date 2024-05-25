@@ -19,6 +19,7 @@ import { UserDetailPopupComponent } from './user-detail-popup/user-detail-popup.
 import { User, UserEdit, UserRegister } from '../../interfaces/users.interface';
 import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
 import { GeneralService } from 'src/app/shared/services/general.service';
+import { DownloadPopupComponent } from 'src/app/shared/components/download-popup/download-popup.component';
 
 @Component({
 	selector: 'app-users',
@@ -59,7 +60,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		private _cdr: ChangeDetectorRef,
 		private _alertService: AlertService,
 		private _generalService: GeneralService
-	) { }
+	) {}
 
 	private _handleUserResponse(
 		res: any,
@@ -81,7 +82,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 		this._alertService.setAlert({
 			isActive,
 			message,
-			type
+			type,
 		});
 	}
 
@@ -106,6 +107,9 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 				this._cdr.detectChanges();
 			}
 		);
+		this._generalService.getStates().subscribe((res) => {
+			this.statesList = res.success ? res.data : [];
+		});
 	}
 	ngAfterViewInit(): void {
 		setTimeout(() => this.setUpPaginator(), 2000);
@@ -120,7 +124,8 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			const searchData =
 				`${data.name} ${data.lastname} ${data.cedula_type}-${data.cedula_number} ${data.role}`.toLowerCase();
 			const statusMatch =
-				(data.active == 1 ? 'Activo' : 'Inactivo').toLowerCase() === filter.trim().toLowerCase();
+				(data.active == 1 ? 'Activo' : 'Inactivo').toLowerCase() ===
+				filter.trim().toLowerCase();
 			const otherColumnsMatch = searchData.includes(
 				filter.trim().toLowerCase()
 			);
@@ -144,12 +149,6 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	openDialogEditUser(user?: User): void {
-
-		this._generalService.getStates().subscribe(res => {
-			if (res.success) this.statesList = res.data;
-			else;
-		});
-
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(EditUserPopupComponent, {
 			width: viewportSize.width < 768 ? '380px' : '474px',
@@ -282,6 +281,29 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (result == 'delete') this.openDiaglogDisabletUser(user);
 		});
 	}
+
+	openDialogUsersDownload(): void {
+		const viewportSize = this._viewportRuler.getViewportSize();
+		const dialogRef = this._dialog.open(DownloadPopupComponent, {
+			width: viewportSize.width < 768 ? '380px' : '479px',
+			height: 'auto',
+			autoFocus: false,
+		});
+
+		dialogRef.afterClosed().subscribe((result: any) => {
+			if (result){
+
+				if(result == 1)	this._generalService.getDocument('lista-usuarios.pdf','application/pdf');
+				else this._generalService.getDocument('lista-usuarios.xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+				this._alertService.setAlert({
+					isActive: true,
+					message: 'Excelente, el reporte se ha descargado con éxito.',
+				});
+			}
+		});
+	}
+
 
 	ngOnDestroy() {
 		if (this._userListSubscription) this._userListSubscription.unsubscribe();

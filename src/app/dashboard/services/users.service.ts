@@ -7,6 +7,7 @@ import { HttpService } from 'src/app/core/services/http.service';
 	providedIn: 'root',
 })
 export class UsersService {
+	// TODO: Crear un servicio para opbtener la informacion del usuarion que inicio sesion
 	private _userListSubject: BehaviorSubject<User[]> = new BehaviorSubject<
 		User[]
 	>([]);

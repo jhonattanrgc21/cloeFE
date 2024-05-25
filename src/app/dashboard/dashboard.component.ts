@@ -11,6 +11,7 @@ import { Alert } from '../shared/interfaces/alert.interface';
 	styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
+	// TODO: agregar un metodo getProfile
 	isSidebarOpen: boolean = false;
 	rutaActual: string = '';
 	alertObj!: Alert;

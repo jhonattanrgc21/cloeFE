@@ -11,7 +11,6 @@ import { ResetPassword } from '../interfaces/reset-password.interface';
   providedIn: 'root'
 })
 export class AuthService {
-
 	private _logInUrl: string = 'auth/login';
 	private _logOutUrl: string = 'auth/logout';
 	private _refreshTokenUrl: string = 'auth/refresh-token';
@@ -52,6 +51,7 @@ export class AuthService {
 		return this._httpService.post(this._logInUrl, json).pipe(
 			tap(response =>{
 				if(response.success){
+					// TODO:modificar la estructura de _currentUser
 					this._currentUser = {
 						token: response.token,
 						role: response.role,
@@ -68,6 +68,7 @@ export class AuthService {
 		return this._httpService.post(this._logOutUrl, {}).pipe(
 			tap(response => {
 				if(response.success){
+					// TODO: modificar la estructura de _currentUser
 					this._currentUser = {
 						token: '',
 						role: '',
@@ -84,6 +85,7 @@ export class AuthService {
 		return this._httpService.post(this._refreshTokenUrl, {}).pipe(
 			tap(response =>{
 				if(response.success){
+						// TODO:modificar la estructura de _currentUser
 					this._currentUser = {
 						token: response.token,
 						role: response.role,

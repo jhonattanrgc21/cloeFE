@@ -1,217 +1,149 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { State } from '../../interfaces/states.interface';
-import { City } from '../../interfaces/cities.interface';
-import { GatheringCenter } from '../../interfaces/gathering-center.interface';
+import { GatheringCenter, GatheringCenterCard } from '../../interfaces/gathering-center.interface';
+import { GeneralService } from 'src/app/shared/services/general.service';
+import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
+import { SelectFilter } from 'src/app/shared/interfaces/filters.interface';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-gathering-center',
 	templateUrl: './gathering-center.component.html',
 	styleUrls: ['./gathering-center.component.scss'],
 })
-export class GatheringCenterComponent implements OnInit {
-	locationForm: FormGroup;
-	states: State[] = [
-		{
-			id: 1,
-			name: 'Distrito capital',
-		},
-		{
-			id: 2,
-			name: 'Carabobo',
-		},
-		{
-			id: 3,
-			name: 'Aragua',
-		},
-		{
-			id: 4,
-			name: 'Miranda',
-		},
-		{
-			id: 5,
-			name: 'Lara',
-		},
-		{
-			id: 6,
-			name: 'Mérida',
-		},
-	];
+export class GatheringCenterComponent implements OnInit, OnDestroy {
 
-	originalCities: City[] = [];
-	cities: City[] = [
-		{
-			id: 1,
-			name: 'Valencia',
-			parentStateId: 2,
-		},
-		{
-			id: 2,
-			name: 'Guacara',
-			parentStateId: 4,
-		},
-		{
-			id: 3,
-			name: 'Los Guayos',
-			parentStateId: 2,
-		},
-		{
-			id: 4,
-			name: 'Bejuma',
-			parentStateId: 5,
-		},
-		{
-			id: 5,
-			name: 'Caracas',
-			parentStateId: 1,
-		},
-	];
-
-	gatheringCenters: GatheringCenter[] = [
-		{
-			id: 1,
-			city: {
-				id: 3,
-				name: 'Los Guayos',
-				parentStateId: 2,
-			},
-			state: {
-				id: 2,
-				name: 'Carabobo',
-			},
-			address: 'Calle Rosalia, Los Guayos 2011, Carabobo',
-		},
-		{
-			id: 2,
-			city: {
-				id: 5,
-				name: 'Caracas',
-				parentStateId: 1,
-			},
-			state: {
-				id: 1,
-				name: 'Distrito capital',
-			},
-			address: 'Caracas 1011, Distrito Capital',
-		},
-		{
-			id: 3,
-			city: {
-				id: 1,
-				name: 'Valencia',
-				parentStateId: 2,
-			},
-			state: {
-				id: 2,
-				name: 'Carabobo',
-			},
-			address: 'local 85-23, entre infante y sucre, Calle Montes de oca.',
-		},
-		{
-			id: 4,
-			city: {
-				id: 1,
-				name: 'Valencia',
-				parentStateId: 1,
-			},
-			state: {
-				id: 2,
-				name: 'Carabobo',
-			},
-			address: 'Av. México, Caracas 1014, Distrito Capital',
-		},
-		{
-			id: 5,
-			city: {
-				id: 1,
-				name: 'Valencia',
-				parentStateId: 1,
-			},
-			state: {
-				id: 2,
-				name: 'Carabobo',
-			},
-			address: 'MERCADO LA HOYADA, Caracas 1010, Distrito Capital',
-		},
-		{
-			id: 6,
-			city: {
-				id: 1,
-				name: 'Valencia',
-				parentStateId: 1,
-			},
-			state: {
-				id: 2,
-				name: 'Carabobo',
-			},
-			address: 'Caracas 1011, Distrito Capital',
-		},
-		{
-			id: 7,
-			city: {
-				id: 1,
-				name: 'Valencia',
-				parentStateId: 1,
-			},
-			state: {
-				id: 1,
-				name: 'Distrito capital',
-			},
-			address: 'Calle Rosalia, Los Guayos 2011, Carabobo',
-		},
-		{
-			id: 8,
-			city: {
-				id: 1,
-				name: 'Valencia',
-				parentStateId: 1,
-			},
-			state: {
-				id: 1,
-				name: 'Distrito capital',
-			},
-			address: 'MERCADO LA HOYADA, Caracas 1010, Distrito Capital',
-		},
-	];
-
-	filteredGatheringCenters: GatheringCenter[] = [];
+  private readonly _destroyed$ = new Subject<void>();
+	locationForm!: FormGroup;
+	statesList: SelectionInput[] = [];
+	citiesList: SelectionInput[] = [];
+	gatheringCentersList: GatheringCenterCard[] = [];
 
 	pageNumber: number = 1;
 	pageSize: number = 6;
 	pageSizeOptions: number[] = [6, 12, 18, 30, 60];
 
-	constructor(private _fb: FormBuilder) {
-		this.locationForm = this._fb.group({
-			city: [],
-			state: [],
-		});
+	// constructor(
+	// 	private _fb: FormBuilder,
+	// 	private _generalService: GeneralService
+	// ) {
+
+	// 	this._generalService.getStates().subscribe(res => {
+	// 		if (res.success) this.statesList = res.data;
+	// 		else this.statesList = [];
+	// 	});
+
+	// 	this.locationForm = this._fb.group({
+	// 		city: [],
+	// 		state: [],
+	// 	});
+
+	// 	this.locationForm.get('state')?.valueChanges.subscribe((stateId) => {
+	// 		this.locationForm.get('city')?.reset();
+	// 		const stateSelectionFilter: SelectFilter = {
+	// 			filters: { estado_id: stateId },
+	// 		};
+
+	// 		this._generalService.getGatheringCenters(stateSelectionFilter).subscribe(res => {
+	// 			if (res.success) {
+	// 				this.gatheringCentersList = res.data;
+	// 			} else this.gatheringCentersList = [];
+	// 		})
+
+	// 		this._generalService.getCities(stateSelectionFilter).subscribe((res) => {
+	// 			if (res.success) {
+	// 				this.citiesList = res.data;
+	// 			} else this.citiesList = [];
+	// 		});
+	// 	});
+
+	// 	this.locationForm.get('city')?.valueChanges.subscribe((cityId) => {
+	// 		const stateId = this.locationForm.get('state')?.value;
+	// 		const centersFilter: SelectFilter = {
+	// 			filters: { estado_id: stateId, municipio_id: cityId },
+	// 		};
+	// 		this._generalService.getGatheringCenters(centersFilter).subscribe(res => {
+	// 			if (res.success) {
+	// 				this.gatheringCentersList = res.data;
+	// 			} else this.gatheringCentersList = [];
+	// 		})
+	// 	})
+	// }
+
+	// ngOnInit() {
+
+	// }
+
+
+  constructor(
+    private _fb: FormBuilder,
+    private _generalService: GeneralService
+  ) {
+    this.initForm();
+  }
+
+	ngOnInit(): void {
+		this.loadStates();
+		this.setupValueChangeSubscriptions();
 	}
 
-	ngOnInit() {
-		this.filteredGatheringCenters = this.gatheringCenters;
-		this.originalCities = [...this.cities];
-		this.locationForm.valueChanges.subscribe(() => {
-			this.applyFilters();
-		});
-	}
-
-	applyFilters(): void {
-    const stateId = this.locationForm.get('state')?.value;
-    const cityId = this.locationForm.get('city')?.value;
-
-    this.filteredGatheringCenters = this.gatheringCenters.filter(center => {
-        return (!stateId || center.state.id === stateId) && (!cityId || center.city.id === cityId);
+  initForm(): void {
+    this.locationForm = this._fb.group({
+      state: [],
+      city: [],
     });
+  }
 
-    if (stateId) this.cities = this.originalCities.filter(city => city.parentStateId === stateId);
-    else this.cities = [...this.originalCities];
-}
+  loadStates(): void {
+    this._generalService.getStates()
+      .pipe(takeUntil(this._destroyed$))
+      .subscribe(res => {
+        this.statesList = res.success ? res.data : [];
+      });
+  }
 
+  setupValueChangeSubscriptions(): void {
+    this.locationForm.get('state')?.valueChanges
+      .pipe(
+        takeUntil(this._destroyed$),
+        switchMap(stateId => {
+          this.locationForm.get('city')?.reset();
+          const stateSelectionFilter: SelectFilter = { filters: { estado_id: stateId } };
+          return this._generalService.getCities(stateSelectionFilter)
+            .pipe(
+              switchMap(res => {
+                this.citiesList = res.success ? res.data : [];
+                return this._generalService.getGatheringCenters(stateSelectionFilter);
+              })
+            );
+        })
+      )
+      .subscribe(res => {
+        this.gatheringCentersList = res.success ? res.data : [];
+      });
+
+    this.locationForm.get('city')?.valueChanges
+      .pipe(
+        takeUntil(this._destroyed$),
+        switchMap(cityId => {
+          const stateId = this.locationForm.get('state')?.value;
+          const centersFilter: SelectFilter = { filters: { estado_id: stateId, municipio_id: cityId } };
+          return this._generalService.getGatheringCenters(centersFilter);
+        })
+      )
+      .subscribe(res => {
+        this.gatheringCentersList = res.success ? res.data : [];
+      });
+  }
 
 	handlePage(event: PageEvent): void {
 		this.pageNumber = event.pageIndex + 1;
 		this.pageSize = event.pageSize;
 	}
+
+  ngOnDestroy(): void {
+    this._destroyed$.next();
+    this._destroyed$.complete();
+  }
 }

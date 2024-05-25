@@ -6,13 +6,15 @@ import { GeneralService } from 'src/app/shared/services/general.service';
 import { User, UserEdit } from 'src/app/dashboard/interfaces/users.interface';
 import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
 import { SelectFilter } from 'src/app/shared/interfaces/filters.interface';
+import { Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
-  selector: 'app-edit-user-popup',
-  templateUrl: './edit-user-popup.component.html',
-  styleUrls: ['./edit-user-popup.component.scss']
+	selector: 'app-edit-user-popup',
+	templateUrl: './edit-user-popup.component.html',
+	styleUrls: ['./edit-user-popup.component.scss'],
 })
-export class EditUserPopupComponent implements OnInit {
+export class EditUserPopupComponent implements OnInit, OnDestroy {
+	private readonly _destroyed$ = new Subject<void>();
 
 	title: string = '';
 	state?: number;
@@ -23,21 +25,21 @@ export class EditUserPopupComponent implements OnInit {
 	employePositions: EmployePosition[] = [
 		{
 			id: 1,
-			name: 'Administrador'
+			name: 'Administrador',
 		},
 		{
 			id: 2,
-			name: 'Clasificador'
+			name: 'Clasificador',
 		},
 		{
 			id: 3,
-			name: 'Separador'
-		}
+			name: 'Separador',
+		},
 	];
 
-	statesList: SelectionInput[] = []; 
+	statesList: SelectionInput[] = [];
 	citiesList: SelectionInput[] = [];
-	centersList: SelectionInput[] = []; 
+	centersList: SelectionInput[] = [];
 
 	constructor(
 		public dialogRef: MatDialogRef<EditUserPopupComponent>,
@@ -45,72 +47,91 @@ export class EditUserPopupComponent implements OnInit {
 		private _generalService: GeneralService,
 		@Inject(MAT_DIALOG_DATA) public data: any
 	) {
-		this._generalService.getStates().subscribe(res => {
-			if (res.success) this.statesList = res.data;
-			else this.statesList = [];
-		});
-		
-    	this.userForm = this._fb.group({
+		this.userForm = this._fb.group({
 			id: [],
-			firstName: [, [Validators.required, this._generalService.noWhitespaceValidator()]],
-			lastName: [, [Validators.required, this._generalService.noWhitespaceValidator()]],
-			email: [, [Validators.required, this._generalService.noWhitespaceValidator()]],
+			firstName: [
+				,
+				[Validators.required, this._generalService.noWhitespaceValidator()],
+			],
+			lastName: [
+				,
+				[Validators.required, this._generalService.noWhitespaceValidator()],
+			],
+			email: [
+				,
+				[Validators.required, this._generalService.noWhitespaceValidator()],
+			],
 			documentType: [, Validators.required],
-			identification: [, [Validators.required, this._generalService.noWhitespaceValidator()]],
+			identification: [
+				,
+				[Validators.required, this._generalService.noWhitespaceValidator()],
+			],
 			employePosition: [, Validators.required],
 			state: [, Validators.required],
 			city: [, Validators.required],
-			address: [, [Validators.required, this._generalService.noWhitespaceValidator()]],
+			address: [
+				,
+				[Validators.required, this._generalService.noWhitespaceValidator()],
+			],
 		});
+
 		this.statesList = this.data.statesList;
-		this.userForm.get('state')?.valueChanges.subscribe((stateId) => {
-			this.userForm.get('city')?.reset();
-			const stateSelectionFilter: SelectFilter = {
-				filters: {estado_id: stateId}
-			}
-			this._generalService.getCities(stateSelectionFilter).subscribe(res => {
-				if (res.success)
-				{
-					this.citiesList = res.data;
-					if(data.user){
-						const user: User = data.user
-						this.city = this.citiesList.find(item => item.name.toLowerCase() ==  user.municipio.toLowerCase())?.id;
-						this.userForm.get('city')?.setValue(this.city);
-					}
-				} 
-				else this.citiesList  = [];
-			}); 
-		  });
+		this.userForm
+			.get('state')
+			?.valueChanges.pipe(
+				takeUntil(this._destroyed$),
+				switchMap((stateId) => {
+					this.userForm.get('city')?.reset();
+					const stateSelectionFilter: SelectFilter = {
+						filters: { estado_id: stateId },
+					};
+					return this._generalService.getCities(stateSelectionFilter);
+				})
+			)
+			.subscribe((res) => {
+				this.citiesList = res.success ? res.data : [];
+				if (this.data.user) {
+					const user: User = this.data.user;
+					this.city = this.citiesList.find(
+						(item) => item.name.toLowerCase() === user.municipio.toLowerCase()
+					)?.id;
+					this.userForm.get('city')?.setValue(this.city);
+				}
+			});
 	}
 
 	ngOnInit(): void {
 		const user: User = this.data.user;
-		if(!user) this.title = 'Registrar usuario';
-		else{
-			this.title = 'Editar usuario';		
-			this.userForm.get('id')?.setValue(user.id);
-			this.userForm.get('firstName')?.setValue(user.name);
-			this.userForm.get('lastName')?.setValue(user.lastname);
-			this.userForm.get('email')?.setValue(user.email);
-			this.userForm.get('documentType')?.setValue(user.cedula_type);
-			this.userForm.get('identification')?.setValue(user.cedula_number);
-			this.userForm.get('employePosition')?.setValue(user.role);
-			this.state = this.statesList.find(item => item.name.toLowerCase() ==  user.estado.toLowerCase())?.id;
-			this.userForm.get('state')?.setValue(this.state);
-			this.address = user.address;
-			this.userForm.get('address')?.setValue(this.address);
-		}
+    if (!user) {
+      this.title = 'Registrar usuario';
+    } else {
+      this.title = 'Editar usuario';
+      this.userForm.patchValue({
+        id: user.id,
+        firstName: user.name,
+        lastName: user.lastname,
+        email: user.email,
+        documentType: user.cedula_type,
+        identification: user.cedula_number,
+        employePosition: user.role,
+        address: user.address
+      });
+      this.state = this.statesList.find(item => item.name.toLowerCase() === user.estado.toLowerCase())?.id;
+      this.userForm.get('state')?.setValue(this.state);
+    }
 	}
 
 	onClose(gatheringCenter?: any): void {
 		this.dialogRef.close(gatheringCenter);
 	}
 
-	onSaveUser(){
+	onSaveUser() {
 		const form = this.userForm.value;
-		const stateObj = this.statesList.find(state => state.id == form.state);
-		const cityObj = this.citiesList.find(city => city.id == form.city);
-		const employePositionObj = this.employePositions.find(employePosition => employePosition.id == form.employePosition);
+		const stateObj = this.statesList.find((state) => state.id == form.state);
+		const cityObj = this.citiesList.find((city) => city.id == form.city);
+		const employePositionObj = this.employePositions.find(
+			(employePosition) => employePosition.id == form.employePosition
+		);
 
 		if (stateObj && cityObj && employePositionObj) {
 			const user: UserEdit = {
@@ -127,5 +148,10 @@ export class EditUserPopupComponent implements OnInit {
 			};
 			this.onClose(user);
 		}
+	}
+
+	ngOnDestroy(): void {
+		this._destroyed$.next();
+		this._destroyed$.complete();
 	}
 }

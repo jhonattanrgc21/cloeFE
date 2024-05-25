@@ -29,9 +29,7 @@ export class AuthInterceptor implements HttpInterceptor {
 		//const token = this.authService.currentToken;
 		const token = this.storageService.getCurrentToken();
 		return {
-			Accept: 'application/json',
 			Authorization: `Bearer ${token}`,
-			'Content-Type': 'application/json',
 		};
 	}
 

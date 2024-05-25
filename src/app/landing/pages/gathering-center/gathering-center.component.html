@@ -6,13 +6,13 @@
 
 <div class="section-2 px-4 md:px-10">
 	<form [formGroup]="locationForm" class="pt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-		<app-cloe-select-search class="w-full" formControlName="state" [forName]="'stateGatheringCenter'" [label]="'Estado'" [placeholder]="'Seleccione el estado'" [options]="states"></app-cloe-select-search>
-		<app-cloe-select-search class="w-full" formControlName="city" [forName]="'cityGatheringCenter'" [label]="'Ciudad'" [placeholder]="'Seleccione la ciudad'" [options]="cities"></app-cloe-select-search>
+		<app-cloe-select-search class="w-full" formControlName="state" [forName]="'stateGatheringCenter'" [label]="'Estado'" [placeholder]="'Seleccione el estado'" [options]="statesList"></app-cloe-select-search>
+		<app-cloe-select-search class="w-full" formControlName="city" [forName]="'cityGatheringCenter'" [label]="'Ciudad'" [placeholder]="'Seleccione la ciudad'" [options]="citiesList"></app-cloe-select-search>
 	</form>
 
-	<ng-container *ngIf="filteredGatheringCenters.length > 0; else notGatherinCenters">
+	<ng-container *ngIf="gatheringCentersList.length > 0; else notGatherinCenters">
 		<div class="grid pt-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-			<ng-container *ngFor="let gatheringCenter of filteredGatheringCenters | paginate: pageSize:pageNumber">
+			<ng-container *ngFor="let gatheringCenter of gatheringCentersList | paginate: pageSize:pageNumber">
 				<div class="w-full">
 					<app-location-card [gatheringCenter]="gatheringCenter"></app-location-card>
 				</div>
@@ -20,7 +20,7 @@
 		</div>
 
 		<div class="py-6">
-			<mat-paginator class="py-2" [length]="filteredGatheringCenters.length " [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+			<mat-paginator class="py-2" [length]="gatheringCentersList.length " [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
 				(page)="handlePage($event)" showFirstLastButtons aria-label="Select page">
 			</mat-paginator>
 		</div>
