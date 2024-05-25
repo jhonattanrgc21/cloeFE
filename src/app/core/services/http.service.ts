@@ -25,7 +25,20 @@ export class HttpService {
       .pipe(takeUntil(this.cancelHttpCall));
   }
 
-	post(uri: string, body: any = {}, params: any[] = []): Observable<any> {
+	post(uri: string, body: any = {}, params: any[] = [], typeDocument?: 'excel' | 'pdf'): Observable<any> {
+		let headers = new HttpHeaders()
+		.append('Accept', 'application/json')
+		.append('Content-Type', 'application/json');
+
+		if(typeDocument){
+			switch(typeDocument){
+				case 'excel': headers = new HttpHeaders().append('Accept', 'application/json').append('Content-Type', 'application/json');
+				break
+				case 'pdf': headers = new HttpHeaders().append('Accept', 'application/json').append('Content-Type', 'application/json');
+				break
+			}
+		}
+
     let _httpParams = new HttpParams();
     params.forEach(p => {
       _httpParams = _httpParams.append(p.key, p.value);
