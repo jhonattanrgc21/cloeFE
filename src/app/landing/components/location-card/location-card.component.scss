@@ -1,6 +1,5 @@
 .card{
-	//height: 140px;
-	height: auto;
+	height: 160px;
 	padding: 16px;
 	@apply  w-full bg-white rounded overflow-hidden shadow-md flex flex-col items-start transition duration-300;
 }

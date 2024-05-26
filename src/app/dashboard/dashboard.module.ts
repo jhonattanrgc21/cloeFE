@@ -20,6 +20,7 @@ import { ClasificationTableComponent } from './pages/separation/clasification-ta
 import { UserDetailPopupComponent } from './pages/users/user-detail-popup/user-detail-popup.component';
 import { ComponentEditComponent } from './pages/separation/component-edit/component-edit.component';
 import { ViewComponentComponent } from './pages/separation/view-component/view-component.component';
+import { HomeComponent } from './pages/home/home.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { ViewComponentComponent } from './pages/separation/view-component/view-c
     UserDetailPopupComponent,
     ComponentEditComponent,
     ViewComponentComponent,
+    HomeComponent,
   ],
   imports: [
     CommonModule,

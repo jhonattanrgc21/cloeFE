@@ -49,7 +49,7 @@ export class SignInComponent implements OnDestroy {
 		this._authService.login(input).subscribe(res => {
 			if(res.success){
 				this.errorMessage = '';
-				this._router.navigateByUrl(ROUTES.summary);
+				this._router.navigateByUrl('/dashboard');
 			}
 			else this.errorMessage = res.message;
 		});

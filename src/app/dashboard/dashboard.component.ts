@@ -12,7 +12,6 @@ import { AuthService } from '../auth/services/auth.service';
 	styleUrls: ['./dashboard.component.scss'],
 })
 export class DashboardComponent implements OnInit, OnDestroy {
-	// TODO: agregar un metodo getProfile
 	isSidebarOpen: boolean = false;
 	rutaActual: string = '';
 	alertObj!: Alert;
@@ -23,7 +22,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 		private _activatedRoute: ActivatedRoute,
 		private _alertService: AlertService,
 		private _viewportRuler: ViewportRuler,
-		private _authService: AuthService
 	) {
 		this._router.events
 			.pipe(
@@ -44,7 +42,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnInit(): void {
-		//this._authService.getProfileInfo().subscribe();
 		this._alertSubscription = this._alertService.alert$.subscribe(
 			(alert: Alert) => {
 				this.alertObj = alert;
@@ -55,8 +52,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
 	obtenerMensaje(): string {
 		let headerMessage: string = '';
 		switch (this.rutaActual) {
+			case 'home':
+				//headerMessage = '¡Bienvenido!';
+				headerMessage = 'Inicio';
+				break;
 			case 'summary':
-				headerMessage = '¡Bienvenido!';
+				headerMessage = 'Resumen';
 				break;
 			case 'gathering-centers':
 				headerMessage = 'Centros de acopio';

@@ -8,6 +8,11 @@ import { AuthService } from 'src/app/auth/services/auth.service';
 })
 export class DashboardSidebarComponent {
 	constructor(private _authService: AuthService){}
+
+	showOption(allowedRoles: string[]){
+		return this._authService.hasRole(allowedRoles);
+	}
+
 	logout(){
 		this._authService.logout().subscribe();
 	}

@@ -8,13 +8,15 @@ export class StorageService {
 
   constructor() { }
 
-	setCurrentSession(token: string, currentUser?: UserSession | undefined | null): void {
+	setCurrentSession(token: string, role: string ,currentUser?: UserSession | undefined | null): void {
 		this.setCurrentToken(token);
+		this.setCurrentRole(role);
 		if(currentUser) this.setCurrentUser(currentUser);
   }
 
   removeCurrentSession(): void {
 		this.clearCurrentToken();
+		this.clearCurrentRole();
 		this.clearCurrentUser();
   }
 
@@ -29,6 +31,18 @@ export class StorageService {
 
   clearCurrentToken(): void {
     localStorage.removeItem('cloe-token');
+  }
+
+	getCurrentRole(): string {
+    return localStorage.getItem('cloe-role') ?? '';
+  }
+
+  setCurrentRole(role: string): void {
+    localStorage.setItem('cloe-role', role);
+  }
+
+  clearCurrentRole(): void {
+    localStorage.removeItem('cloe-role');
   }
 
 	getCurrentUser(): UserSession | null {

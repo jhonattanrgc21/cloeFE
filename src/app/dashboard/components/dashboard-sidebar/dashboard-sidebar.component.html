@@ -5,36 +5,59 @@
 	<!-- Enlaces del sidebar -->
 	<nav class="pt-4">
 		<ul class="flex flex-col">
-			<a routerLink="/dashboard/summary" routerLinkActive="active" class="option">
-				<img src="../../../../assets/svg/icono_sidebar_analiticas_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
-				<img src="../../../../assets/svg/icono_sidebar_analiticas_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
-				<img src="../../../../assets/svg/icono_sidebar_analiticas_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
-				Analíticas
+			<a routerLink="/dashboard/home" routerLinkActive="active" class="option">
+				<img src="../../../../assets/svg/home.svg" alt="Logo" class="w-6 h-6 svg-default" />
+				<img src="../../../../assets/svg/home_blanco.svg" alt="Logo" class="w-6 h-6 svg-active" />
+				<img src="../../../../assets/svg/home_verde.svg" alt="Logo" class="w-6 h-6 svg-hover" />
+				Inicio
 			</a>
 
-			<a routerLink="/dashboard/gathering-centers" routerLinkActive="active" class="option">
-				<img src="../../../../assets/svg/icono_sidebar_centros_acopios_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
-				<img src="../../../../assets/svg/icono_sidebar_centros_acopios_blanco_24x24.svg" alt="Logo"
-					class="w-6 h-6 svg-active" />
-				<img src="../../../../assets/svg/icono_sidebar_centros_acopios_verde_24x24.svg" alt="Logo"
-					class="w-6 h-6 svg-hover" />
-				Centros de acopio</a>
-			<a routerLink="/dashboard/users" routerLinkActive="active" class="option"><img
-					src="../../../../assets/svg/icono_sidebar_usuarios_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
-				<img src="../../../../assets/svg/icono_sidebar_usuarios_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
-				<img src="../../../../assets/svg/icono_sidebar_usuarios_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
-				Usuarios</a>
-			<a routerLink="/dashboard/clasification" routerLinkActive="active" class="option"><img
-					src="../../../../assets/svg/icono_sidebar_clasificar_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
-				<img src="../../../../assets/svg/icono_sidebar_clasificar_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
-				<img src="../../../../assets/svg/icono_sidebar_clasificar_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
-				Clasificar</a>
+			<ng-container *ngIf="showOption(['admin'])">
+				<a routerLink="/dashboard/summary" routerLinkActive="active" class="option">
+					<img src="../../../../assets/svg/icono_sidebar_analiticas_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
+					<img src="../../../../assets/svg/icono_sidebar_analiticas_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
+					<img src="../../../../assets/svg/icono_sidebar_analiticas_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
+					Analíticas
+				</a>
+			</ng-container>
 
-			<a routerLink="/dashboard/separation" routerLinkActive="active" class="option"><img
-					src="../../../../assets/svg/icono_sidebar_separar_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
-				<img src="../../../../assets/svg/icono_sidebar_separar_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
-				<img src="../../../../assets/svg/icono_sidebar_separar_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
-				Separar</a>
+			<ng-container *ngIf="showOption(['admin'])">
+				<a routerLink="/dashboard/gathering-centers" routerLinkActive="active" class="option">
+					<img src="../../../../assets/svg/icono_sidebar_centros_acopios_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
+					<img src="../../../../assets/svg/icono_sidebar_centros_acopios_blanco_24x24.svg" alt="Logo"
+						class="w-6 h-6 svg-active" />
+					<img src="../../../../assets/svg/icono_sidebar_centros_acopios_verde_24x24.svg" alt="Logo"
+						class="w-6 h-6 svg-hover" />
+					Centros de acopio</a>
+			</ng-container>
+
+
+			<ng-container *ngIf="showOption(['admin'])">
+				<a routerLink="/dashboard/users" routerLinkActive="active" class="option"><img
+						src="../../../../assets/svg/icono_sidebar_usuarios_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
+					<img src="../../../../assets/svg/icono_sidebar_usuarios_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
+					<img src="../../../../assets/svg/icono_sidebar_usuarios_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
+					Usuarios</a>
+			</ng-container>
+
+
+			<ng-container *ngIf="showOption(['admin', 'encargado', 'clasificador'])">
+				<a routerLink="/dashboard/clasification" routerLinkActive="active" class="option"><img
+						src="../../../../assets/svg/icono_sidebar_clasificar_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
+					<img src="../../../../assets/svg/icono_sidebar_clasificar_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
+					<img src="../../../../assets/svg/icono_sidebar_clasificar_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
+					Clasificar</a>
+			</ng-container>
+
+
+			<ng-container *ngIf="showOption(['admin', 'encargado', 'separador'])">
+				<a routerLink="/dashboard/separation" routerLinkActive="active" class="option"><img
+						src="../../../../assets/svg/icono_sidebar_separar_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
+					<img src="../../../../assets/svg/icono_sidebar_separar_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
+					<img src="../../../../assets/svg/icono_sidebar_separar_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
+					Separar</a>
+			</ng-container>
+
 
 			<a routerLink="/auth/sign-in" routerLinkActive="active" class="option" (click)="logout()"><img
 					src="../../../../assets/svg/logout.svg" alt="Logo" class="w-6 h-6 svg-default" />

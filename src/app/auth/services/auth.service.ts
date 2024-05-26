@@ -23,22 +23,13 @@ export class AuthService {
 		private _storageService: StorageService,
 		private _httpService: HttpService
 	) { }
-
-	private _parseJwt(token: string): any {
-    const base64Url = token;
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)).join(''));
-
-    return JSON.parse(jsonPayload);
-  }
-
 	get currentToken(): string{
 		const token: string = this._storageService.getCurrentToken();
 		return token ?? '';
 	}
 
 	get currentRole(): string{
-		return this._currentUser? this._currentUser.role: '';
+		return this._currentUser? this._currentUser.role.toLowerCase(): this._storageService.getCurrentRole().toLowerCase();
 	}
 
 	get currentFullName(): string{
@@ -66,6 +57,7 @@ export class AuthService {
 			tap(response =>{
 				if(response.success){
 					this._storageService.setCurrentToken(response.token);
+					this._storageService.setCurrentRole(response.role);
 				}
 			})
 		);
@@ -87,7 +79,7 @@ export class AuthService {
 			tap(response =>{
 				if(response.success){
 					this._currentUser = response.user;
-					this._storageService.setCurrentSession(response.token, this._currentUser);
+					this._storageService.setCurrentSession(response.token, this._currentUser!.role, this._currentUser);
 				}
 			})
 		);
@@ -103,13 +95,7 @@ export class AuthService {
 		return this._httpService.post(this._resetPasswordUrl, json);
 	}
 
-	isTokenExpired(): boolean {
-    const accessToken = this._storageService.getCurrentToken();
-    if (!accessToken) return true;
-
-    const tokenPayload = this._parseJwt(accessToken);
-    const expirationDate = new Date(tokenPayload.exp * 1000);
-
-    return expirationDate <= new Date();
+	hasRole(roles: string[]): boolean {
+    return roles.includes(this.currentRole);
   }
 }
