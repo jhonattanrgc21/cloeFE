@@ -16,10 +16,8 @@ export class DashboardHeaderComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this._authService.getProfileInfo().subscribe(res => {
-			this.fullName = this._authService.currentFullName;
-			this.role = this._authService.currentRole;
-		});
+		this.fullName = this._authService.currentFullName;
+		this.role = this._authService.currentRole;
 	}
 
   toggleSidebar() {

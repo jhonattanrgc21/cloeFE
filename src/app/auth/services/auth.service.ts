@@ -8,7 +8,7 @@ import { ForgotPassword } from '../interfaces/forgot-password.interface';
 import { ResetPassword } from '../interfaces/reset-password.interface';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root',
 })
 export class AuthService {
 	private _logInUrl: string = 'auth/login';
@@ -19,43 +19,58 @@ export class AuthService {
 	private _profileInfoUserUrl: string = 'auth/profile-info';
 	private _currentUser!: UserSession | null | undefined;
 
-  constructor(
+	constructor(
 		private _storageService: StorageService,
 		private _httpService: HttpService
-	) { }
-	get currentToken(): string{
+	) {}
+
+	get currentUserSession(): UserSession | null | undefined {
+		return this._currentUser;
+	}
+
+	get currentToken(): string {
 		const token: string = this._storageService.getCurrentToken();
 		return token ?? '';
 	}
 
-	get currentRole(): string{
-		return this._currentUser? this._currentUser.role.toLowerCase(): this._storageService.getCurrentRole().toLowerCase();
+	get currentRole(): string {
+		return this._currentUser
+			? this._currentUser.role.toLowerCase()
+			: this._storageService.getCurrentRole().toLowerCase();
 	}
 
-	get currentFullName(): string{
-		return this._currentUser? this._currentUser.name + ' ' + this._currentUser.lastname : '';
+	get currentFullName(): string {
+		let userStorage = this._storageService.getCurrentUser();
+		let fullNameStorage = userStorage?.name + ' ' + userStorage?.lastname;
+		return this._currentUser
+			? this._currentUser.name + ' ' + this._currentUser.lastname
+			: fullNameStorage;
 	}
 
-	get currentUuid(): number{
-		return this._currentUser? this._currentUser.user_id: -1;
+	get currentUuid(): number {
+		return this._currentUser ? this._currentUser.user_id : -1;
 	}
 
-	getProfileInfo(){
+	getProfileInfo() {
 		return this._httpService.get(this._profileInfoUserUrl).pipe(
-			tap(response => {
-				if(response.success){
+			tap((response) => {
+				if (response.success) {
 					this._currentUser = response.user;
 					this._storageService.setCurrentUser(this._currentUser);
-				}
-				else this._currentUser = null;
+				} else this._currentUser = null;
 			})
 		);
 	}
 
-	login(json: Login){
+	setCurrentName(newCurrentSession: UserSession) {
+		this._currentUser = newCurrentSession;
+		this._storageService.setCurrentUser(this._currentUser);
+	}
+
+	login(json: Login) {
 		return this._httpService.post(this._logInUrl, json).pipe(
-			tap(response =>{
-				if(response.success){
+			tap((response) => {
+				if (response.success) {
 					this._storageService.setCurrentToken(response.token);
 					this._storageService.setCurrentRole(response.role);
 				}
@@ -63,29 +78,33 @@ export class AuthService {
 		);
 	}
 
-	logout(){
+	logout() {
 		return this._httpService.post(this._logOutUrl, {}).pipe(
-			tap(response => {
-				if(response.success){
+			tap((response) => {
+				if (response.success) {
 					this._currentUser = null;
 					this._storageService.removeCurrentSession();
-				}
-			})
-		)
-	}
-
-	refreshToken(){
-		return this._httpService.post(this._refreshTokenUrl, {}).pipe(
-			tap(response =>{
-				if(response.success){
-					this._currentUser = response.user;
-					this._storageService.setCurrentSession(response.token, this._currentUser!.role, this._currentUser);
 				}
 			})
 		);
 	}
 
-	forgotPassword(json: ForgotPassword){
+	refreshToken() {
+		return this._httpService.post(this._refreshTokenUrl, {}).pipe(
+			tap((response) => {
+				if (response.success) {
+					this._currentUser = response.user;
+					this._storageService.setCurrentSession(
+						response.token,
+						this._currentUser!.role,
+						this._currentUser
+					);
+				}
+			})
+		);
+	}
+
+	forgotPassword(json: ForgotPassword) {
 		return this._httpService.post(this._forgotPasswordUrl, json);
 	}
 
@@ -96,6 +115,6 @@ export class AuthService {
 	}
 
 	hasRole(roles: string[]): boolean {
-    return roles.includes(this.currentRole);
-  }
+		return roles.includes(this.currentRole);
+	}
 }

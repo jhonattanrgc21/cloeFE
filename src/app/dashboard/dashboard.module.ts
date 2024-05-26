@@ -21,6 +21,8 @@ import { UserDetailPopupComponent } from './pages/users/user-detail-popup/user-d
 import { ComponentEditComponent } from './pages/separation/component-edit/component-edit.component';
 import { ViewComponentComponent } from './pages/separation/view-component/view-component.component';
 import { HomeComponent } from './pages/home/home.component';
+import { EditProfileComponent } from './pages/home/edit-profile/edit-profile.component';
+import { EditPasswordComponent } from './pages/home/edit-password/edit-password.component';
 
 
 @NgModule({
@@ -42,6 +44,8 @@ import { HomeComponent } from './pages/home/home.component';
     ComponentEditComponent,
     ViewComponentComponent,
     HomeComponent,
+    EditProfileComponent,
+    EditPasswordComponent,
   ],
   imports: [
     CommonModule,
