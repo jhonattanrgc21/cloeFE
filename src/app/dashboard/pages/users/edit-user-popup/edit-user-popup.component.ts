@@ -96,7 +96,7 @@ export class EditUserPopupComponent implements OnInit, OnDestroy {
 								const user: User = this.data.user;
 								this.city = this.citiesList.find(
 									(item) =>
-										item.name.toLowerCase() === user.municipio.toLowerCase()
+										item.name.toLowerCase() === user.ciudad.toLowerCase()
 								)?.id;
 								this.userForm.get('city')?.setValue(this.city);
 							}
@@ -135,7 +135,7 @@ export class EditUserPopupComponent implements OnInit, OnDestroy {
 				switchMap((cityId) => {
 					const stateId = this.userForm.get('state')?.value;
 					const centersFilter: SelectFilter = {
-						filters: { estado_id: stateId, municipio_id: cityId },
+						filters: { estado_id: stateId, ciudad: cityId },
 					};
 					return this._generalService.getGatheringCenters(centersFilter);
 				})
@@ -204,7 +204,7 @@ export class EditUserPopupComponent implements OnInit, OnDestroy {
 				centro_id: center?.id,
 				address: form.address.trim(),
 				estado_id: stateObj.id,
-				municipio_id: cityObj.id,
+				ciudad_id: cityObj.id,
 			};
 			this.onClose(user);
 		}

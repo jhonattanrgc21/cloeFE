@@ -63,7 +63,7 @@ export class EditProfileComponent implements OnInit {
 				if (res.success) {
 					this.citiesList = res.data;
 					this.city = this.citiesList.find(
-						(item) => item.id == this.user?.municipio
+						(item) => item.id == this.user?.ciudad
 					)?.id;
 					this.userForm.get('city')?.setValue(this.city);
 				} else this.citiesList = [];
@@ -96,7 +96,7 @@ export class EditProfileComponent implements OnInit {
 				lastname: form.lastName.trim(),
 				address: form.address.trim(),
 				estado_id: stateObj.id,
-				municipio_id: cityObj.id,
+				ciudad_id: cityObj.id,
 			};
 			this.onClose(user);
 		}

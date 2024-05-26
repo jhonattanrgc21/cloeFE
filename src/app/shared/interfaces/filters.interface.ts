@@ -4,5 +4,5 @@ export interface SelectFilter {
 
 export interface Filters {
 	estado_id:    number | null;
-	municipio_id?: number | null;
+	ciudad?: number | null;
 }

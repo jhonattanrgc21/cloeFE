@@ -119,7 +119,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			this.rolesList = res ?? [];
 		});
 
-		const centersFilter: SelectFilter = { filters: { estado_id: null, municipio_id: null } };
+		const centersFilter: SelectFilter = { filters: { estado_id: null, ciudad: null } };
 		this._generalService.getGatheringCenters(centersFilter).subscribe(res => {
 			if(!res.success) this.centersList = [];
 			else{

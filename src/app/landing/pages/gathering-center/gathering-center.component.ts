@@ -32,7 +32,7 @@ export class GatheringCenterComponent implements OnInit, OnDestroy {
   }
 
 	ngOnInit(): void {
-		const centersFilter: SelectFilter = { filters: { estado_id: null, municipio_id: null } };
+		const centersFilter: SelectFilter = { filters: { estado_id: null, ciudad: null } };
 		this._generalService.getGatheringCenters(centersFilter).subscribe(res => {
 			this.gatheringCentersList = res.success ? res.data : [];
 		});
@@ -80,7 +80,7 @@ export class GatheringCenterComponent implements OnInit, OnDestroy {
         takeUntil(this._destroyed$),
         switchMap(cityId => {
           const stateId = this.locationForm.get('state')?.value;
-          const centersFilter: SelectFilter = { filters: { estado_id: stateId, municipio_id: cityId } };
+          const centersFilter: SelectFilter = { filters: { estado_id: stateId, ciudad: cityId } };
           return this._generalService.getGatheringCenters(centersFilter);
         })
       )

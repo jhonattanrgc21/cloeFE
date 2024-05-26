@@ -11,7 +11,7 @@ export interface GatheringCenter{
 export interface GatheringCenterCard {
 	centro_id:   number;
 	estado:      string;
-	municipio:   string;
+	ciudad:   string;
 	address:     string;
 	name:        string;
 	description: string;

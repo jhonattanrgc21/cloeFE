@@ -4,7 +4,7 @@
 	<form [formGroup]="gatheringCenterForm" class="flex flex-col gap-4">
 		<app-cloe-input-field [label]="'Descripción'" formControlName="description" [typeInput]="'text'" [forName]="'descriptionGatheringCenters'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 		<app-cloe-select-search  formControlName="state" [forName]="'stateGatheringCenters'" [label]="'Estado'" [placeholder]="'Selecciona'" [options]="states"></app-cloe-select-search>
-		<app-cloe-select-search  formControlName="city" [forName]="'cityGatheringCenters'" [label]="'Municipio'" [placeholder]="'Selecciona'" [options]="cities"></app-cloe-select-search>
+		<app-cloe-select-search  formControlName="city" [forName]="'cityGatheringCenters'" [label]="'ciudad'" [placeholder]="'Selecciona'" [options]="cities"></app-cloe-select-search>
 		<app-cloe-select-search  formControlName="manager" [forName]="'managerGatheringCenters'" [label]="'Encargado'" [placeholder]="'Selecciona'" [options]="managers"></app-cloe-select-search>
 		<app-cloe-input-field [label]="'Dirección'" formControlName="address" [typeInput]="'text'" [forName]="'addressGatheringCenters'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 	</form>

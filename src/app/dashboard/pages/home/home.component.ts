@@ -1,3 +1,4 @@
+import { ResetPassword } from './../../../auth/interfaces/reset-password.interface';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from 'src/app/auth/services/auth.service';
@@ -11,6 +12,7 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 import { UserEdit } from '../../interfaces/users.interface';
 import { Subscription } from 'rxjs';
+import { EditPasswordComponent } from './edit-password/edit-password.component';
 
 @Component({
 	selector: 'app-home',
@@ -58,13 +60,13 @@ export class HomeComponent implements OnInit {
 		});
 
 		dialogRef.afterClosed().subscribe((result: any) => {
-			if (result) this.openDialogConfirmationUser(result);
+			if (result) this.openDialogConfirmationProfile(result);
 		});
 	}
 
-	openDialogConfirmationUser(userEdit: UserEdit): void {
+	openDialogConfirmationProfile(userEdit: UserEdit): void {
 		const title = 'Editar Perfil';
-		const subtitle = '¿Seguro de que deseas editar su perfil?';
+		const subtitle = '¿Seguro de que desea editar su perfil?';
 
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
@@ -93,7 +95,7 @@ export class HomeComponent implements OnInit {
 						this.user!.name = userEdit.name as string;
 						this.user!.lastname = userEdit.lastname as string;
 						this.user!.estado = userEdit.estado_id as number;
-						this.user!.municipio = userEdit.municipio_id as number;
+						this.user!.ciudad = userEdit.ciudad_id as number;
 						this.user!.address = userEdit.address as string;
 						this._authService.setCurrentUser(this.user!);
 					}
@@ -106,4 +108,60 @@ export class HomeComponent implements OnInit {
 			}
 		});
 	}
+
+	openDialogEditPassword(): void {
+		const title = 'Cambiar Contraseña';
+		const viewportSize = this._viewportRuler.getViewportSize();
+		const dialogRef = this._dialog.open(EditPasswordComponent, {
+			width: viewportSize.width < 768 ? '380px' : '400px',
+			height: '350px',
+			autoFocus: false,
+			data: {
+				title,
+				user: this.user,
+			},
+		});
+
+		dialogRef.afterClosed().subscribe((result: any) => {
+			if (result) this.openDialogConfirmationPassword(result);
+		});
+	}
+
+	openDialogConfirmationPassword(userEdit: UserEdit): void {
+		const title = 'Cambiar Contraseña';
+		const subtitle = '¿Seguro de que desea cambiar su contraseña?';
+
+		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
+			width: '380px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				icon: '../../../../../assets/svg/passkey_verde.svg',
+				title,
+				subtitle,
+				type: 'edit',
+			},
+		});
+
+		dialogRef.afterClosed().subscribe((result) => {
+			if (result) {
+				this._usersServices.updateUser(userEdit).subscribe((res) => {
+					let isActive: boolean = true;
+					let type: string = 'success';
+					let message: string =
+						'Excelente, la contraseña se ha cambiado con éxito.';
+					if (!res.success) {
+						message = res.message;
+						type = 'error';
+					}
+					this._alertService.setAlert({
+						isActive,
+						message,
+						type,
+					});
+				});
+			}
+		});
+	}
+
 }

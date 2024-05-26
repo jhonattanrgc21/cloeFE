@@ -7,13 +7,16 @@ export interface UserRegister {
     ci_type:      string;
     ci_number:    string;
     estado_id:    number;
-    municipio_id: number;
+    ciudad_id: number;
     centro_id:    number;
 }
 
 export type UserEdit = Partial<UserRegister> & {
     id?: number;
     active?: number
+		password?: string;
+		confirm_password?: string;
+
 }
 
 export interface User {
@@ -25,7 +28,7 @@ export interface User {
 	email:         string;
 	username:      string;
 	estado:        string;
-	municipio:     string;
+	ciudad:     string;
 	address:       string;
 	active:        number;
 	role:          string;
