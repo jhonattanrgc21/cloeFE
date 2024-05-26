@@ -1,0 +1,27 @@
+.home {
+	@apply w-screen md:w-full flex items-center justify-center my-4 bg-white rounded shadow-lg shadow-[#004D4014];
+
+	.card-content {
+		@apply flex items-center w-auto;
+		height: 459px;
+
+		.btn-edit-profile {
+			.svg-edit-profile-default {
+				display: block;
+			}
+
+			.svg-edit-profile-hover {
+				display: none;
+			}
+
+
+			&:hover .svg-edit-profile-default {
+				display: none;
+			}
+
+			&:hover .svg-edit-profile-hover {
+				display: block;
+			}
+		}
+	}
+}
