@@ -10,6 +10,7 @@ import { ViewportRuler } from '@angular/cdk/scrolling';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 import { UserEdit } from '../../interfaces/users.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
 	selector: 'app-home',
@@ -94,7 +95,7 @@ export class HomeComponent implements OnInit {
 						this.user!.estado = userEdit.estado_id as number;
 						this.user!.municipio = userEdit.municipio_id as number;
 						this.user!.address = userEdit.address as string;
-						this._authService.setCurrentName(this.user!);
+						this._authService.setCurrentUser(this.user!);
 					}
 					this._alertService.setAlert({
 						isActive,
