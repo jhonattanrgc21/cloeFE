@@ -11,7 +11,9 @@ export class ConfirmationPopupComponent {
 	constructor(
 		public dialogRef: MatDialogRef<ConfirmationPopupComponent>,
 		@Inject(MAT_DIALOG_DATA) public data: Confirmation
-	) {}
+	) {
+		console.log(data)
+	}
 
 	onClose(result?: string): void {
 		this.dialogRef.close(result);

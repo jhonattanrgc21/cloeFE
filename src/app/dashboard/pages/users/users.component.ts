@@ -206,7 +206,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 				title,
 				subtitle,
 				description,
-				type: isEdit ? 'edit' : 'register',
+				type: 'edit',
 			},
 		});
 
