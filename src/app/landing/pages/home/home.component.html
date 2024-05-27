@@ -99,16 +99,16 @@
 		<form [formGroup]="landingForm" class="section-6__form flex flex-col">
 			<div class="md:flex md:flex-wrap ">
 				<div class="mb-6 md:w-1/2 ">
-					<app-cloe-input-field [label]="'Nombre'" formControlName="name" [forName]="'nameLanding'" [typeInput]="'text'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+					<app-cloe-input-field [label]="'Nombre'" [useLettersOnly]="true" formControlName="name" [forName]="'nameLanding'" [typeInput]="'text'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 				</div>
 				<div class="mb-6 md:w-1/2 md:pl-4 ">
-					<app-cloe-input-field [label]="'Teléfono'" formControlName="phone" [typeInput]="'text'" [forName]="'phoneLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+					<app-cloe-input-field [label]="'Teléfono'" [useNumbersOnly]="true" formControlName="phone" [typeInput]="'text'" [forName]="'phoneLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 				</div>
 				<div class="mb-6 md:w-1/2 ">
 					<app-cloe-input-field [label]="'Correo electrónico'" formControlName="email" [typeInput]="'email'" [forName]="'emailLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 				</div>
 				<div class="mb-6 md:w-1/2 md:pl-4 ">
-					<app-cloe-input-field [label]="'Ciudad'" formControlName="city" [typeInput]="'text'" [forName]="'cityLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+					<app-cloe-input-field [label]="'Ciudad'" [useLettersOnly]="true" formControlName="city" [typeInput]="'text'" [forName]="'cityLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 				</div>
 				<div class="mb-6  w-full ">
 					<app-cloe-input-field [label]="'Mensaje'" formControlName="message" [typeInput]="'textarea'" [forName]="'messageLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>

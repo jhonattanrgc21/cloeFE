@@ -8,79 +8,94 @@
 	</label>
 </ng-container>
 <div class="relative">
-  <ng-container *ngIf="typeInput == 'text' || typeInput == 'email' || typeInput == 'password'">
-    <input
-			[ngClass]="{
-				'border-success-500': isInputActive,
-				'ring-success-500': isInputActive,
-				'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
-				'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
-				'border-danger-500': control.invalid && (control.dirty || control.touched),
-				'ring-danger-500': control.invalid && (control.dirty || control.touched),
-			}"
-			[mask]="mask"
-			[allowNegativeNumbers]="false"
-      [id]="forName"
-      [placeholder]="placeholder"
-      [formControl]="control"
-      [type]="typeInput === 'password' && !showPassword ? 'password' : 'text'"
-      class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
-      (focus)="onInputFocus()"
-      (blur)="onInputBlur()"
-    />
-  </ng-container>
-  <ng-container *ngIf="typeInput == 'textarea'">
-    <textarea
-			[ngClass]="{
-				'border-success-500': isInputActive,
-				'ring-success-500': isInputActive,
-				'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
-				'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
-				'border-danger-500': control.invalid && (control.dirty || control.touched),
-				'ring-danger-500': control.invalid && (control.dirty || control.touched),
-			}"
-
-      [id]="forName"
-      [placeholder]="placeholder"
-      [formControl]="control"
-      class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
-      (focus)="onInputFocus()"
-      (blur)="onInputBlur()"
-			[rows]="rows"
-    ></textarea>
-  </ng-container>
-  <div *ngIf="typeInput === 'password'" class="absolute inset-y-0 right-0 pr-3 flex items-center">
-    <ng-container *ngIf="!showPassword ; else showPasswordTemplate">
-      <img src="../../../../assets/svg/icono_visibilidad_24x24.svg" (click)="togglePasswordVisibility()" alt="Icono" class="h-6 w-6 cursor-pointer">
-    </ng-container>
-    <ng-template #showPasswordTemplate>
-      <img src="../../../../assets/svg/visibility_off.svg" (click)="togglePasswordVisibility()" alt="Icono" class="h-6 w-6 cursor-pointer">
-    </ng-template>
-  </div>
-
-	<ng-container *ngIf="typeInput == 'select'">
-		<select
-		[ngClass]="{
+	<ng-container *ngIf="typeInput == 'text' || typeInput == 'email' || typeInput == 'password'">
+		<ng-container *ngIf="useLettersOnly">
+			<input [ngClass]="{
 			'border-success-500': isInputActive,
 			'ring-success-500': isInputActive,
 			'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
 			'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
 			'border-danger-500': control.invalid && (control.dirty || control.touched),
 			'ring-danger-500': control.invalid && (control.dirty || control.touched),
-		}"
-		[id]="forName"
-		[formControl]="control"
-		class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
-		(focus)="onInputFocus()"
-		(blur)="onInputBlur()"
-	>
-		<option *ngFor="let option of options" [value]="option">{{ option }}</option>
-	</select>
+		}" [mask]="mask" [allowNegativeNumbers]="false" [id]="forName" [placeholder]="placeholder" [formControl]="control"
+				[type]="typeInput === 'password' && !showPassword ? 'password' : 'text'" appLettersOnly
+				[isActive]="useLettersOnly"
+				class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
+				(focus)="onInputFocus()" (blur)="onInputBlur()" />
+		</ng-container>
+
+		<ng-container *ngIf="useNumbersOnly">
+			<input [ngClass]="{
+			'border-success-500': isInputActive,
+			'ring-success-500': isInputActive,
+			'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+			'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+			'border-danger-500': control.invalid && (control.dirty || control.touched),
+			'ring-danger-500': control.invalid && (control.dirty || control.touched),
+		}" [mask]="mask" [allowNegativeNumbers]="false" [id]="forName" [placeholder]="placeholder" [formControl]="control"
+				[type]="typeInput === 'password' && !showPassword ? 'password' : 'text'"  appNumbersOnly [isActive]="useNumbersOnly"
+				class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
+				(focus)="onInputFocus()" (blur)="onInputBlur()" />
+		</ng-container>
+
+		<ng-container *ngIf="!useLettersOnly && !useNumbersOnly">
+			<input [ngClass]="{
+			'border-success-500': isInputActive,
+			'ring-success-500': isInputActive,
+			'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+			'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+			'border-danger-500': control.invalid && (control.dirty || control.touched),
+			'ring-danger-500': control.invalid && (control.dirty || control.touched),
+		}" [mask]="mask" [allowNegativeNumbers]="false" [id]="forName" [placeholder]="placeholder" [formControl]="control"
+				[type]="typeInput === 'password' && !showPassword ? 'password' : 'text'"
+				class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
+				(focus)="onInputFocus()" (blur)="onInputBlur()" />
+		</ng-container>
+	</ng-container>
+	<ng-container *ngIf="typeInput == 'textarea'">
+		<textarea [ngClass]="{
+				'border-success-500': isInputActive,
+				'ring-success-500': isInputActive,
+				'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+				'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+				'border-danger-500': control.invalid && (control.dirty || control.touched),
+				'ring-danger-500': control.invalid && (control.dirty || control.touched),
+			}" [id]="forName" [placeholder]="placeholder" [formControl]="control"
+			class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
+			(focus)="onInputFocus()" (blur)="onInputBlur()" [rows]="rows"></textarea>
+	</ng-container>
+	<div *ngIf="typeInput === 'password'" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+		<ng-container *ngIf="!showPassword ; else showPasswordTemplate">
+			<img src="../../../../assets/svg/icono_visibilidad_24x24.svg" (click)="togglePasswordVisibility()"
+				alt="Icono" class="h-6 w-6 cursor-pointer">
+		</ng-container>
+		<ng-template #showPasswordTemplate>
+			<img src="../../../../assets/svg/visibility_off.svg" (click)="togglePasswordVisibility()" alt="Icono"
+				class="h-6 w-6 cursor-pointer">
+		</ng-template>
+	</div>
+
+	<ng-container *ngIf="typeInput == 'select'">
+		<select [ngClass]="{
+			'border-success-500': isInputActive,
+			'ring-success-500': isInputActive,
+			'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+			'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+			'border-danger-500': control.invalid && (control.dirty || control.touched),
+			'ring-danger-500': control.invalid && (control.dirty || control.touched),
+		}" [id]="forName" [formControl]="control"
+			class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
+			(focus)="onInputFocus()" (blur)="onInputBlur()">
+			<option *ngFor="let option of options" [value]="option">{{ option }}</option>
+		</select>
 	</ng-container>
 </div>
 
 <ng-container *ngIf="control.invalid && control.touched">
-	<p *ngIf="control.hasError('required')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">Este campo es obligatorio.</p>
-	<p *ngIf="control.hasError('email')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">El correo es inválido.</p>
-	<p *ngIf="control.hasError('minlength')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">La longitud debe ser de mínimo 8 caracteres.</p>
+	<p *ngIf="control.hasError('required')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">Este campo
+		es obligatorio.</p>
+	<p *ngIf="control.hasError('email')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">El correo es
+		inválido.</p>
+	<p *ngIf="control.hasError('minlength')" class="font-poppins-regular mt-0.5 ml-3 text-sm text-danger-500">La
+		longitud debe ser de mínimo 8 caracteres.</p>
 </ng-container>

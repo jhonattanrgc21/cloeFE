@@ -9,7 +9,8 @@ import { CloeSelectSearchComponent } from './components/cloe-select-search/cloe-
 import { AlertComponent } from './components/alert/alert.component';
 import { ConfirmationPopupComponent } from './components/confirmation-popup/confirmation-popup.component';
 import { DownloadPopupComponent } from './components/download-popup/download-popup.component';
-
+import { LettersOnlyDirective } from './directives/letters-only.directive';
+import { NumbersOnlyDirective } from './directives/numbers-only.directive';
 @NgModule({
 	declarations: [
 		CloeInputFieldComponent,
@@ -18,6 +19,8 @@ import { DownloadPopupComponent } from './components/download-popup/download-pop
 		PaginatePipe,
 		ConfirmationPopupComponent,
 		DownloadPopupComponent,
+		LettersOnlyDirective,
+		NumbersOnlyDirective,
 	],
 	exports: [
 		CloeInputFieldComponent,
@@ -26,6 +29,8 @@ import { DownloadPopupComponent } from './components/download-popup/download-pop
 		PaginatePipe,
 		ConfirmationPopupComponent,
 		DownloadPopupComponent,
+		LettersOnlyDirective,
+		NumbersOnlyDirective
 	],
 	imports: [
 		CommonModule,
@@ -34,4 +39,4 @@ import { DownloadPopupComponent } from './components/download-popup/download-pop
 		NgxMaskModule.forChild(),
 	],
 })
-export class SharedModule {}
+export class SharedModule { }
