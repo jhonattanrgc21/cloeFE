@@ -69,15 +69,14 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	private _handleUserResponse(
 		res: any,
 		message: string,
-		actionType: 'add' | 'modifyStatus'
+		actionType: 'add' | 'modifyStatus', user?: User
 	): void {
 		let isActive: boolean = true;
 		let type: string = 'success';
 		if (res.success) {
 			if (actionType == 'add') this._usersServices.addUser(res.data);
-			else this._usersServices.modifyStatusUser(res.data);
+			else this._usersServices.addUser(user!);
 		} else {
-			isActive = false;
 			message = res.message;
 			type = 'error';
 		}
@@ -246,12 +245,15 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 				let userEdit: UserEdit = user as UserEdit;
 				userEdit.active = 0;
 				const action$ = this._usersServices.updateUser(userEdit);
-				action$.subscribe((res) =>
+				action$.subscribe((res) => {
+					user.active = userEdit.active = 0;
 					this._handleUserResponse(
 						res,
 						'Excelente, el usuario se ha desactivado con éxito.',
-						'modifyStatus'
+						'modifyStatus',
+						user
 					)
+				}
 				);
 			}
 		});
@@ -276,12 +278,15 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 				userEdit.active = 1;
 
 				const action$ = this._usersServices.updateUser(userEdit);
-				action$.subscribe((res) =>
+				action$.subscribe((res) => {
+					user.active = userEdit.active = 1;
 					this._handleUserResponse(
 						res,
 						'Excelente, el usuario se ha activado con éxito.',
-						'modifyStatus'
+						'modifyStatus',
+						user
 					)
+				}
 				);
 			}
 		});

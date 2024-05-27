@@ -47,12 +47,4 @@ export class UsersService {
 		else currentList.push(user);
 		this._userListSubject.next(currentList);
 	}
-
-	modifyStatusUser(user: User): void {
-		const currentList = this._userListSubject.getValue();
-		const index = currentList.findIndex((item) => item.id === user.id);
-		user.active = user.active == 1 ? 0 : 1;
-		currentList[index] = user;
-		this._userListSubject.next(currentList);
-	}
 }
