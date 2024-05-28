@@ -12,6 +12,7 @@ import { CloeAdvantagesComponent } from './components/cloe-advantages/cloe-advan
 import { RaeeTypeCardComponent } from './components/raee-type-card/raee-type-card.component';
 import { LocationCardComponent } from './components/location-card/location-card.component';
 import { GatheringCenterComponent } from './pages/gathering-center/gathering-center.component';
+import { ReceivedMessageComponent } from './pages/home/received-message/received-message.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { GatheringCenterComponent } from './pages/gathering-center/gathering-cen
 		GatheringCenterComponent,
     CloeAdvantagesComponent,
     RaeeTypeCardComponent,
-    LocationCardComponent
+    LocationCardComponent,
+    ReceivedMessageComponent
   ],
   imports: [
     CommonModule,

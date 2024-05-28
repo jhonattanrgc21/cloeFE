@@ -1,0 +1,10 @@
+<div class="received-message-popup">
+	<img [src]="data.icon" alt="" class="w-12 h-12">
+	<p class="mt-2 font-poppins-regular text-base text-[#00000099] text-center">{{ data.subtitle }}</p>
+
+	<div class="mt-6 flex items-center justify-center gap-6">
+		<div class="w-24">
+			<button class="btn btn-md btn-primary btn-primary__success" (click)="onAcept()">Aceptar</button>
+		</div>
+	</div>
+</div>

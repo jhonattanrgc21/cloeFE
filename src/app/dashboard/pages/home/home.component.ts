@@ -11,7 +11,6 @@ import { ViewportRuler } from '@angular/cdk/scrolling';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 import { UserEdit } from '../../interfaces/users.interface';
-import { Subscription } from 'rxjs';
 import { EditPasswordComponent } from './edit-password/edit-password.component';
 
 @Component({
