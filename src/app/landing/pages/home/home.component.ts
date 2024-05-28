@@ -1,4 +1,3 @@
-import { ViewportRuler } from '@angular/cdk/scrolling';
 import { Component, ElementRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
@@ -8,6 +7,7 @@ import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmati
 import { GeneralService } from 'src/app/shared/services/general.service';
 import { SendMessage } from '../../interfaces/contacts.interface';
 import { ReceivedMessageComponent } from './received-message/received-message.component';
+import { LandingService } from '../../services/landing.service';
 
 @Component({
 	selector: 'app-home',
@@ -23,7 +23,7 @@ export class HomeComponent {
 		private _elementRef: ElementRef,
 		private _generalService: GeneralService,
 		private _dialog: MatDialog,
-		private _viewportRuler: ViewportRuler
+		private _landingService: LandingService
 	) {
 		this.landingForm = this._fb.group({
 			name: [
@@ -89,17 +89,25 @@ export class HomeComponent {
 					message: input.message.trim(),
 				};
 
-				// TODO: agregar peticion para enviar el correo
-				subtitle = 'Mensaje recibido, lo(a) contactaremos en la brevedad posible.';
-				const dialogSendMessage = this._dialog.open(ReceivedMessageComponent, {
-					width: '380px',
-					height: 'auto',
-					autoFocus: false,
-					data: {
-						icon: '../../../../assets/svg/mark_email_unread.svg',
-						subtitle,
-					},
+				this._landingService.sendMessage(inputMessage).subscribe(res => {
+					if(res.success){
+						subtitle = 'Mensaje recibido, lo(a) contactaremos en la brevedad posible.';
+						const dialogSendMessage = this._dialog.open(ReceivedMessageComponent, {
+							width: '380px',
+							height: 'auto',
+							autoFocus: false,
+							data: {
+								icon: '../../../../assets/svg/mark_email_unread.svg',
+								subtitle,
+							},
+						});
+					}
+					else
+					{
+						
+					}
 				});
+
 			}
 		});
 	}
