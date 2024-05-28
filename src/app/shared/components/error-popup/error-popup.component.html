@@ -1,0 +1,13 @@
+<div class="error-popup">
+	<img [src]="data.icon" alt="" class="w-12 h-12">
+	<ng-container *ngIf="data.title">
+		<p class="mt-4 font-poppins-medium text-lg text-[#000000DE]">{{ data.title }}</p>
+	</ng-container>
+	<p class="mt-2 font-poppins-regular text-base text-[#00000099] text-center">{{ data.subtitle }}</p>
+
+	<div class="mt-6 flex items-center justify-center gap-6">
+		<div class="w-24">
+			<button class="btn btn-md btn-primary btn-primary__danger" (click)="onClose()">Cerrar</button>
+		</div>
+	</div>
+</div>

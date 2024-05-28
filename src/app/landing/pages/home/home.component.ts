@@ -8,6 +8,7 @@ import { GeneralService } from 'src/app/shared/services/general.service';
 import { SendMessage } from '../../interfaces/contacts.interface';
 import { ReceivedMessageComponent } from './received-message/received-message.component';
 import { LandingService } from '../../services/landing.service';
+import { ErrorPopupComponent } from 'src/app/shared/components/error-popup/error-popup.component';
 
 @Component({
 	selector: 'app-home',
@@ -63,7 +64,7 @@ export class HomeComponent {
 	}
 
 	sendMessage() {
-		const title = 'Enviar Mensaje';
+		let title = 'Enviar Mensaje';
 		let subtitle = '¿Seguro de que desea enviar este mensaje';
 
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
@@ -71,7 +72,7 @@ export class HomeComponent {
 			height: 'auto',
 			autoFocus: false,
 			data: {
-				icon: '../../../../assets/svg/icono_sobre_48x48.svg',
+				icon: '../../../../assets/svg/send.svg',
 				title,
 				subtitle,
 				type: 'edit',
@@ -89,25 +90,40 @@ export class HomeComponent {
 					message: input.message.trim(),
 				};
 
-				this._landingService.sendMessage(inputMessage).subscribe(res => {
-					if(res.success){
-						subtitle = 'Mensaje recibido, lo(a) contactaremos en la brevedad posible.';
-						const dialogSendMessage = this._dialog.open(ReceivedMessageComponent, {
+				this._landingService.sendMessage(inputMessage).subscribe((res) => {
+					if (res.success) {
+						subtitle =
+							'Mensaje recibido, lo(a) contactaremos en la brevedad posible.';
+						const dialogSendMessage = this._dialog.open(
+							ReceivedMessageComponent,
+							{
+								width: '380px',
+								height: 'auto',
+								autoFocus: false,
+								data: {
+									icon: '../../../../assets/svg/markunread_mailbox.svg',
+									subtitle,
+								},
+							}
+						);
+						dialogSendMessage.afterClosed().subscribe((result) => {
+							if (result) this.landingForm.reset();
+						});
+					} else {
+						title =  'Ocurrió un error'
+						subtitle = 'Algo salio mal, intente nuevamente.';
+						const dialogSendMessage = this._dialog.open(ErrorPopupComponent, {
 							width: '380px',
 							height: 'auto',
 							autoFocus: false,
 							data: {
-								icon: '../../../../assets/svg/mark_email_unread.svg',
+								icon: '../../../../assets/svg/cancel_schedule_send.svg',
+								title,
 								subtitle,
 							},
 						});
 					}
-					else
-					{
-						
-					}
 				});
-
 			}
 		});
 	}
