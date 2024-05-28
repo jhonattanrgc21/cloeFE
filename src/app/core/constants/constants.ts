@@ -5,3 +5,8 @@ export const ROUTES = {
 	landingGatheringCenter: '/landing/gathering-center',
 	summary: '/dashboard/summary',
 };
+
+export const DOCUMENT_TYPE =  {
+	pdf: 'application/pdf',
+	excel: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+}

@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User, UserEdit, UserRegister } from '../interfaces/users.interface';
 import { HttpService } from 'src/app/core/services/http.service';
+import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
 
 @Injectable({
 	providedIn: 'root',
 })
 export class UsersService {
-	// TODO: Crear un servicio para opbtener la informacion del usuarion que inicio sesion
 	private _userListSubject: BehaviorSubject<User[]> = new BehaviorSubject<
 		User[]
 	>([]);
@@ -15,6 +15,7 @@ export class UsersService {
 	private _getUsersUrl: string = 'users/index?page=';
 	private _createUserUrl: string = 'users/register';
 	private _updateUserUrl: string = 'users/update';
+	private _getUsersByRoleUrl: string = 'users/getByRoleName';
 
 	constructor(private _httpService: HttpService) {}
 
@@ -37,6 +38,10 @@ export class UsersService {
 		const id = json.id;
 		delete json.id;
 		return this._httpService.put(this._updateUserUrl + '/' + id, json);
+	}
+
+	getUsersByRole(json: any) {
+		return this._httpService.post(this._getUsersByRoleUrl, json);
 	}
 
 	addUser(user: User): void {

@@ -23,6 +23,7 @@ import { ViewComponentComponent } from './pages/separation/view-component/view-c
 import { HomeComponent } from './pages/home/home.component';
 import { EditProfileComponent } from './pages/home/edit-profile/edit-profile.component';
 import { EditPasswordComponent } from './pages/home/edit-password/edit-password.component';
+import { GatheringCenterDetailComponent } from './pages/gathering-centers/gathering-center-detail/gathering-center-detail.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { EditPasswordComponent } from './pages/home/edit-password/edit-password.
     HomeComponent,
     EditProfileComponent,
     EditPasswordComponent,
+    GatheringCenterDetailComponent,
   ],
   imports: [
     CommonModule,

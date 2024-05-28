@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { PageEvent } from '@angular/material/paginator';
-import { GatheringCenter, GatheringCenterCard } from '../../interfaces/gathering-center.interface';
+import { GatheringCenterCard } from '../../interfaces/gathering-center.interface';
 import { GeneralService } from 'src/app/shared/services/general.service';
 import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
 import { SelectFilter } from 'src/app/shared/interfaces/filters.interface';

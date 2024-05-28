@@ -1,121 +1,113 @@
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Manager, GatheringCenter } from './../../../interfaces/gathering-center.interface';
-import { City } from 'src/app/landing/interfaces/cities.interface';
-import { State } from 'src/app/landing/interfaces/states.interface';
+import { GatheringCenter, GatheringCenterUpdate } from './../../../interfaces/gathering-center.interface';
 import { GeneralService } from 'src/app/shared/services/general.service';
+import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
+import { Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { SelectFilter } from 'src/app/shared/interfaces/filters.interface';
 
 @Component({
 	selector: 'app-new-gathering-centers-popup',
 	templateUrl: './new-gathering-centers-popup.component.html',
 	styleUrls: ['./new-gathering-centers-popup.component.scss'],
 })
-export class NewGatheringCentersPopupComponent {
+export class NewGatheringCentersPopupComponent implements OnInit, OnDestroy {
+	private readonly _destroyed$ = new Subject<void>();
+
 	title: string = '';
 	gatheringCenterForm!: FormGroup;
-	managers: Manager[] = [
-		{
-			id: 1,
-			name: 'Jhonattan Garcia',
-		},
-	];
-
-	states: State[] = [
-		{
-			id: 1,
-			name: 'Distrito capital',
-		},
-		{
-			id: 2,
-			name: 'Carabobo',
-		},
-		{
-			id: 3,
-			name: 'Aragua',
-		},
-		{
-			id: 4,
-			name: 'Miranda',
-		},
-		{
-			id: 5,
-			name: 'Lara',
-		},
-		{
-			id: 6,
-			name: 'Mérida',
-		},
-	];
-
-	cities: City[] = [
-		{
-			id: 1,
-			name: 'Valencia',
-			parentStateId: 2,
-		},
-		{
-			id: 2,
-			name: 'Guacara',
-			parentStateId: 4,
-		},
-		{
-			id: 3,
-			name: 'Los Guayos',
-			parentStateId: 2,
-		},
-		{
-			id: 4,
-			name: 'Bejuma',
-			parentStateId: 5,
-		},
-		{
-			id: 5,
-			name: 'Caracas',
-			parentStateId: 1,
-		},
-	];
+	managerList: SelectionInput[] = [];
+	statesList: SelectionInput[] = [];
+	citiesList: SelectionInput[] = [];
+	manager?: number;
+	state?: number;
+	city?: number;
 
 	constructor(
 		public dialogRef: MatDialogRef<NewGatheringCentersPopupComponent>,
 		private _fb: FormBuilder,
 		private _generalService: GeneralService,
-		@Inject(MAT_DIALOG_DATA) public data: GatheringCenter
+		@Inject(MAT_DIALOG_DATA) public data: any
 	) {
-		this.title = data?.id ? 'Editar centro de acopio': 'Registrar centro de acopio';
-    this.gatheringCenterForm = this._fb.group({
-			id: [data?.id],
-			manager: [data?.manager.id, Validators.required],
-			description: [data?.description, [Validators.required, this._generalService.noWhitespaceValidator()]],
-			state: [data?.state.id, Validators.required],
-			city: [data?.city.id, Validators.required],
-			address: [data?.address, [Validators.required, this._generalService.noWhitespaceValidator()]],
+		this.statesList = this.data.statesList;
+		this.managerList = this.data.managerList;
+		this.gatheringCenterForm = this._fb.group({
+			centro_id: [],
+			name: [
+				,
+				[Validators.required, this._generalService.noWhitespaceValidator()],
+			],
+			description: [
+				,
+				[Validators.required, this._generalService.noWhitespaceValidator()],
+			],
+			encargado_id: [, Validators.required],
+			estado_id: [, Validators.required],
+			ciudad_id: [, Validators.required],
+			address: [
+				,
+				[Validators.required, this._generalService.noWhitespaceValidator()],
+			],
 		});
 
+		this.gatheringCenterForm
+			.get('estado_id')
+			?.valueChanges.pipe(
+				takeUntil(this._destroyed$),
+				switchMap((stateId) => {
+					this.gatheringCenterForm.get('ciudad_id')?.reset();
+					const stateSelectionFilter: SelectFilter = {
+						filters: { estado_id: stateId },
+					};
+					return this._generalService.getCities(stateSelectionFilter).pipe(
+						tap((res) => {
+							this.citiesList = res.success ? res.data : [];
+							if (this.data.center) {
+								const center: GatheringCenter = this.data.center;
+								this.city = this.citiesList.find(
+									(item) =>
+										item.name.toLowerCase() === center.ciudad.toLowerCase()
+								)?.id;
+								this.gatheringCenterForm.get('ciudad_id')?.setValue(this.city);
+							}
+						})
+					);
+				})
+			)
+			.subscribe();
 	}
 
-	onClose(gatheringCenter?: GatheringCenter): void {
+	ngOnInit(): void {
+		const center: GatheringCenter = this.data.center;
+		if (!center) this.title = 'Registrar centro de acopio';
+		else {
+			this.title = 'Editar centro de acopio';
+			this.gatheringCenterForm.patchValue({
+				centro_id: center.centro_id,
+				name: center.name,
+				description: center.description,
+				encargado_id: center.encargado.user_id,
+				address: center.address,
+			});
+			this.state = this.statesList.find(
+				(item) => item.name.toLowerCase() === center.estado.toLowerCase()
+			)?.id;
+			this.gatheringCenterForm.get('estado_id')?.setValue(this.state);
+		}
+	}
+
+	onClose(gatheringCenter?: GatheringCenterUpdate): void {
 		this.dialogRef.close(gatheringCenter);
 	}
 
-	onSaveGatheringCenter(){
-		const form = this.gatheringCenterForm.value;
-		const managerObj = this.managers.find(manager => manager.id == form.manager);
-		const stateObj = this.states.find(state => state.id == form.state);
-		const cityObj = this.cities.find(city => city.id == form.city);
-		const status: string = this.data? this.data.status: 'Activo';
+	onSaveGatheringCenter() {
+		const form: GatheringCenterUpdate = this.gatheringCenterForm.value;
+		this.onClose(form);
+	}
 
-		if (managerObj && stateObj && cityObj) {
-			const gatheringCenter: GatheringCenter = {
-				id: form.id,
-				address: form.address.trim(),
-				description: form.description.trim(),
-				manager: managerObj,
-				state: stateObj,
-				city: cityObj,
-				status
-			};
-			this.onClose(gatheringCenter);
-		}
+	ngOnDestroy(): void {
+		this._destroyed$.next();
+		this._destroyed$.complete();
 	}
 }

@@ -1,6 +1,6 @@
 import { Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatPaginator } from '@angular/material/paginator';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { ViewportRuler } from '@angular/cdk/scrolling';
 import { AlertService } from './../../../shared/services/alert.service';
@@ -8,10 +8,16 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChi
 import { NewGatheringCentersPopupComponent } from './new-gathering-centers-popup/new-gathering-centers-popup.component';
 import {
 	GatheringCenter,
-	RegisterGatheringCenter,
+	GatheringCenterRegister, GatheringCenterUpdate,
 } from '../../interfaces/gathering-center.interface';
 import { GatheringCentersService } from '../../services/gatherin-centers.service';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
+import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
+import { GeneralService } from 'src/app/shared/services/general.service';
+import { GatheringCenterDetailComponent } from './gathering-center-detail/gathering-center-detail.component';
+import { DownloadPopupComponent } from 'src/app/shared/components/download-popup/download-popup.component';
+import { DOCUMENT_TYPE } from 'src/app/core/constants/constants';
+import { UsersService } from '../../services/users.service';
 
 @Component({
 	selector: 'app-gathering-centers',
@@ -21,65 +27,135 @@ import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmati
 export class GatheringCentersComponent
 	implements OnInit, AfterViewInit, OnDestroy
 {
-	gatheringCenterList: GatheringCenter[] = [];
 	private _gatheringCenterListSubscription!: Subscription;
+	@ViewChild('gatheringCenterPaginator') paginator!: MatPaginator;
+	gatheringCenterList: GatheringCenter[] = [];
+	statesList: SelectionInput[] = [];
+	managerList : SelectionInput[] = [];
+	totalItems: number = 0;
+	itemsPerPage = 5;
+	currentPage = 1;
+	length = 0;
+	pageSize = 5;
+	pageIndex = 1;
+	pageSizeOptions = [5, 10, 25];
+	hidePageSize = false;
+	showPageSizeOptions = true;
+	showFirstLastButtons = true;
+	disabled = false;
+	pageEvent: PageEvent = new PageEvent();
 
-	displayedColumns: string[] = [
-		'manager',
-		'state',
-		'city',
-		'address',
-		'status',
-		'actions',
-	];
+	displayedColumns: string[] = ['name', 'state', 'city', 'status', 'actions'];
+
 	dataSource = new MatTableDataSource<GatheringCenter>(
 		this.gatheringCenterList
 	);
-	@ViewChild(MatPaginator) paginator!: MatPaginator;
+
+	private _handleUserResponse(
+		res: any,
+		message: string,
+		actionType: 'add' | 'modifyStatus',
+		gtheringCenter?: GatheringCenter
+	): void {
+		let isActive: boolean = true;
+		let type: string = 'success';
+		if (res.success) {
+			if (actionType == 'add')
+				this._gatheringCenterService.addGatheringCenter(res.data);
+			else this._gatheringCenterService.addGatheringCenter(gtheringCenter!);
+		} else {
+			message = res.message;
+			type = 'error';
+		}
+
+		this._cdr.detectChanges();
+		this._alertService.setAlert({
+			isActive,
+			message,
+			type,
+		});
+	}
 
 	constructor(
 		private _dialog: MatDialog,
 		private _viewportRuler: ViewportRuler,
 		private _gatheringCenterService: GatheringCentersService,
 		private _cdr: ChangeDetectorRef,
-		private _alertService: AlertService
+		private _alertService: AlertService,
+		private _generalService: GeneralService,
+		private _usersService: UsersService
 	) {}
 
 	ngOnInit(): void {
+		this.loadGatheringCenters(this.currentPage, this.itemsPerPage);
 		this._gatheringCenterListSubscription =
 			this._gatheringCenterService.gatheringCenterList$.subscribe(
 				(centers: GatheringCenter[]) => {
 					this.gatheringCenterList = centers;
 					this.dataSource.data = centers;
-					this.waitForPaginator();
+					this._cdr.detectChanges();
 				}
 			);
+
+		this._generalService.getStates().subscribe((res) => {
+			this.statesList = res.success ? res.data : [];
+		});
+
+		this._usersService
+			.getUsersByRole({
+				roleName: 'Encargado',
+				estado_id: 7,
+			})
+			.subscribe((res) => {
+				this.managerList = res.success ? res.data: [];
+			});
 	}
 
-	waitForPaginator(): void {
-		if (!this.paginator) {
-			setTimeout(() => {
-				this.waitForPaginator();
-			}, 100);
+	handlePageEvent(e: PageEvent) {
+		this.pageEvent = e;
+		this.length = e.length;
+		this.pageSize = e.pageSize;
+		this.pageIndex = e.pageIndex;
+		if (e.previousPageIndex! < e.pageIndex) {
+			this.loadGatheringCenters(this.currentPage + 1, this.pageSize);
 		} else {
-			this.dataSource.paginator = this.paginator;
-			this._cdr.detectChanges();
+			this.loadGatheringCenters(this.currentPage - 1, this.pageSize);
 		}
 	}
 
-	ngAfterViewInit() {
-		this.dataSource.paginator = this.paginator;
+	loadGatheringCenters(page: number, pageSize: number): void {
+		this._gatheringCenterService
+			.getGatheringCenters(page, pageSize)
+			.subscribe((response) => {
+				this.totalItems = response.meta.total;
+				this.itemsPerPage = response.meta.itemsPerPage;
+				this.currentPage = response.meta.currentPage;
+				this.gatheringCenterList = response.data;
+				this.dataSource.data = this.gatheringCenterList;
+				this.dataSource.paginator = this.paginator;
+			});
+	}
 
-		this.dataSource.filterPredicate = (
-			data: GatheringCenter,
-			filter: string
-		) => {
+	ngAfterViewInit() {
+		setTimeout(() => this.setUpPaginator(), 2000);
+	}
+
+	setUpPaginator(): void {
+		this._cdr.detectChanges();
+		this.length = this.totalItems;
+		this.pageSize = this.itemsPerPage;
+		this.pageIndex = this.currentPage - 1;
+
+		this.dataSource.filterPredicate = (data: any, filter: string) => {
 			const searchData =
-				`${data.manager.name} ${data.state.name} ${data.city.name} ${data.address}`.toLowerCase();
+				`${data.name} ${data.estado} ${data.ciudad} ${data.address}`.toLowerCase();
+			const statusMatch =
+				(data.active == 1 ? 'Activo' : 'Inactivo').toLowerCase() ===
+				filter.trim().toLowerCase();
 			const otherColumnsMatch = searchData.includes(
 				filter.trim().toLowerCase()
 			);
-			return otherColumnsMatch;
+			return statusMatch || otherColumnsMatch;
 		};
 	}
 
@@ -94,21 +170,26 @@ export class GatheringCentersComponent
 			width: viewportSize.width < 768 ? '380px' : '474px',
 			height: '500px',
 			autoFocus: false,
-			data: center,
+			data: {
+				center,
+				statesList: this.statesList,
+				managerList: this.managerList
+			},
 		});
 
-		dialogRef.afterClosed().subscribe((result: GatheringCenter) => {
+		dialogRef.afterClosed().subscribe((result: GatheringCenterUpdate) => {
 			if (result) this.openDialogConfirmationGatheringCenter(result);
 		});
 	}
 
 	openDialogConfirmationGatheringCenter(
-		gatheringCenter: GatheringCenter
+		gatheringCenter: GatheringCenterUpdate
 	): void {
-		const title = gatheringCenter.id
+		const isEdit = !!gatheringCenter.centro_id;
+		const title = isEdit
 			? 'Editar centro de acopio'
 			: 'Registrar centro de acopio';
-		const subtitle = gatheringCenter.id
+		const subtitle = isEdit
 			? '¿Seguro de que deseas editar este centro de acopio?'
 			: '¿Seguro de que deseas registrar este centro de acopio?';
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
@@ -125,22 +206,19 @@ export class GatheringCentersComponent
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				// TODO: agregar peticion al backend para guardar el registro
-				const json: RegisterGatheringCenter = {
-					id: gatheringCenter.id,
-					address: gatheringCenter.address,
-					description: gatheringCenter.description,
-					managerId: gatheringCenter.manager.id,
-					stateId: gatheringCenter.state.id,
-					cityId: gatheringCenter.state.id,
-				};
+				const action$ = isEdit
+					? this._gatheringCenterService.updateGatheringCenter(gatheringCenter)
+					: this._gatheringCenterService.createGatheringCenter(
+							gatheringCenter as GatheringCenterRegister
+					  );
 
-				this._gatheringCenterService.addGatheringCenter(gatheringCenter);
-				this._cdr.detectChanges();
-				this._alertService.setAlert({
-					isActive: true,
-					message: 'Excelente, el centro de acopio se ha guardado con éxito.',
-				});
+				action$.subscribe((res) =>
+					this._handleUserResponse(
+						res,
+						'Excelente, el centro de acopio se ha guardado con éxito.',
+						'add'
+					)
+				);
 			}
 		});
 	}
@@ -160,15 +238,25 @@ export class GatheringCentersComponent
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				this._gatheringCenterService.modifyStatusGatheringCenter(center);
-				this._cdr.detectChanges();
-				this._alertService.setAlert({
-					isActive: true,
-					message: 'Excelente, el centro de acopio se ha desactivado con éxito.',
+				let gatheringCenterUpdate: GatheringCenterUpdate =
+					center as GatheringCenterUpdate;
+				gatheringCenterUpdate.active = 0;
+				const action$ = this._gatheringCenterService.updateGatheringCenter(
+					gatheringCenterUpdate
+				);
+				action$.subscribe((res) => {
+					center.active = gatheringCenterUpdate.active = 0;
+					this._handleUserResponse(
+						res,
+						'Excelente, el centro de acopio se ha desactivado con éxito.',
+						'modifyStatus',
+						center
+					);
 				});
 			}
 		});
 	}
+
 	openEnabletGatheringCenter(center: GatheringCenter) {
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
@@ -184,11 +272,63 @@ export class GatheringCentersComponent
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				this._gatheringCenterService.modifyStatusGatheringCenter(center);
-				this._cdr.detectChanges();
+				let gatheringCenterUpdate: GatheringCenterUpdate =
+					center as GatheringCenterUpdate;
+				gatheringCenterUpdate.active = 1;
+
+				const action$ = this._gatheringCenterService.updateGatheringCenter(
+					gatheringCenterUpdate
+				);
+				action$.subscribe((res) => {
+					center.active = gatheringCenterUpdate.active = 0;
+					this._handleUserResponse(
+						res,
+						'Excelente, el centro de acopio se ha activado con éxito.',
+						'modifyStatus',
+						center
+					);
+				});
+			}
+		});
+	}
+
+	openDialogGatheringCenterDetail(center: GatheringCenter) {
+		const viewportSize = this._viewportRuler.getViewportSize();
+		const dialogRef = this._dialog.open(GatheringCenterDetailComponent, {
+			width: viewportSize.width < 768 ? '380px' : '479px',
+			height: 'auto',
+			autoFocus: false,
+			data: {
+				center,
+				disableActions: false,
+			},
+		});
+
+		dialogRef.afterClosed().subscribe((result: any) => {
+			if (result == 'edit') this.openDialogNewGatheringCenter(center);
+			if (result == 'delete') this.openDisabletGatheringCenter(center);
+		});
+	}
+
+	openDialogGatheringCenterDownload(): void {
+		const viewportSize = this._viewportRuler.getViewportSize();
+		const dialogRef = this._dialog.open(DownloadPopupComponent, {
+			width: viewportSize.width < 768 ? '380px' : '479px',
+			height: 'auto',
+			autoFocus: false,
+		});
+
+		dialogRef.afterClosed().subscribe((result: any) => {
+			if (result){
+				const getPdfUrl = 'centro-acopio/report-pdf';
+				const getExcelUrl = 'centro-acopio/report-excel';
+
+				if(result == 1)	this._generalService.getDocument('reporte-centros-acopio.xlsx', DOCUMENT_TYPE.excel, getExcelUrl);
+				else this._generalService.getDocument('reporte-centros-acopio.pdf',DOCUMENT_TYPE.pdf , getPdfUrl);
+
 				this._alertService.setAlert({
 					isActive: true,
-					message: 'Excelente, el centro de acopio se ha activado con éxito.',
+					message: 'Excelente, el reporte se ha descargado con éxito.',
 				});
 			}
 		});

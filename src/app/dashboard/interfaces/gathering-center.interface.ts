@@ -1,24 +1,30 @@
-import { City } from "src/app/landing/interfaces/cities.interface";
-import { State } from "src/app/landing/interfaces/states.interface";
-
-export interface Manager{
-	id: number;
-	name: string;
+export interface GatheringCenterRegister {
+	encargado_id: number;
+	estado_id:    number;
+	ciudad_id: number;
+	description:  string;
+	address:      string;
+	name:        string;
 }
 
+export type GatheringCenterUpdate = Partial<GatheringCenterRegister> & {
+	centro_id?: number;
+	active?: number
+}
 
-export interface GatheringCenter{
-	id: number;
-	manager: Manager;
+export interface GatheringCenter {
+	centro_id:   number;
+	encargado:   Encargado;
+	estado:      string;
+	ciudad:      string;
+	address:     string;
+	name:        string;
 	description: string;
-	state: State;
-	city: City;
-	address: string;
-	status: string;
+	active:      number;
 }
 
-export type RegisterGatheringCenter = Pick<GatheringCenter, 'id' | 'description' | 'address'> & {
-	managerId: number;
-	stateId: number;
-	cityId: number;
+export interface Encargado {
+	user_id: number;
+	name:    string;
+	cedula:  string;
 }

@@ -10,7 +10,7 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Subscription, filter, first } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { UsersService } from '../../services/users.service';
 import { EditUserPopupComponent } from './edit-user-popup/edit-user-popup.component';
@@ -22,6 +22,7 @@ import { GeneralService } from 'src/app/shared/services/general.service';
 import { DownloadPopupComponent } from 'src/app/shared/components/download-popup/download-popup.component';
 import { SelectFilter } from 'src/app/shared/interfaces/filters.interface';
 import { GatheringCenterCard } from 'src/app/landing/interfaces/gathering-center.interface';
+import { DOCUMENT_TYPE } from 'src/app/core/constants/constants';
 
 @Component({
 	selector: 'app-users',
@@ -182,7 +183,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			},
 		});
 
-		dialogRef.afterClosed().subscribe((result: any) => {
+		dialogRef.afterClosed().subscribe((result: UserEdit) => {
 			if (result) this.openDialogConfirmationUser(result);
 		});
 	}
@@ -320,9 +321,10 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result){
-
-				if(result == 1)	this._generalService.getDocument('lista-usuarios.xlsx','application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-				else this._generalService.getDocument('lista-usuarios.pdf','application/pdf');
+				const getPdfUrl: string = 'users/report-pdf';
+				const getExcelUrl: string = 'users/report-excel';
+				if(result == 1)	this._generalService.getDocument('reporte-usuarios.xlsx', DOCUMENT_TYPE.excel, getExcelUrl);
+				else this._generalService.getDocument('reporte-usuarios.pdf', DOCUMENT_TYPE.pdf, getPdfUrl);
 
 				this._alertService.setAlert({
 					isActive: true,

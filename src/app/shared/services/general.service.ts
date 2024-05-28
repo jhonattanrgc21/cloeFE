@@ -15,8 +15,6 @@ export class GeneralService {
 	private _getCategoriesUrl: string = 'utils/categories';
 	private _getBrandsUrl: string = 'utils/brands';
 	private _getGatheringCentersUrl: string = 'utils/centros';
-	private _getPdfUrl: string = 'users/report-pdf';
-	private _getExcelUrl: string = 'users/report-excel';
 	private _getRolesUrl: string = 'cargos';
 
 	constructor(private _httpService: HttpService) {}
@@ -37,30 +35,33 @@ export class GeneralService {
 	}
 
 	getRoles() {
-		return this._httpService.get(this._getRolesUrl).pipe(
-			map(response => response.data.map((role: { name: string }) => role.name))
-		);
+		return this._httpService
+			.get(this._getRolesUrl)
+			.pipe(
+				map((response) =>
+					response.data.map((role: { name: string }) => role.name)
+				)
+			);
 	}
 
 	getLines() {
-		return this._httpService.get(this._getLinesUrl)
+		return this._httpService.get(this._getLinesUrl);
 	}
 
 	getCategories() {
-		return this._httpService.get(this._getCategoriesUrl)
+		return this._httpService.get(this._getCategoriesUrl);
 	}
 
 	getBrands() {
 		return this._httpService.get(this._getBrandsUrl);
 	}
 
-	getGatheringCenters(json: SelectFilter | null ) {
-		return this._httpService.post(this._getGatheringCentersUrl, json)
+	getGatheringCenters(json: SelectFilter | null) {
+		return this._httpService.post(this._getGatheringCentersUrl, json);
 	}
 
-	getDocument(name: string, type: string) {
-		const url: string = type == 'application/pdf' ? this._getPdfUrl : this._getExcelUrl;
-				this._httpService.getDocument(url).subscribe((data: Blob) => {
+	getDocument(name: string, type: string, url: string) {
+		this._httpService.getDocument(url).subscribe((data: Blob) => {
 			const blob = new Blob([data], { type });
 			saveAs(blob, name);
 		});
