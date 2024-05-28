@@ -17,6 +17,8 @@ import { ErrorPopupComponent } from 'src/app/shared/components/error-popup/error
 })
 export class HomeComponent {
 	landingForm: FormGroup;
+	dialogWidth: string = '380px';
+	dialogHeight: string = 'auto';
 
 	constructor(
 		private _fb: FormBuilder,
@@ -63,20 +65,27 @@ export class HomeComponent {
 		section.scrollIntoView({ behavior: 'smooth', block: 'start' });
 	}
 
-	sendMessage() {
-		let title = 'Enviar Mensaje';
-		let subtitle = '¿Seguro de que desea enviar este mensaje';
-
-		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
-			width: '380px',
-			height: 'auto',
+	openDialog (component: any, data?: any) {
+		return this._dialog.open(component, {
+			width: this.dialogWidth,
+			height: this.dialogHeight,
 			autoFocus: false,
-			data: {
-				icon: '../../../../assets/svg/send.svg',
-				title,
-				subtitle,
-				type: 'edit',
-			},
+			data,
+		});
+	};
+
+	sendMessage() {
+		const initialTitle = 'Enviar Mensaje';
+		const initialSubtitle = '¿Seguro de que desea enviar este mensaje?';
+		const successSubtitle = 'Mensaje recibido, lo(a) contactaremos en la brevedad posible.';
+		const errorTitle = 'Ocurrió un error';
+		const errorSubtitle = 'Algo salió mal, intente nuevamente.';
+
+		const dialogRef = this.openDialog(ConfirmationPopupComponent, {
+			icon: '../../../../assets/svg/send.svg',
+			title: initialTitle,
+			subtitle: initialSubtitle,
+			type: 'edit',
 		});
 
 		dialogRef.afterClosed().subscribe((result) => {
@@ -92,39 +101,24 @@ export class HomeComponent {
 
 				this._landingService.sendMessage(inputMessage).subscribe((res) => {
 					if (res.success) {
-						subtitle =
-							'Mensaje recibido, lo(a) contactaremos en la brevedad posible.';
-						const dialogSendMessage = this._dialog.open(
-							ReceivedMessageComponent,
-							{
-								width: '380px',
-								height: 'auto',
-								autoFocus: false,
-								data: {
-									icon: '../../../../assets/svg/markunread_mailbox.svg',
-									subtitle,
-								},
-							}
-						);
+						const dialogSendMessage = this.openDialog(ReceivedMessageComponent, {
+							icon: '../../../../assets/svg/markunread_mailbox.svg',
+							subtitle: successSubtitle,
+						});
+
 						dialogSendMessage.afterClosed().subscribe((result) => {
 							if (result) this.landingForm.reset();
 						});
 					} else {
-						title =  'Ocurrió un error'
-						subtitle = 'Algo salio mal, intente nuevamente.';
-						const dialogSendMessage = this._dialog.open(ErrorPopupComponent, {
-							width: '380px',
-							height: 'auto',
-							autoFocus: false,
-							data: {
-								icon: '../../../../assets/svg/cancel_schedule_send.svg',
-								title,
-								subtitle,
-							},
+						const dialogSendMessage = this.openDialog(ErrorPopupComponent, {
+							icon: '../../../../assets/svg/cancel_schedule_send.svg',
+							title: errorTitle,
+							subtitle: errorSubtitle,
 						});
 					}
 				});
 			}
 		});
 	}
+
 }
