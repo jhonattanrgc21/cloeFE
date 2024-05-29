@@ -4,9 +4,8 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
   selector: '[appLettersOnly]'
 })
 export class LettersOnlyDirective {
-
   @Input() isActive: boolean = false;
-  private regex: RegExp = /^[a-zA-Z\s]*$/;
+  private regex: RegExp = /^[a-zA-ZÀ-ÖØ-öø-ÿÑñÄäËëÏïÖöÜüŸÿ\s]*$/;
 
   constructor(private el: ElementRef) { }
 
@@ -19,7 +18,7 @@ export class LettersOnlyDirective {
     const value = input.value;
 
     if (!this.regex.test(value)) {
-      input.value = value.replace(/[^a-zA-Z\s]/g, '');
+      input.value = value.replace(/[^a-zA-ZÀ-ÖØ-öø-ÿÑñÄäËëÏïÖöÜüŸÿ\s]/g, '');
       event.preventDefault();
     }
   }
