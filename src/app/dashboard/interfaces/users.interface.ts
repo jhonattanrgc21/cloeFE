@@ -7,7 +7,7 @@ export interface UserRegister {
     ci_type:      string;
     ci_number:    string;
     estado_id:    number;
-    ciudad_id: number;
+    ciudad_id: 		number;
     centro_id:    number;
 }
 
@@ -33,4 +33,5 @@ export interface User {
 	active:        number;
 	role:          string;
 	centro_id:     number;
+	centro_name:   string;
 }

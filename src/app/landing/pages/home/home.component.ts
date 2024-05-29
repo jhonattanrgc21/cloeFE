@@ -75,7 +75,7 @@ export class HomeComponent {
 	};
 
 	sendMessage() {
-		const initialTitle = 'Enviar Mensaje';
+		const initialTitle = 'Enviar mensaje';
 		const initialSubtitle = '¿Seguro de que desea enviar este mensaje?';
 		const successSubtitle = 'Mensaje recibido, lo(a) contactaremos en la brevedad posible.';
 		const errorTitle = 'Ocurrió un error';
