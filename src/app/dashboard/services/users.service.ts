@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User, UserEdit, UserRegister } from '../interfaces/users.interface';
 import { HttpService } from 'src/app/core/services/http.service';
-import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
 
 @Injectable({
 	providedIn: 'root',

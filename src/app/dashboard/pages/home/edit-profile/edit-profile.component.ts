@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 import { UserSession } from 'src/app/auth/interfaces/current-user.interface';
 import { UserEdit } from 'src/app/dashboard/interfaces/users.interface';
 import { SelectFilter } from 'src/app/shared/interfaces/filters.interface';

@@ -135,7 +135,7 @@ export class EditUserPopupComponent implements OnInit, OnDestroy {
 				switchMap((cityId) => {
 					const stateId = this.userForm.get('state')?.value;
 					const centersFilter: SelectFilter = {
-						filters: { estado_id: stateId, ciudad: cityId },
+						filters: { estado_id: stateId, ciudad_id: cityId },
 					};
 					return this._generalService.getGatheringCenters(centersFilter);
 				})

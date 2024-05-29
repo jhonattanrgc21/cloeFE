@@ -2,10 +2,10 @@
 	<p class="text-[#0B132B] font-poppins-medium text-lg mb-6">{{ title }}</p>
 
 	<form [formGroup]="clasificationForm" class="flex flex-col gap-4">
-		<app-cloe-input-field [label]="'Marca'" formControlName="make" [typeInput]="'text'" [forName]="'makeClasification'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 		<app-cloe-input-field [label]="'Modelo'" formControlName="model" [typeInput]="'text'" [forName]="'modelClasification'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
-		<app-cloe-select-search  formControlName="lineType" [forName]="'lineTypeClasification'" [label]="'Línea'" [placeholder]="'Selecciona'" [options]="lineTypes"></app-cloe-select-search>
-		<app-cloe-select-search  formControlName="category" [forName]="'categoryClasification'" [label]="'Categoría'" [placeholder]="'Selecciona'" [options]="categorties"></app-cloe-select-search>
+		<app-cloe-select-search  formControlName="brand_id" [forName]="'branfClasification'" [label]="'Marca'" [placeholder]="'Selecciona'" [options]="brandsList"></app-cloe-select-search>
+		<app-cloe-select-search  formControlName="line_id" [forName]="'lineTypeClasification'" [label]="'Línea'" [placeholder]="'Selecciona'" [options]="linesList"></app-cloe-select-search>
+		<app-cloe-select-search  formControlName="category_id" [forName]="'categoryClasification'" [label]="'Categoría'" [placeholder]="'Selecciona'" [options]="categoriesList"></app-cloe-select-search>
 		<app-cloe-input-field [label]="'Información adicional (opcional)'" formControlName="information" [typeInput]="'text'" [forName]="'informationClasification'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 	</form>
 

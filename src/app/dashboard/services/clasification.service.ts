@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { HttpService } from 'src/app/core/services/http.service';
+import { ClasificationEdit, ClasificationRegister } from '../interfaces/clasification.interface';
 
 @Injectable({
-  providedIn: 'root'
+	providedIn: 'root'
 })
 export class ClasificationService {
 
@@ -11,7 +13,39 @@ export class ClasificationService {
 	clasificationList$: Observable<any[]> =
 		this._clasificationListSubject.asObservable();
 
-	constructor() {}
+
+	private _getClasificationsUrl: string = 'raee/index?page=';
+	private _createClasificationUrl: string = 'raee/store';
+	private _updateClasificationUrl: string = 'raee/update';
+	private _deleteClasificationUrl: string = 'raee/delete';
+
+	constructor(private _httpService: HttpService) { }
+
+	getClasifications(page: number, pageSize: number) {
+		return this._httpService
+			.get(`${this._getClasificationsUrl}${page}&limit=${pageSize}`)
+			.pipe(
+				tap((response) => {
+					if (response.success) this._clasificationListSubject.next(response.data);
+					else this._clasificationListSubject.next([]);
+				})
+			);
+	}
+
+	createClasification(json: ClasificationRegister) {
+		return this._httpService.post(this._createClasificationUrl, json);
+	}
+
+	updateClasification(json: ClasificationEdit) {
+		const id = json.id;
+		delete json.id;
+		return this._httpService.put(this._updateClasificationUrl + '/' + id, json);
+	}
+
+	deleteClasification(raeeId: number) {
+		return this._httpService.delete(this._deleteClasificationUrl, raeeId);
+	}
+
 
 	addClasification(raee: any): void {
 		const currentList = this._clasificationListSubject.getValue();
@@ -21,7 +55,7 @@ export class ClasificationService {
 
 		if (index !== -1) currentList[index] = raee;
 		//else currentList.push(raee);
-		else{
+		else {
 			raee.id = currentList.length + 1;
 			currentList.push(raee);
 		}
@@ -37,7 +71,7 @@ export class ClasificationService {
 		this._clasificationListSubject.next(currentList);
 	}
 
-	modifyStatus(raeeId: any, status: string): any{
+	modifyStatus(raeeId: any, status: string): any {
 		const currentList = this._clasificationListSubject.getValue();
 		const index = currentList.findIndex(
 			(item) => item.id === raeeId

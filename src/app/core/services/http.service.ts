@@ -60,14 +60,9 @@ export class HttpService {
 			.pipe(takeUntil(this.cancelHttpCall));
 	}
 
-	delete(uri: string, params: any[] = []): Observable<any> {
-		let _httpParams = new HttpParams();
-		params.forEach((p) => {
-			_httpParams = _httpParams.append(p.key, p.value);
-		});
-
+	delete(uri: string, raeeId: number) {
 		return this._http
-			.delete<any>(this.cloeBEUrl + uri, { params: _httpParams })
+			.delete<any>(this.cloeBEUrl + uri + '/' + raeeId)
 			.pipe(takeUntil(this.cancelHttpCall));
 	}
 

@@ -13,7 +13,7 @@ export class GatheringCentersService {
 		this._gatheringCenterListSubject.asObservable();
 
 	private _getGatheringCentersUrl: string = 'centro-acopio/index?page=';
-	private _createGatheringCenterUrl: string = 'centro-acopio/register';
+	private _createGatheringCenterUrl: string = 'centro-acopio/store';
 	private _updateGatheringCenterUrl: string = 'centro-acopio/update';
 
 	constructor(private _httpService: HttpService) {}
