@@ -29,8 +29,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	isActiveSeparationView: boolean = false;
 	raeeSelected: any;
 	separationRaeeList: any[] = [];
-	clasificationAllList: any[] = [];
-	clasificationList: any[] = [];
 	componentsList: any[] = [];
 	separationList: any[] = [];
 	materialList: any[] = [
@@ -69,7 +67,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 
 	separation!: Separation;
 
-	private clasificationListSubscription!: Subscription;
 	private separationListSubscription!: Subscription;
 	@ViewChild(MatTabGroup) matTabGroup: any;
 
@@ -86,7 +83,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	];
 
 	constructor(
-		private _clasificationService: ClasificationService,
 		private _separationService: SeparationService,
 		private _viewportRuler: ViewportRuler,
 		private _dialog: MatDialog,
@@ -97,27 +93,12 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	) {}
 
 	ngOnInit(): void {
-		this.clasificationListSubscription =
-			this._clasificationService.clasificationList$.subscribe(
-				(clasifications: any[]) => {
-					this.clasificationAllList = clasifications;
-					this.clasificationList = this.clasificationAllList.filter(
-						(elem) => elem.status == 'Clasificado'
-					);
-					this.separationList = this.clasificationAllList.filter(
-						(elem) => elem.status == 'Separado'
-					);
-				}
-			);
-
 		this.separationListSubscription =
 			this._separationService.separationList$.subscribe(
 				(separationsRaee: any[]) => {
 					this.separationRaeeList = separationsRaee;
 				}
 			);
-
-		this.dataSource.data = this.componentsList;
 	}
 
 	openDialogComponentEdit(component?: any) {
@@ -246,7 +227,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		}
 	}
 
-
 	openDialogCancelSeparation() {
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
@@ -339,11 +319,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		if (this.clasificationListSubscription) {
-			this._alertService.setAlert({ isActive: false, message: '' });
-			this.clasificationListSubscription.unsubscribe();
-		}
-
 		if (this.separationListSubscription) {
 			this._alertService.setAlert({ isActive: false, message: '' });
 			this.separationListSubscription.unsubscribe();

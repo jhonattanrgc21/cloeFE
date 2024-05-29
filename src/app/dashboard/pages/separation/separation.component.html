@@ -6,13 +6,13 @@
 		<div class="mt-4 table-container">
 			<mat-tab-group>
 				<mat-tab label="Todos">
-					<app-clasification-table [data]="clasificationAllList" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
+					<app-clasification-table [typeRaeeStatus]="1" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
 				</mat-tab>
 				<mat-tab label="Clasificados">
-					<app-clasification-table [data]="clasificationList" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
+					<app-clasification-table [typeRaeeStatus]="2" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
 				</mat-tab>
 				<mat-tab label="Separados">
-					<app-clasification-table [data]="separationList" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
+					<app-clasification-table [typeRaeeStatus]="3" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
 				</mat-tab>
 			</mat-tab-group>
 		</div>
