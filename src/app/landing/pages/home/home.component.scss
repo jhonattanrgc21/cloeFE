@@ -9,7 +9,7 @@
 }
 
 .section-2 {
-	height: 806px;
+	height: 900px;
 	background-color: #F5FBFB;
 }
 
@@ -85,7 +85,7 @@
 	}
 
 	.section-2 {
-		height: 967px;
+		height: 1050px;
 	}
 
 	.section-3 {
@@ -136,6 +136,7 @@
 
 }
 
+
 @media (min-width: 1024px) {
 	.section-1 {
 		height: 863px;
@@ -143,10 +144,6 @@
 		background-image: url('../../../../assets/landing_page_assets/images/jpg/show_case_1_1440x900.jpg');
 		background-attachment: fixed;
 		background-size: cover;
-	}
-
-	.section-2 {
-		height: 725px;
 	}
 
 	.section-4a{
@@ -177,6 +174,14 @@
 		}
 	}
 }
+
+@media (min-width: 1200px) {
+
+	.section-2 {
+		height: 800px;
+	}
+}
+
 
 @media (min-width: 1440px) {
 	.section-1 {
