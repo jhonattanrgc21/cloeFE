@@ -1,43 +1,42 @@
 footer {
 	@apply bg-success-500 text-white;
-  
+
 	li {
-	  @apply hover:underline;
+		@apply hover:underline;
 	}
-  
-	height: 332px;
-  }
-  
-  
+
+	//height: 332px;
+}
+
   .logo {
 	width: 9rem;
 	height: 2.5rem;
   }
-  
+
   .link-list {
 	margin-bottom: 1rem;
-	
+
 	li:not(:first-child) {
 		opacity: 0.75;
 	  }
-  
+
 	&.no-margin {
 	  margin-bottom: 0;
 	}
   }
-  
+
   .footer-text {
 	font-size: 0.75rem;
 	opacity: 0.75;
   }
-  
+
   @media (min-width: 768px) and (max-width: 1440px) {
 	footer {
-	  height: 409px;
+	  height: 500px;
 	}
   }
-  
-  
+
+
   @media (min-width: 412px) and (max-width: 767px) {
 	footer {
 	  height: 475px;
