@@ -4,8 +4,6 @@ footer {
 	li {
 		@apply hover:underline;
 	}
-
-	//height: 332px;
 }
 
   .logo {
@@ -32,12 +30,12 @@ footer {
 
   @media (min-width: 768px) and (max-width: 1440px) {
 	footer {
-	  height: 500px;
+	  height: 450px;
 	}
   }
 
 
-  @media (min-width: 412px) and (max-width: 767px) {
+  @media (min-width: 300px) and (max-width: 767px) {
 	footer {
 	  height: 475px;
 	}
