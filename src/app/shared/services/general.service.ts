@@ -16,6 +16,8 @@ export class GeneralService {
 	private _getBrandsUrl: string = 'utils/brands';
 	private _getGatheringCentersUrl: string = 'utils/centros';
 	private _getRolesUrl: string = 'cargos';
+	private _getMaterialsUrl: string = 'utils/materiales';
+	private _getProcessUrl: string = 'utils/procesos';
 
 	constructor(private _httpService: HttpService) {}
 
@@ -65,5 +67,13 @@ export class GeneralService {
 			const blob = new Blob([data], { type });
 			saveAs(blob, name);
 		});
+	}
+
+	getMaterials(){
+		return this._httpService.get(this._getMaterialsUrl);
+	}
+
+	getProcess(){
+		return this._httpService.get(this._getProcessUrl);
 	}
 }

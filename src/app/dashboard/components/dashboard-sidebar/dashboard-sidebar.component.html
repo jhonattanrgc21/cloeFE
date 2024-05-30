@@ -58,6 +58,13 @@
 					Separar</a>
 			</ng-container>
 
+			<ng-container *ngIf="showOption(['admin', 'encargado', 'separador'])">
+				<a routerLink="/dashboard/raee-components" routerLinkActive="active" class="option"><img
+						src="../../../../assets/svg/icono_sidebar_separar_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
+					<img src="../../../../assets/svg/icono_sidebar_separar_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
+					<img src="../../../../assets/svg/icono_sidebar_separar_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
+					Componentes RAEE</a>
+			</ng-container>
 
 			<a routerLink="/auth/sign-in" routerLinkActive="active" class="option" (click)="logout()"><img
 					src="../../../../assets/svg/logout.svg" alt="Logo" class="w-6 h-6 svg-default" />

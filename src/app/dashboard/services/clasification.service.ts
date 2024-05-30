@@ -54,11 +54,7 @@ export class ClasificationService {
 		);
 
 		if (index !== -1) currentList[index] = raee;
-		//else currentList.push(raee);
-		else {
-			raee.id = currentList.length + 1;
-			currentList.push(raee);
-		}
+		else currentList.push(raee);
 		this._clasificationListSubject.next(currentList);
 	}
 

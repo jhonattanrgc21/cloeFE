@@ -38,7 +38,21 @@
 				(focus)="onInputFocus()" (blur)="onInputBlur()" />
 		</ng-container>
 
-		<ng-container *ngIf="!useLettersOnly && !useNumbersOnly">
+		<ng-container *ngIf="useSpecialCharactersOnly">
+			<input [ngClass]="{
+			'border-success-500': isInputActive,
+			'ring-success-500': isInputActive,
+			'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+			'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+			'border-danger-500': control.invalid && (control.dirty || control.touched),
+			'ring-danger-500': control.invalid && (control.dirty || control.touched),
+		}" [mask]="mask" [allowNegativeNumbers]="false" [id]="forName" [placeholder]="placeholder" [formControl]="control"
+				[type]="typeInput === 'password' && !showPassword ? 'password' : 'text'"  appSpecialCharactersDirective [isActive]="useSpecialCharactersOnly"
+				class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
+				(focus)="onInputFocus()" (blur)="onInputBlur()" />
+		</ng-container>
+
+		<ng-container *ngIf="!useLettersOnly && !useNumbersOnly && !useSpecialCharactersOnly">
 			<input [ngClass]="{
 			'border-success-500': isInputActive,
 			'ring-success-500': isInputActive,
@@ -62,7 +76,7 @@
 				'ring-danger-500': control.invalid && (control.dirty || control.touched),
 			}" [id]="forName" [placeholder]="placeholder" [formControl]="control"
 			class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
-			(focus)="onInputFocus()" (blur)="onInputBlur()" [rows]="rows"></textarea>
+			(focus)="onInputFocus()" (blur)="onInputBlur()" [rows]="rows" appSpecialCharactersDirective [isActive]="useSpecialCharactersOnly"></textarea>
 	</ng-container>
 	<div *ngIf="typeInput === 'password'" class="absolute inset-y-0 right-0 pr-3 flex items-center">
 		<ng-container *ngIf="!showPassword ; else showPasswordTemplate">

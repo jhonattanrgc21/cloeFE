@@ -53,7 +53,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 		let headerMessage: string = '';
 		switch (this.rutaActual) {
 			case 'home':
-				//headerMessage = '¡Bienvenido!';
 				headerMessage = 'Inicio';
 				break;
 			case 'summary':
@@ -70,6 +69,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 				break;
 			case 'separation':
 				headerMessage = 'Separar';
+				break;
+			case 'raee-components':
+				headerMessage = 'Lista de componentes de RAEE';
 				break;
 		}
 		return headerMessage;

@@ -18,6 +18,7 @@ export class CloeInputFieldComponent implements ControlValueAccessor, OnInit, On
 	@Input() mask: string = '';
 	@Input() useLettersOnly: boolean = false;
 	@Input() useNumbersOnly: boolean = false;
+	@Input() useSpecialCharactersOnly: boolean = false;
 	control: FormControl = new FormControl(null);
 	isInputActive: boolean = false;
 	showPassword: boolean = false;

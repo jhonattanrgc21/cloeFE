@@ -12,6 +12,7 @@ import { DownloadPopupComponent } from './components/download-popup/download-pop
 import { LettersOnlyDirective } from './directives/letters-only.directive';
 import { NumbersOnlyDirective } from './directives/numbers-only.directive';
 import { ErrorPopupComponent } from './components/error-popup/error-popup.component';
+import { SpecialCharactersDirectiveDirective } from './directives/special-characters-directive.directive';
 @NgModule({
 	declarations: [
 		CloeInputFieldComponent,
@@ -23,6 +24,7 @@ import { ErrorPopupComponent } from './components/error-popup/error-popup.compon
 		LettersOnlyDirective,
 		NumbersOnlyDirective,
   ErrorPopupComponent,
+  SpecialCharactersDirectiveDirective,
 	],
 	exports: [
 		CloeInputFieldComponent,

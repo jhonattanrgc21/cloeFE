@@ -8,6 +8,7 @@ import { ClasificationComponent } from './pages/clasification/clasification.comp
 import { SeparationComponent } from './pages/separation/separation.component';
 import { RoleGuard } from '../core/guards/role.guard';
 import { HomeComponent } from './pages/home/home.component';
+import { RaeeComponentsComponent } from './pages/raee-components/raee-components.component';
 
 const routes: Routes = [
 	{
@@ -50,6 +51,12 @@ const routes: Routes = [
 			{
 				path: 'separation',
 				component: SeparationComponent,
+				canActivate: [RoleGuard],
+				data: { expectedRoles: ['admin', 'encargado', 'separador'] }
+			},
+			{
+				path: 'raee-components',
+				component: RaeeComponentsComponent,
 				canActivate: [RoleGuard],
 				data: { expectedRoles: ['admin', 'encargado', 'separador'] }
 			},

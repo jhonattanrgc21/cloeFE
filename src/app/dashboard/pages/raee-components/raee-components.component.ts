@@ -1,41 +1,38 @@
 import { ViewportRuler } from '@angular/cdk/scrolling';
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { ClasificationService } from '../../services/clasification.service';
-import { AlertService } from 'src/app/shared/services/alert.service';
-import { EditClasificationComponent } from './edit-clasification/edit-clasification.component';
-import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
-import { ClasificationDetailComponent } from './clasification-detail/clasification-detail.component';
-import { DownloadPopupComponent } from 'src/app/shared/components/download-popup/download-popup.component';
-import { Clasification, ClasificationEdit, ClasificationRegister } from '../../interfaces/clasification.interface';
-import { DOCUMENT_TYPE } from 'src/app/core/constants/constants';
-import { GeneralService } from 'src/app/shared/services/general.service';
+import { Subscription } from 'rxjs';
 import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
-import { AuthService } from 'src/app/auth/services/auth.service';
+import { AlertService } from 'src/app/shared/services/alert.service';
+import { GeneralService } from 'src/app/shared/services/general.service';
+import { RaeeComponentsService } from '../../services/raee-components.service';
+import { ComponentEditComponent } from '../separation/component-edit/component-edit.component';
+import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
+import { ClasificationDetailComponent } from '../clasification/clasification-detail/clasification-detail.component';
+import { DownloadPopupComponent } from 'src/app/shared/components/download-popup/download-popup.component';
+import { DOCUMENT_TYPE } from 'src/app/core/constants/constants';
 
 @Component({
-  selector: 'app-clasification',
-  templateUrl: './clasification.component.html',
-  styleUrls: ['./clasification.component.scss']
+  selector: 'app-raee-components',
+  templateUrl: './raee-components.component.html',
+  styleUrls: ['./raee-components.component.scss']
 })
-export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy {
-	private _clasificationListSubscription!: Subscription;
+export class RaeeComponentsComponent implements OnInit, OnDestroy {
+	private _componentsListSubscription!: Subscription;
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
-	clasificationList: Clasification[] = [];
-	brandsList: SelectionInput[] = [];
-	linesList: SelectionInput[] = [];
-	categoriesList: SelectionInput[] = [];
+	componentsList: any[] = [];
+	materialsList: SelectionInput[] = [];
+	processList: SelectionInput[] = [];
 	displayedColumns: string[] = [
-		'model',
-		'brand',
-		'lineType',
-		'category',
+		'name',
+		'weight',
+		'dimensions',
+		'reutilizable',
 		'actions',
 	];
-	dataSource = new MatTableDataSource<Clasification>(this.clasificationList);
+	dataSource = new MatTableDataSource<any>(this.componentsList);
 	totalItems: number = 0;
 	itemsPerPage = 5;
 	currentPage = 1;
@@ -53,14 +50,14 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 		res: any,
 		message: string,
 		actionType: 'add' | 'modifyStatus',
-		clasification?: Clasification
+		component?: any
 	): void {
 		let isActive: boolean = true;
 		let type: string = 'success';
 		if (res.success) {
 			if (actionType == 'add')
-				this._clasificationService.addClasification(res.data);
-			else this._clasificationService.addClasification(clasification!);
+				this._raeeComponentsServices.addComponent(res.data);
+			else this._raeeComponentsServices.addComponent(component!);
 		} else {
 			message = res.message;
 			type = 'error';
@@ -77,39 +74,30 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 	constructor(
 		private _dialog: MatDialog,
 		private _viewportRuler: ViewportRuler,
-		private _clasificationService: ClasificationService,
+		private _raeeComponentsServices: RaeeComponentsService,
 		private _cdr: ChangeDetectorRef,
 		private _alertService: AlertService,
 		private _generalService: GeneralService,
-		private _authService: AuthService
 	) {}
 
 	ngOnInit(): void {
-		this.loadClasifications(this.currentPage, this.itemsPerPage);
-		this._clasificationListSubscription =
-			this._clasificationService.clasificationList$.subscribe(
-				(clasifications: Clasification[]) => {
-					this.clasificationList = clasifications;
-					this.dataSource.data = clasifications;
+		this.loadComponents(this.currentPage, this.itemsPerPage);
+		this._componentsListSubscription =
+			this._raeeComponentsServices.raeeComponentList$.subscribe(
+				(components: any[]) => {
+					this.componentsList = components;
+					this.dataSource.data = this.componentsList;
 					this._cdr.detectChanges();
 				}
 			);
 
-		this._generalService.getBrands().subscribe((res) => {
-			this.brandsList = res.success ? res.data : [];
+		this._generalService.getMaterials().subscribe((res) => {
+			this.materialsList = res.success ? res.data : [];
 		});
 
-		this._generalService.getCategories().subscribe((res) => {
-			this.categoriesList = res.success ? res.data : [];
+		this._generalService.getProcess().subscribe((res) => {
+			this.processList = res.success ? res.data : [];
 		});
-
-		this._generalService.getLines().subscribe((res) => {
-			this.linesList = res.success ? res.data : [];
-		});
-	}
-
-	isAdminRole() {
-		return this._authService.currentRole == 'admin';
 	}
 
 	handlePageEvent(e: PageEvent) {
@@ -118,21 +106,20 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 		this.pageSize = e.pageSize;
 		this.pageIndex = e.pageIndex;
 		if (e.previousPageIndex! < e.pageIndex) {
-			this.loadClasifications(this.currentPage + 1, this.pageSize);
+			this.loadComponents(this.currentPage + 1, this.pageSize);
 		} else {
-			this.loadClasifications(this.currentPage - 1, this.pageSize);
+			this.loadComponents(this.currentPage - 1, this.pageSize);
 		}
 	}
 
-	loadClasifications(page: number, pageSize: number): void {
-		this._clasificationService
-			.getClasifications(page, pageSize)
+	loadComponents(page: number, pageSize: number): void {
+		this._raeeComponentsServices.getComponents(page, pageSize)
 			.subscribe((response) => {
 				this.totalItems = response.meta.total;
 				this.itemsPerPage = response.meta.itemsPerPage;
 				this.currentPage = response.meta.currentPage;
-				this.clasificationList = response.data;
-				this.dataSource.data = this.clasificationList;
+				this.componentsList = response.data;
+				this.dataSource.data = this.componentsList;
 				this.dataSource.paginator = this.paginator;
 			});
 	}
@@ -150,13 +137,10 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 		this.dataSource.filterPredicate = (data: any, filter: string) => {
 			const searchData =
 				`${data.name} ${data.model} ${data.brand} ${data.lineType} ${data.category} `.toLowerCase();
-			const statusMatch =
-				(data.active == 1 ? 'Activo' : 'Inactivo').toLowerCase() ===
-				filter.trim().toLowerCase();
 			const otherColumnsMatch = searchData.includes(
 				filter.trim().toLowerCase()
 			);
-			return statusMatch || otherColumnsMatch;
+			return otherColumnsMatch;
 		};
 	}
 
@@ -165,42 +149,37 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	openDialogEditClasification(clasification?: Clasification): void {
+	openDialogComponentEdit(component?: any) {
 		const viewportSize = this._viewportRuler.getViewportSize();
-		const dialogRef = this._dialog.open(EditClasificationComponent, {
+		const dialogRef = this._dialog.open(ComponentEditComponent, {
 			width: viewportSize.width < 768 ? '380px' : '474px',
 			height: '500px',
 			autoFocus: false,
 			data: {
-				clasification,
-				brandsList: this.brandsList,
-				categoriesList: this.categoriesList,
-				linesList: this.linesList
-			} ,
+				materialList: this.materialsList,
+				processList: this.processList,
+				component,
+			},
 		});
 
-		dialogRef.afterClosed().subscribe((result: ClasificationEdit) => {
-			if (result) this.openDialogConfirmationClasification(result);
+
+		dialogRef.afterClosed().subscribe((result: any) => {
+			if (result) this.openDialogConfirmationComponent(result);
 		});
 	}
 
 
-	openDialogConfirmationClasification(
-		clasificationEdit: ClasificationEdit
+	openDialogConfirmationComponent(
+		componentEdit: any
 	): void {
-		const isEdit = !!clasificationEdit.id;
-		const title = isEdit
-			? 'Editar clasificación de RAEE'
-			: 'Clasificar RAEE';
-		const subtitle = isEdit
-			? '¿Seguro de que deseas editar esta clasificación de RAEE?'
-			: '¿Seguro de que deseas clasificar este nuevo RAEE?';
+		const title = 'Editar componente de RAEE';
+		const subtitle = '¿Seguro de que deseas editar esta componente de RAEE?';
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
 			height: 'auto',
 			autoFocus: false,
 			data: {
-				icon: './../../../../../assets/svg/icono_sidebar_centros_acopios_verde_24x24.svg',
+				icon: './../../../../../assets/svg/icono_sidebar_separar_verde_24x24.svg',
 				title,
 				subtitle,
 				type: 'edit',
@@ -209,16 +188,12 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				const action$ = isEdit
-					? this._clasificationService.updateClasification(clasificationEdit)
-					: this._clasificationService.createClasification(
-						clasificationEdit as ClasificationRegister
-					  );
+				const action$ = this._raeeComponentsServices.updateComponent(componentEdit);
 
 				action$.subscribe((res) =>
 					this._handleUserResponse(
 						res,
-						'Excelente, el RAEE se ha clasificado con éxito.',
+						'Excelente, el RAEE se ha actualizado con éxito.',
 						'add'
 					)
 				);
@@ -226,47 +201,47 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 		});
 	}
 
-	openDialogClasificationDetail(clasification?: Clasification): void {
+	openDialogComponentDetail(component: any): void {
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(ClasificationDetailComponent, {
 			width: viewportSize.width < 768 ? '380px' : '479px',
 			height: 'auto',
 			autoFocus: false,
 			data: {
-				clasification,
-				disableActions:  this.isAdminRole()
+				component,
+				disableActions: false
 			}
 		});
 
 		dialogRef.afterClosed().subscribe((result: any) => {
-			if (result == 'edit') this.openDialogEditClasification(clasification);
-			if (result == 'delete') this.openDiaglogDisabletClasification(clasification!);
+			if (result == 'edit') this.openDialogComponentEdit(component);
+			if (result == 'delete') this.openDiaglogRemoveComponent(component!);
 		});
 	}
 
 
-	openDiaglogDisabletClasification(clasification: Clasification) {
+	openDiaglogRemoveComponent(component: any) {
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
 			height: 'auto',
 			autoFocus: false,
 			data: {
-				icon: './../../../../../assets/svg/icono_sidebar_clasificar_rojo_24x24.svg',
-				title: 'Eliminar RAEE',
-				subtitle: '¿Seguro de que deseas eliminar este RAEE?',
+				icon: './../../../../../assets/svg/icono_sidebar_separar_rojo_24x24.svg',
+				title: 'Eliminar componente de RAEE',
+				subtitle: '¿Seguro de que deseas eliminar este componente de RAEE?',
 				type: 'delete',
 			},
 		});
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				this._clasificationService.deleteClasification(clasification.id).subscribe(res => {
+				this._raeeComponentsServices.deleteComponent(component.id).subscribe(res => {
 					let type: string = 'success';
 					let message: string;
 					if(res.success) {
-						message = 'Excelente, el RAEE se ha eliminado con éxito.';
+						message = 'Excelente, el componente RAEE se ha eliminado con éxito.';
 						type = 'success';
-						this._clasificationService.removeClasification(clasification);
+						this._raeeComponentsServices.removeComponent(component);
 					}
 					else{
 						message = res.message;
@@ -285,7 +260,7 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 		});
 	}
 
-	openDialogClasificationDownload(): void {
+	openDialogComponentDownload(): void {
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(DownloadPopupComponent, {
 			width: viewportSize.width < 768 ? '380px' : '479px',
@@ -310,9 +285,9 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 	}
 
 	ngOnDestroy(): void {
-		if (this._clasificationListSubscription) {
+		if (this._componentsListSubscription) {
 			this._alertService.setAlert({ isActive: false, message: '' });
-			this._clasificationListSubscription.unsubscribe();
+			this._componentsListSubscription.unsubscribe();
 		}
 	}
 }

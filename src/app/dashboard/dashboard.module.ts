@@ -24,6 +24,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { EditProfileComponent } from './pages/home/edit-profile/edit-profile.component';
 import { EditPasswordComponent } from './pages/home/edit-password/edit-password.component';
 import { GatheringCenterDetailComponent } from './pages/gathering-centers/gathering-center-detail/gathering-center-detail.component';
+import { RaeeComponentsComponent } from './pages/raee-components/raee-components.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { GatheringCenterDetailComponent } from './pages/gathering-centers/gather
     EditProfileComponent,
     EditPasswordComponent,
     GatheringCenterDetailComponent,
+    RaeeComponentsComponent,
   ],
   imports: [
     CommonModule,

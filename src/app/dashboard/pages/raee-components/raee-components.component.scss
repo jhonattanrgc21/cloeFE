@@ -1,0 +1,52 @@
+.raee-components{
+	@apply w-screen md:w-full my-4 px-4 py-6 bg-white rounded shadow-lg shadow-[#004D4014];
+
+	.card-content{
+		height: 459px;
+	}
+
+	.btn-download{
+		.svg-download-default {
+			display: block;
+		}
+
+		.svg-download-hover {
+			display: none;
+		}
+
+
+		&:hover .svg-download-default {
+			display: none;
+		}
+
+		&:hover .svg-download-hover {
+			display: block;
+		}
+
+	}
+}
+
+
+@media (min-width: 768px) {
+	.raee-components{
+		.card-content{
+			height: 670px;
+		}
+	}
+}
+
+@media (min-width: 1024px) {
+	.raee-components{
+		.card-content{
+			height: 438px;
+		}
+	}
+}
+
+@media (min-width: 1920px) {
+	.raee-components{
+		.card-content{
+			height: 601px;
+		}
+	}
+}
