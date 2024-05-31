@@ -5,6 +5,7 @@ export interface RaeeComponent {
 	weight:       number;
 	dimensions:   string;
 	reusable:     number;
+	observations: string;
 	materials:    string[];
 	process:      string[];
 }
