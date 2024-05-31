@@ -10,31 +10,31 @@
 	<div class="flex flex-col gap-4">
     <div class="grid grid-cols-2">
         <p class="font-poppins-medium text-sm text-[#00000099]">Componente</p>
-        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.name}}</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.component.name}}</p>
     </div>
     <div class="grid grid-cols-2">
         <p class="font-poppins-medium text-sm text-[#00000099]">Materiales</p>
-        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.materials}}</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{getNames(data.component.materials)}}</p>
     </div>
     <div class="grid grid-cols-2">
         <p class="font-poppins-medium text-sm text-[#00000099]">Procesos</p>
-        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.process}}</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{getNames(data.component.process)}}</p>
     </div>
     <div class="grid grid-cols-2">
         <p class="font-poppins-medium text-sm text-[#00000099]">Peso (g)</p>
-        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.weight}}</p>
+        <p class="font-poppins-regular text-sm text-[#000000DE]">{{data.component.weight}}</p>
     </div>
 		<div class="grid grid-cols-2">
 			<p class="font-poppins-medium text-sm text-[#00000099]">Dimensiones (cm)</p>
-			<p class="font-poppins-regular text-sm text-[#000000DE]">{{data.dimensions}}</p>
+			<p class="font-poppins-regular text-sm text-[#000000DE]">{{data.component.dimensions}}</p>
 		</div>
 		<div class="grid grid-cols-2">
 			<p class="font-poppins-medium text-sm text-[#00000099]">Reutilizable</p>
-			<p class="font-poppins-regular text-sm text-[#000000DE]">{{data.reutilizable ? 'Si':'No'}}</p>
+			<p class="font-poppins-regular text-sm text-[#000000DE]">{{data.component.reusable == 1 ? 'Si':'No'}}</p>
 		</div>
 		<div class="grid grid-cols-2">
 			<p class="font-poppins-medium text-sm text-[#00000099]">Observación</p>
-			<p class="font-poppins-regular text-sm text-[#000000DE]">{{data.comment}}</p>
+			<p class="font-poppins-regular text-sm text-[#000000DE]">{{data.component.comment}}</p>
 		</div>
 	</div>
 

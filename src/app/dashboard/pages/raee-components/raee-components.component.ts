@@ -10,9 +10,10 @@ import { GeneralService } from 'src/app/shared/services/general.service';
 import { RaeeComponentsService } from '../../services/raee-components.service';
 import { ComponentEditComponent } from '../separation/component-edit/component-edit.component';
 import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
-import { ClasificationDetailComponent } from '../clasification/clasification-detail/clasification-detail.component';
 import { DownloadPopupComponent } from 'src/app/shared/components/download-popup/download-popup.component';
 import { DOCUMENT_TYPE } from 'src/app/core/constants/constants';
+import { RaeeComponent, RaeeComponentEdit } from '../../interfaces/raee-component.interface';
+import { ViewComponentComponent } from '../separation/view-component/view-component.component';
 
 @Component({
   selector: 'app-raee-components',
@@ -22,7 +23,7 @@ import { DOCUMENT_TYPE } from 'src/app/core/constants/constants';
 export class RaeeComponentsComponent implements OnInit, OnDestroy {
 	private _componentsListSubscription!: Subscription;
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
-	componentsList: any[] = [];
+	componentsList: RaeeComponent[] = [];
 	materialsList: SelectionInput[] = [];
 	processList: SelectionInput[] = [];
 	displayedColumns: string[] = [
@@ -32,7 +33,7 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 		'reutilizable',
 		'actions',
 	];
-	dataSource = new MatTableDataSource<any>(this.componentsList);
+	dataSource = new MatTableDataSource<RaeeComponent>(this.componentsList);
 	totalItems: number = 0;
 	itemsPerPage = 5;
 	currentPage = 1;
@@ -50,7 +51,7 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 		res: any,
 		message: string,
 		actionType: 'add' | 'modifyStatus',
-		component?: any
+		component?: RaeeComponent
 	): void {
 		let isActive: boolean = true;
 		let type: string = 'success';
@@ -84,7 +85,7 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 		this.loadComponents(this.currentPage, this.itemsPerPage);
 		this._componentsListSubscription =
 			this._raeeComponentsServices.raeeComponentList$.subscribe(
-				(components: any[]) => {
+				(components: RaeeComponent[]) => {
 					this.componentsList = components;
 					this.dataSource.data = this.componentsList;
 					this._cdr.detectChanges();
@@ -149,7 +150,7 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
-	openDialogComponentEdit(component?: any) {
+	openDialogComponentEdit(component?: RaeeComponent) {
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(ComponentEditComponent, {
 			width: viewportSize.width < 768 ? '380px' : '474px',
@@ -163,14 +164,14 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 		});
 
 
-		dialogRef.afterClosed().subscribe((result: any) => {
+		dialogRef.afterClosed().subscribe((result: RaeeComponentEdit) => {
 			if (result) this.openDialogConfirmationComponent(result);
 		});
 	}
 
 
 	openDialogConfirmationComponent(
-		componentEdit: any
+		componentEdit: RaeeComponentEdit
 	): void {
 		const title = 'Editar componente de RAEE';
 		const subtitle = '¿Seguro de que deseas editar esta componente de RAEE?';
@@ -201,9 +202,9 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	openDialogComponentDetail(component: any): void {
+	openDialogComponentDetail(component: RaeeComponent): void {
 		const viewportSize = this._viewportRuler.getViewportSize();
-		const dialogRef = this._dialog.open(ClasificationDetailComponent, {
+		const dialogRef = this._dialog.open(ViewComponentComponent, {
 			width: viewportSize.width < 768 ? '380px' : '479px',
 			height: 'auto',
 			autoFocus: false,
@@ -220,7 +221,7 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 	}
 
 
-	openDiaglogRemoveComponent(component: any) {
+	openDiaglogRemoveComponent(component: RaeeComponent) {
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
 			height: 'auto',
@@ -235,7 +236,7 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				this._raeeComponentsServices.deleteComponent(component.id).subscribe(res => {
+				this._raeeComponentsServices.deleteComponent(component.component_id).subscribe(res => {
 					let type: string = 'success';
 					let message: string;
 					if(res.success) {
@@ -254,8 +255,6 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 						type
 					});
 				})
-
-
 			}
 		});
 	}
@@ -270,11 +269,11 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result){
-				const getPdfUrl = 'raee/report-pdf';
-				const getExcelUrl = 'raee/report-excel';
+				const getPdfUrl = 'components/report-pdf';
+				const getExcelUrl = 'components/report-excel';
 
-				if(result == 1)	this._generalService.getDocument('reporte-centros-acopio.xlsx', DOCUMENT_TYPE.excel, getExcelUrl);
-				else this._generalService.getDocument('reporte-centros-acopio.pdf',DOCUMENT_TYPE.pdf , getPdfUrl);
+				if(result == 1)	this._generalService.getDocument('reporte-componentes-raee.xlsx', DOCUMENT_TYPE.excel, getExcelUrl);
+				else this._generalService.getDocument('reporte-componentes-raee.pdf',DOCUMENT_TYPE.pdf , getPdfUrl);
 
 				this._alertService.setAlert({
 					isActive: true,

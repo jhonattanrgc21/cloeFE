@@ -12,6 +12,10 @@ export class ViewComponentComponent {
 		@Inject(MAT_DIALOG_DATA) public data: any
 	) {}
 
+	getNames(list: string[]){
+		return list.join(', ');
+	}
+
 	onClose(option?: string): void {
 		this.dialogRef.close(option);
 	}
