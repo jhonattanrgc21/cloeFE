@@ -1,4 +1,4 @@
-<div class="flex flex-col">
+<div class="flex flex-col overflow-hidden">
   <!-- Header -->
 	<app-dashboard-header (sidebarToggled)="onSidebarToggle()"></app-dashboard-header>
 
@@ -6,7 +6,7 @@
   <div class="flex">
     <!-- Sidebar -->
     <div class="lg:w-64" [class.hidden]="!isSidebarOpen">
-      <app-dashboard-sidebar></app-dashboard-sidebar>
+      <app-dashboard-sidebar (sidebarToggled)="onSidebarToggle3()"></app-dashboard-sidebar>
     </div>
 
 		<div class="relative flex-grow" (click)="onSidebarToggle2()">

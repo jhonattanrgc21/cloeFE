@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
@@ -7,11 +7,17 @@ import { AuthService } from 'src/app/auth/services/auth.service';
   styleUrls: ['./dashboard-sidebar.component.scss']
 })
 export class DashboardSidebarComponent {
+	@Output() sidebarToggled = new EventEmitter<void>();
 	constructor(private _authService: AuthService){}
 
 	showOption(allowedRoles: string[]){
 		return this._authService.hasRole(allowedRoles);
 	}
+
+	toggleSidebar() {
+    this.sidebarToggled.emit();
+  }
+
 
 	logout(){
 		this._authService.logout().subscribe();

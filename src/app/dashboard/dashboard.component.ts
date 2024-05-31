@@ -77,6 +77,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 		return headerMessage;
 	}
 
+	onSidebarToggle3(){
+		const viewportSize = this._viewportRuler.getViewportSize();
+		if( viewportSize.width < 768 && this.isSidebarOpen) this.isSidebarOpen = false;
+	}
+
 	onSidebarToggle() {
 		this.isSidebarOpen = !this.isSidebarOpen;
 	}
