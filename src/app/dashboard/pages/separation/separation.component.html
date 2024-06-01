@@ -4,15 +4,15 @@
 		<p class="text-[#0B132B] w-full font-poppins-medium text-base">RAEE registrados</p>
 
 		<div class="mt-4 table-container">
-			<mat-tab-group>
+			<mat-tab-group (selectedTabChange)="handleTabChange()" 	mat-align-tabs="start">
 				<mat-tab label="Todos">
-					<app-clasification-table [typeRaeeStatus]="1" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
+					<app-clasification-table [typeRaeeStatus]="1" [clasificationList]="clasificationList" [currentPage]="currentPage" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
 				</mat-tab>
 				<mat-tab label="Clasificados">
-					<app-clasification-table [typeRaeeStatus]="2" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
+					<app-clasification-table [typeRaeeStatus]="2" [clasificationList]="clasificationList" [currentPage]="currentPage" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
 				</mat-tab>
 				<mat-tab label="Separados">
-					<app-clasification-table [typeRaeeStatus]="3" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
+					<app-clasification-table [typeRaeeStatus]="3" [clasificationList]="clasificationList" [currentPage]="currentPage" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" (clasificationSelected)="editSeparation($event)"></app-clasification-table>
 				</mat-tab>
 			</mat-tab-group>
 		</div>

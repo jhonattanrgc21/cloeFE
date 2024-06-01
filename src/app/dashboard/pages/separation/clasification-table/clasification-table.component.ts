@@ -1,5 +1,16 @@
 import { ViewportRuler } from '@angular/cdk/scrolling';
-import { ChangeDetectorRef, Component, Input, ViewChild, OnInit, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import {
+	ChangeDetectorRef,
+	Component,
+	Input,
+	ViewChild,
+	OnInit,
+	AfterViewInit,
+	Output,
+	EventEmitter,
+	SimpleChanges,
+	OnChanges,
+} from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
@@ -18,11 +29,17 @@ import { GeneralService } from 'src/app/shared/services/general.service';
 	templateUrl: './clasification-table.component.html',
 	styleUrls: ['./clasification-table.component.scss'],
 })
-export class ClasificationTableComponent implements OnInit, AfterViewInit {
+export class ClasificationTableComponent
+	implements OnInit, AfterViewInit, OnChanges
+{
 	private _clasificationListSubscription!: Subscription;
 	@Input() clasificationList: Clasification[] = [];
 	@Input() typeRaeeStatus: number = 1; // 1: Todos, 2: clasificados, 3: separados
 	@Output() clasificationSelected: any = new EventEmitter<any>();
+
+	@Input() totalItems: number = 0;
+	@Input() itemsPerPage = 5;
+	@Input() currentPage = 1;
 	displayedColumns: string[] = [
 		'model',
 		'brand',
@@ -33,10 +50,6 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 	];
 	dataSource = new MatTableDataSource<Clasification>(this.clasificationList);
 	@ViewChild(MatPaginator) paginator!: MatPaginator;
-
-	totalItems: number = 0;
-	itemsPerPage = 5;
-	currentPage = 1;
 	length = 0;
 	pageSize = 5;
 	pageIndex = 1;
@@ -57,7 +70,6 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 	) {}
 
 	ngOnInit(): void {
-		this.loadClasifications(this.currentPage, this.itemsPerPage);
 		this._clasificationListSubscription =
 			this._separationService.raeeList$.subscribe(
 				(clasifications: Clasification[]) => {
@@ -66,6 +78,12 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 					this._cdr.detectChanges();
 				}
 			);
+	}
+
+	ngOnChanges(changes: SimpleChanges): void {
+		this.dataSource.data = this.clasificationList;
+		this.setUpPaginator();
+		this._cdr.markForCheck();
 	}
 
 	handlePageEvent(e: PageEvent) {
@@ -89,12 +107,12 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 				this.currentPage = response.meta.currentPage;
 				this.clasificationList = response.data;
 				this.dataSource.data = this.clasificationList;
-				this.dataSource.paginator = this.paginator;
+				this.setUpPaginator();
 			});
 	}
 
 	ngAfterViewInit() {
-		setTimeout(() => this.setUpPaginator(), 2000);
+		this.setUpPaginator();
 	}
 
 	setUpPaginator(): void {
@@ -141,11 +159,21 @@ export class ClasificationTableComponent implements OnInit, AfterViewInit {
 		});
 
 		dialogRef.afterClosed().subscribe((result: any) => {
-			if (result){
+			if (result) {
 				const getPdfUrl: string = 'split/report-pdf';
 				const getExcelUrl: string = 'split/report-excel';
-				if(result == 1)	this._generalService.getDocument('reporte-usuarios.xlsx', DOCUMENT_TYPE.excel, getExcelUrl);
-				else this._generalService.getDocument('reporte-usuarios.pdf', DOCUMENT_TYPE.pdf, getPdfUrl);
+				if (result == 1)
+					this._generalService.getDocument(
+						'reporte-usuarios.xlsx',
+						DOCUMENT_TYPE.excel,
+						getExcelUrl
+					);
+				else
+					this._generalService.getDocument(
+						'reporte-usuarios.pdf',
+						DOCUMENT_TYPE.pdf,
+						getPdfUrl
+					);
 
 				this._alertService.setAlert({
 					isActive: true,

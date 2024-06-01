@@ -18,6 +18,7 @@ import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmati
 import { Separation } from '../../interfaces/separation.interface';
 import { SeparationService } from './../../services/separation.service';
 import { ViewComponentComponent } from './view-component/view-component.component';
+import { Clasification } from '../../interfaces/clasification.interface';
 
 @Component({
 	selector: 'app-separation',
@@ -64,6 +65,10 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		},
 	];
 
+	clasificationList: Clasification[] = [];
+	totalItems: number = 0;
+	itemsPerPage = 5;
+	currentPage = 1;
 	separation!: Separation;
 
 	private separationListSubscription!: Subscription;
@@ -88,16 +93,34 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		private _cdr: ChangeDetectorRef,
 		private _alertService: AlertService,
 		private _fb: FormBuilder,
-		private _generalService: GeneralService
+		private _generalService: GeneralService,
 	) {}
 
 	ngOnInit(): void {
+		this.loadClasifications(0, 5, 1);
 		this.separationListSubscription =
 			this._separationService.separationList$.subscribe(
 				(separationsRaee: any[]) => {
 					this.separationRaeeList = separationsRaee;
 				}
 			);
+	}
+
+	handleTabChange() {
+		const tabInedx = this.matTabGroup.selectedIndex;
+		this.loadClasifications(0, 5, tabInedx + 1);
+	}
+
+
+	loadClasifications(currentPage: number, itemsPerPage:number, typeClasification: number){
+		this._separationService
+			.getRaeeByStatus(currentPage, itemsPerPage, typeClasification)
+			.subscribe((response) => {
+				this.totalItems = response.meta.total;
+				this.itemsPerPage = response.meta.itemsPerPage;
+				this.currentPage = response.meta.currentPage;
+				this.clasificationList; response.data
+			});
 	}
 
 	openDialogComponentEdit(component?: any) {

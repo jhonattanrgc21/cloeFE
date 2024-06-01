@@ -17,7 +17,7 @@ export class SeparationService {
 
 	private _createSeparationUrl: string = 'split/store';
 	private _updateSeparationUrl: string = 'split/update';
-	private _getRaeeByStatusUrl: string = 'raee/index?page=';
+	private _getRaeeByStatusUrl: string = 'split/index?page=';
 
 	constructor(
 		private _clasificationService: ClasificationService,
