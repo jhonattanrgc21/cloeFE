@@ -9,58 +9,13 @@
 		<canvas id="chart2">{{ graphOfChemicalMaterials }}</canvas>
 	</section>
 
-	<section class="content px-4 py-6 lg:col-span-3 ">
-		<div class="flex flex-col items-start gap-3 md:flex-row md:justify-between">
-			<p class="text-lg font-poppins-medium text-[#0B132B]">Usuarios registrados</p>
+	<section class="content graph-container lg:col-span-1">
+		<p class="font-poppins-medium text-lg">Estatus de RAEE</p>
+		<canvas id="chart3">{{ raeeTypeGraph }}</canvas>
+	</section>
 
-			<div class="relative">
-				<input type="text" autocomplete="off" (keyup)="applyFilter($event)" placeholder="Buscar" class=" text-sm font-poppins-regular rounded-md w-80 py-3 px-4 pr-10 border border-[#0000001F] focus:border-success-500 focus:ring-1 focus:ring-success-500 outline-none">
-				<div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-					<img class="w-6 h-6" src="../../../../assets/svg/icono_busqueda_24x24.svg"
-					alt="ventajas.webp" role="img" />
-				</div>
-			</div>
-		</div>
-
-		<div class="mt-2 table-container">
-			<table mat-table [dataSource]="dataSource">
-				<ng-container matColumnDef="name">
-					<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium"> Nombre </th>
-					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{element.name}} </td>
-				</ng-container>
-
-				<ng-container matColumnDef="employePosition">
-					<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium"> Cargo </th>
-					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{element.employePosition}} </td>
-				</ng-container>
-
-				<ng-container matColumnDef="identification">
-					<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium"> Cédula </th>
-					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{element.identification}} </td>
-				</ng-container>
-
-				<ng-container matColumnDef="address">
-					<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium"> Dirección </th>
-					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> {{element.address}} </td>
-				</ng-container>
-
-				<ng-container matColumnDef="status">
-					<th mat-header-cell *matHeaderCellDef class="text-sm font-poppins-medium"> Estatus </th>
-					<td mat-cell *matCellDef="let element" class="text-sm font-poppins-regular"> <span class="py-1 px-3 rounded-full"
-							[ngClass]="{
-										'text-success-500 bg-success-50 ': element.status === 'Activo',
-										'text-[#FA8873] bg-[#FEF0ED]': element.status === 'Inactivo'
-									}">{{ element.status }}</span> </td>
-				</ng-container>
-
-				<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-				<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-			</table>
-
-			<mat-paginator class="py-3" [pageSizeOptions]="[5, 10, 20]"
-										 showFirstLastButtons
-										 aria-label="Select page of registeredUsers elements">
-			</mat-paginator>
-		</div>
+	<section class="content graph-container lg:col-span-2">
+		<p class="font-poppins-medium text-lg">Tipos de usuario según su rol</p>
+		<canvas id="chart4">{{ graphOfChemicalMaterials }}</canvas>
 	</section>
 </div>
