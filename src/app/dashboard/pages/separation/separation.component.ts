@@ -45,9 +45,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	private separationListSubscription!: Subscription;
 	@ViewChild(MatTabGroup) matTabGroup: any;
 
-	title = 'form-array';
-
-	fg!: FormGroup;
 	dataSource = new MatTableDataSource<any>(this.componentsList);
 	displayedColumns = [
 		'name',
@@ -63,7 +60,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		private _dialog: MatDialog,
 		private _cdr: ChangeDetectorRef,
 		private _alertService: AlertService,
-		private _fb: FormBuilder,
 		private _generalService: GeneralService,
 	) {}
 
@@ -201,8 +197,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	editSeparation(raee: Clasification) {
 		this.isActiveSeparationView = true;
 		this.raeeSelected = raee;
-
-		// Agregar peticion a backend par aobtener datos del RAEE
 		this._separationService.getSeparationById(raee.id).subscribe(res => {
 			if(res.success){
 				this.componentsList = res.data.components;
@@ -217,30 +211,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 				this.separation.raeeId = raee.id;
 			}
 		})
-
-		// this.separation = this.separationRaeeList.find(
-		// 	(separation) => separation.raeeId == raee.id
-		// );
-		// if (this.separation) {
-		// 	this.fg = this._fb.group({
-		// 		observation: [
-		// 			this.separation.observation,
-		// 			this._generalService.noWhitespaceValidator(),
-		// 		],
-		// 	});
-		// 	this.componentsList = this.separation.components;
-		// 	this.dataSource.data = this.componentsList;
-		// } else {
-		// 	this.separation = {
-		// 		raeeId: raee.id,
-		// 		components: [],
-		// 		observation: '',
-		// 	};
-		// 	this.separation.raeeId = raee.id;
-		// 	this.fg = this._fb.group({
-		// 		observation: [, this._generalService.noWhitespaceValidator()],
-		// 	});
-		// }
 	}
 
 	openDialogCancelSeparation() {
@@ -290,7 +260,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				this.separation.components = this.componentsList;
-				this.separation.observation = this.fg.value.observation;
 				this._separationService.addSeparation(this.separation);
 				this._alertService.setAlert({
 					isActive: true,

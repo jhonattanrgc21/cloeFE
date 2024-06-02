@@ -116,8 +116,7 @@ export class AuthService {
 		return this._httpService.post(this._forgotPasswordUrl, json);
 	}
 
-	resetPassword(token: string, json: ResetPassword) {
-		this._storageService.setCurrentToken(token);
+	resetPassword(json: ResetPassword) {
 		return this._httpService.post(this._resetPasswordUrl, json);
 	}
 

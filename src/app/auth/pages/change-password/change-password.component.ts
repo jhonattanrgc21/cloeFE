@@ -38,10 +38,11 @@ export class ChangePasswordComponent implements OnInit {
 	savePassword() {
 		const resetPassword: ResetPassword = {
 			password: this.form.value.password.trim(),
-			confirm_password: this.form.value.confirmPassword.trim()
+			confirm_password: this.form.value.confirmPassword.trim(),
+			token_url: this.token
 		}
 
-		this._authService.resetPassword(this.token, resetPassword).subscribe(res =>{
+		this._authService.resetPassword(resetPassword).subscribe(res =>{
 			if(res.success){
 				this.isSavePassword = true;
 				this.isErrorSave = false;
