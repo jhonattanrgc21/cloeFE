@@ -1,4 +1,4 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
@@ -9,16 +9,22 @@ import { SendMessage } from '../../interfaces/contacts.interface';
 import { ReceivedMessageComponent } from './received-message/received-message.component';
 import { LandingService } from '../../services/landing.service';
 import { ErrorPopupComponent } from 'src/app/shared/components/error-popup/error-popup.component';
+import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
+import { SelectFilter } from 'src/app/shared/interfaces/filters.interface';
 
 @Component({
 	selector: 'app-home',
 	templateUrl: './home.component.html',
 	styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
 	landingForm: FormGroup;
 	dialogWidth: string = '380px';
 	dialogHeight: string = 'auto';
+	state?: number;
+	city?: number;
+	statesList: SelectionInput[] = [];
+	citiesList: SelectionInput[] = [];
 
 	constructor(
 		private _fb: FormBuilder,
@@ -26,7 +32,7 @@ export class HomeComponent {
 		private _elementRef: ElementRef,
 		private _generalService: GeneralService,
 		private _dialog: MatDialog,
-		private _landingService: LandingService
+		private _landingService: LandingService,
 	) {
 		this.landingForm = this._fb.group({
 			name: [
@@ -45,14 +51,29 @@ export class HomeComponent {
 					Validators.pattern(emailPattern),
 				],
 			],
-			city: [
-				,
-				[Validators.required, this._generalService.noWhitespaceValidator()],
-			],
+			state: [, Validators.required],
+			city: [, Validators.required],
 			message: [
 				,
 				[Validators.required, this._generalService.noWhitespaceValidator()],
 			],
+		});
+
+		this.landingForm.get('state')?.valueChanges.subscribe((stateId) => {
+			this.landingForm.get('city')?.reset();
+			const stateSelectionFilter: SelectFilter = {
+				filters: { estado_id: stateId },
+			};
+			this._generalService.getCities(stateSelectionFilter).subscribe((res) => {
+				if (res.success) {
+					this.citiesList = res.data;
+				} else this.citiesList = [];
+			});
+		});
+	}
+	ngOnInit(): void {
+		this._generalService.getStates().subscribe((res) => {
+			this.statesList = res.success ? res.data : [];
 		});
 	}
 
@@ -91,11 +112,14 @@ export class HomeComponent {
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
 				let input = this.landingForm.value;
+				const cityId = this.citiesList.find(item => item.id == input.city)?.id;
+				const stateId = this.statesList.find(item => item.id == input.state)?.id;
 				const inputMessage: SendMessage = {
 					name: input.name.trim(),
 					phone: input.phone.trim(),
 					email: input.email.trim(),
-					city: input.city.trim(),
+					ciudad_id: stateId!,
+					estado_id: cityId!,
 					message: input.message.trim(),
 				};
 

@@ -105,7 +105,10 @@
 					<app-cloe-input-field [label]="'Correo electrónico'" formControlName="email" [typeInput]="'email'" [forName]="'emailLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 				</div>
 				<div class="mb-6 md:w-1/2 md:pl-4 ">
-					<app-cloe-input-field [label]="'Ciudad'" [useLettersOnly]="true" formControlName="city" [typeInput]="'text'" [forName]="'cityLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+					<app-cloe-select-search  formControlName="state" [forName]="'stateLanding'" [label]="'Estado'" [placeholder]="'Selecciona'" [options]="statesList"></app-cloe-select-search>
+				</div>
+				<div class="mb-6 md:w-1/2">
+					<app-cloe-select-search  formControlName="city" [forName]="'cityLanding'" [label]="'Ciudad'" [placeholder]="'Selecciona'" [options]="citiesList"></app-cloe-select-search>
 				</div>
 				<div class="mb-6  w-full ">
 					<app-cloe-input-field [label]="'Mensaje'" [useSpecialCharactersOnly]="true" formControlName="message" [typeInput]="'textarea'" [forName]="'messageLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
