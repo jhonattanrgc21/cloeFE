@@ -97,7 +97,7 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	) {}
 
 	ngOnInit(): void {
-		this.loadClasifications(0, 5, 1);
+		this.loadClasifications(1, 5, 1);
 		this.separationListSubscription =
 			this._separationService.separationList$.subscribe(
 				(separationsRaee: any[]) => {
@@ -108,7 +108,7 @@ export class SeparationComponent implements OnInit, OnDestroy {
 
 	handleTabChange() {
 		const tabInedx = this.matTabGroup.selectedIndex;
-		this.loadClasifications(0, 5, tabInedx + 1);
+		this.loadClasifications(1, 5, tabInedx + 1);
 	}
 
 
