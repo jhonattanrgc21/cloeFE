@@ -187,8 +187,6 @@ export class ClasificationTableComponent
 		this.clasificationSelected.emit(clasification);
 	}
 
-	openSeparationDetail(separation: Clasification) {}
-
 	openDiaglogDisabletSeparation(clasification: any) {
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',

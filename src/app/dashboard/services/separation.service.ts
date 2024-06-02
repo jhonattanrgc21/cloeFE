@@ -18,6 +18,7 @@ export class SeparationService {
 	private _createSeparationUrl: string = 'split/store';
 	private _updateSeparationUrl: string = 'split/update';
 	private _getRaeeByStatusUrl: string = 'split/index?page=';
+	private _getSeparationByIdUrl: string = 'split/show/';
 
 	constructor(
 		private _clasificationService: ClasificationService,
@@ -44,6 +45,10 @@ export class SeparationService {
 		const id = json.id;
 		delete json.id;
 		return this._httpService.put(this._updateSeparationUrl + '/' + id, json);
+	}
+
+	getSeparationById(raeeId: number){
+		return this._httpService.get(`${this._getSeparationByIdUrl}${raeeId}`)
 	}
 
 	addSeparation(separation: Separation) {

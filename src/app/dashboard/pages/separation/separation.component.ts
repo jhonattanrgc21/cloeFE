@@ -19,6 +19,8 @@ import { Separation } from '../../interfaces/separation.interface';
 import { SeparationService } from './../../services/separation.service';
 import { ViewComponentComponent } from './view-component/view-component.component';
 import { Clasification } from '../../interfaces/clasification.interface';
+import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
+import { RaeeComponent, RaeeComponentEdit } from '../../interfaces/raee-component.interface';
 
 @Component({
 	selector: 'app-separation',
@@ -31,45 +33,14 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	separationRaeeList: any[] = [];
 	componentsList: any[] = [];
 	separationList: any[] = [];
-	materialList: any[] = [
-		{
-			id: 1,
-			name: 'Plastico',
-		},
-		{
-			id: 2,
-			name: 'Metal',
-		},
-		{
-			id: 3,
-			name: 'Vidrio',
-		},
-		{
-			id: 4,
-			name: 'Otros',
-		},
-	];
-
-	processList: any[] = [
-		{
-			id: 1,
-			name: 'Proceso 1',
-		},
-		{
-			id: 2,
-			name: 'Proceso 2',
-		},
-		{
-			id: 3,
-			name: 'Proceso 3',
-		},
-	];
+	materialList: SelectionInput[] = [];
+	processList: SelectionInput[] = [];
+	separation!: Separation;
 
 	clasificationList: Clasification[] = [];
 	totalItems: number = 0;
 	itemsPerPage = 5;
 	currentPage = 1;
-	separation!: Separation;
 
 	private separationListSubscription!: Subscription;
 	@ViewChild(MatTabGroup) matTabGroup: any;
@@ -98,6 +69,14 @@ export class SeparationComponent implements OnInit, OnDestroy {
 
 	ngOnInit(): void {
 		this.loadClasifications(1, 5, 1);
+		this._generalService.getMaterials().subscribe((res) => {
+			this.materialList = res.success ? res.data : [];
+		});
+
+		this._generalService.getProcess().subscribe((res) => {
+			this.processList = res.success ? res.data : [];
+		});
+
 		this.separationListSubscription =
 			this._separationService.separationList$.subscribe(
 				(separationsRaee: any[]) => {
@@ -123,7 +102,7 @@ export class SeparationComponent implements OnInit, OnDestroy {
 			});
 	}
 
-	openDialogComponentEdit(component?: any) {
+	openDialogComponentEdit(component?: RaeeComponent) {
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(ComponentEditComponent, {
 			width: viewportSize.width < 768 ? '380px' : '474px',
@@ -141,11 +120,11 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	openDialogConfirmationComponent(component: any): void {
-		const title = component.id
+	openDialogConfirmationComponent(component: RaeeComponentEdit): void {
+		const title = component.component_id
 			? 'Editar componente de RAEE'
 			: 'Componente de RAEE';
-		const subtitle = component.id
+		const subtitle = component.component_id
 			? '¿Seguro de que deseas editar esta componente de RAEE?'
 			: '¿Seguro de que deseas registrar este componente de RAEE?';
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
@@ -163,11 +142,10 @@ export class SeparationComponent implements OnInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				// TODO: conversar esta validacion con Jesus
-				if (!component.id) component.id = this.componentsList.length + 1;
+				if (!component.component_id) component.component_id = this.componentsList.length + 1;
 
 				const index = this.componentsList.findIndex(
-					(item) => item.id === component.id
+					(item) => item.id === component.component_id
 				);
 
 				let message = '';
@@ -220,33 +198,49 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	editSeparation(raee: any) {
+	editSeparation(raee: Clasification) {
 		this.isActiveSeparationView = true;
 		this.raeeSelected = raee;
 
-		this.separation = this.separationRaeeList.find(
-			(separation) => separation.raeeId == raee.id
-		);
-		if (this.separation) {
-			this.fg = this._fb.group({
-				observation: [
-					this.separation.observation,
-					this._generalService.noWhitespaceValidator(),
-				],
-			});
-			this.componentsList = this.separation.components;
-			this.dataSource.data = this.componentsList;
-		} else {
-			this.separation = {
-				raeeId: raee.id,
-				components: [],
-				observation: '',
-			};
-			this.separation.raeeId = raee.id;
-			this.fg = this._fb.group({
-				observation: [, this._generalService.noWhitespaceValidator()],
-			});
-		}
+		// Agregar peticion a backend par aobtener datos del RAEE
+		this._separationService.getSeparationById(raee.id).subscribe(res => {
+			if(res.success){
+				this.componentsList = res.data.components;
+				this.dataSource.data = this.componentsList;
+			}
+			else{
+				this.separation = {
+					raeeId: raee.id,
+					components: [],
+					observation: '',
+				};
+				this.separation.raeeId = raee.id;
+			}
+		})
+
+		// this.separation = this.separationRaeeList.find(
+		// 	(separation) => separation.raeeId == raee.id
+		// );
+		// if (this.separation) {
+		// 	this.fg = this._fb.group({
+		// 		observation: [
+		// 			this.separation.observation,
+		// 			this._generalService.noWhitespaceValidator(),
+		// 		],
+		// 	});
+		// 	this.componentsList = this.separation.components;
+		// 	this.dataSource.data = this.componentsList;
+		// } else {
+		// 	this.separation = {
+		// 		raeeId: raee.id,
+		// 		components: [],
+		// 		observation: '',
+		// 	};
+		// 	this.separation.raeeId = raee.id;
+		// 	this.fg = this._fb.group({
+		// 		observation: [, this._generalService.noWhitespaceValidator()],
+		// 	});
+		// }
 	}
 
 	openDialogCancelSeparation() {

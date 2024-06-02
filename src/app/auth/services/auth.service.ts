@@ -117,7 +117,6 @@ export class AuthService {
 	}
 
 	resetPassword(token: string, json: ResetPassword) {
-		token = token.split(' ')[1];
 		this._storageService.setCurrentToken(token);
 		return this._httpService.post(this._resetPasswordUrl, json);
 	}
