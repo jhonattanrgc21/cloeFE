@@ -1,12 +1,12 @@
 export interface SummaryGraph {
-	raee_by_line:   RaeeByLine[];
+	raee_by_line_percent:   RaeeByLine[];
 	raee_by_status: RaeeByStatus[];
-	users_by_role:  UsersByRole[];
+	users_by_role_percent:  UsersByRole[];
 }
 
 export interface RaeeByLine {
 	line_name:   string;
-	raees_count: number;
+	raees_percentage: number;
 }
 
 export interface RaeeByStatus {
@@ -16,5 +16,5 @@ export interface RaeeByStatus {
 
 export interface UsersByRole {
 	role:        string;
-	users_count: number;
+	users_percentage: number;
 }

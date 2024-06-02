@@ -28,8 +28,8 @@ export class SummaryComponent implements OnInit {
 
 		this._summaryService.getDataGraph().subscribe((res: SummaryGraph) => {
 
-			this.labelsRaeeTypeGraph = res.raee_by_line.map(item => item.line_name);
-			this.dataRaeeTypeGraph = res.raee_by_line.map(item => item.raees_count);
+			this.labelsRaeeTypeGraph = res.raee_by_line_percent.map(item => item.line_name);
+			this.dataRaeeTypeGraph = res.raee_by_line_percent.map(item => Number(item.raees_percentage));
 			const data = {
 				labels: this.labelsRaeeTypeGraph,
 				datasets: [
@@ -127,8 +127,8 @@ export class SummaryComponent implements OnInit {
 				},
 			});
 
-			this.labelsUsersByRolGraph = res.users_by_role.map(item => item.role);
-			this.dataUsersByRolraph = res.users_by_role.map(item => item.users_count);
+			this.labelsUsersByRolGraph = res.users_by_role_percent.map(item => item.role);
+			this.dataUsersByRolraph = res.users_by_role_percent.map(item => Number(item.users_percentage));
 
 			const data4 = {
 				labels: this.labelsUsersByRolGraph,

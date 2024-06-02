@@ -274,33 +274,21 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	openDialogComponentDetail(component: any){
+	openDialogComponentDetail(component: RaeeComponent){
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(ViewComponentComponent, {
 			width: viewportSize.width < 768 ? '380px' : '479px',
 			height: 'auto',
 			autoFocus: false,
 			data: {
-				name: component,
-				materials: this.getNames(this.materialList, component.materials),
-				process: this.getNames(this.processList, component.process),
-				weight: component.weight,
-				dimensions: component.dimensions,
-				reutilizable: component.reutilizable,
-				comment: component.comment?? ''
-			}
+				component,
+			},
 		});
 
 		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result == 'edit') this.openDialogComponentEdit(component);
 			if (result == 'delete') this.openDiaglogRemoveComponent(component);
 		});
-	}
-
-	getNames(list: any[], ids: number[]) {
-		const objetosFiltrados = list.filter((item) => ids.includes(item.id));
-		const nombres = objetosFiltrados.map((objeto) => objeto.name).join(', ');
-		return nombres;
 	}
 
 	ngOnDestroy(): void {
