@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, map, tap } from 'rxjs';
 import { ClasificationService } from './clasification.service';
 import { Separation } from '../interfaces/separation.interface';
 import { HttpService } from 'src/app/core/services/http.service';
@@ -9,8 +9,6 @@ import { Clasification } from '../interfaces/clasification.interface';
 	providedIn: 'root',
 })
 export class SeparationService {
-	private _separationListSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-	separationList$: Observable<any[]> = this._separationListSubject.asObservable();
 
 	private _raeeListSubject: BehaviorSubject<Clasification[]> = new BehaviorSubject<Clasification[]>([]);
 	raeeList$: Observable<Clasification[]> = this._raeeListSubject.asObservable();
@@ -37,7 +35,7 @@ export class SeparationService {
 		);
 	}
 
-	createSeparation(json: any) {
+	registerSeparation(json: any) {
 		return this._httpService.post(this._createSeparationUrl, json);
 	}
 
@@ -48,27 +46,44 @@ export class SeparationService {
 	}
 
 	getSeparationById(raeeId: number){
-		return this._httpService.get(`${this._getSeparationByIdUrl}${raeeId}`)
+		return this._httpService.get(`${this._getSeparationByIdUrl}${raeeId}`).pipe(
+      map(response => {
+        if (response && response.data && response.data.components) {
+          response.data.components = response.data.components.map((component: any) => {
+            return {
+              component_id: component.id,
+              name: component.name,
+              weight: component.weight,
+              dimensions: component.dimensions,
+              reusable: component.reusable,
+              observations: component.observations,
+              materials: component.materials,
+              process: component.process
+            };
+          });
+        }
+        return response;
+      }));
 	}
 
-	addSeparation(separation: Separation) {
-		const currentList = this._separationListSubject.getValue();
-		const index = currentList.findIndex(
-			(item) => item.raeeId === separation.raeeId
-		);
+	// addSeparation(separation: Separation) {
+	// 	const currentList = this._separationListSubject.getValue();
+	// 	const index = currentList.findIndex(
+	// 		(item) => item.raee_id === separation.raee_id
+	// 	);
 
-		if (index !== -1) currentList[index] = separation;
-		else currentList.push(separation);
+	// 	if (index !== -1) currentList[index] = separation;
+	// 	else currentList.push(separation);
 
-		this._separationListSubject.next(currentList);
-		this._clasificationService.modifyStatus(separation.raeeId, 'Separado');
-	}
+	// 	this._separationListSubject.next(currentList);
+	// 	this._clasificationService.modifyStatus(separation.raee_id, 'Separado');
+	// }
 
-	removeSeparation(raeeId: number) {
-		const currentList = this._separationListSubject.getValue();
-		const index = currentList.findIndex((item) => item.id === raeeId);
-		currentList.splice(index, 1);
-		this._separationListSubject.next(currentList);
-		this._clasificationService.modifyStatus(raeeId, 'Clasificado');
-	}
+	// removeSeparation(raeeId: number) {
+	// 	const currentList = this._separationListSubject.getValue();
+	// 	const index = currentList.findIndex((item) => item.id === raeeId);
+	// 	currentList.splice(index, 1);
+	// 	this._separationListSubject.next(currentList);
+	// 	this._clasificationService.modifyStatus(raeeId, 'Clasificado');
+	// }
 }

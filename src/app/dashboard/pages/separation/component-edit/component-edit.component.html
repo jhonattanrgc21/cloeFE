@@ -11,17 +11,17 @@
 		<app-cloe-select-search formControlName="process" [label]="'Procesos'" [isMultiple]="true"
 			[forName]="'processSeparation'" [placeholder]="'Selecciona'" [options]="processList"></app-cloe-select-search>
 
-		<app-cloe-input-field formControlName="weight" [mask]="'separator.2'" [label]="'Peso (g)'" [typeInput]="'text'"
-			[forName]="'weightSeparation'" [placeholder]="'0,00'"></app-cloe-input-field>
+		<app-cloe-input-field formControlName="weight" [useNumericInput]="true" [label]="'Peso (g)'" [typeInput]="'text'"
+			[forName]="'weightSeparation'" [placeholder]="'0.00'"></app-cloe-input-field>
 
-		<app-cloe-input-field formControlName="length" [mask]="'separator,2'" [label]="'Largo (cm)'" [typeInput]="'text'"
-			[forName]="'lengthSeparation'" [placeholder]="'0,00'"></app-cloe-input-field>
+		<app-cloe-input-field formControlName="length" [useNumericInput]="true" [label]="'Largo (cm)'" [typeInput]="'text'"
+			[forName]="'lengthSeparation'" [placeholder]="'0.00'"></app-cloe-input-field>
 
-		<app-cloe-input-field formControlName="width" [mask]="'separator,2'" [label]="'Ancho (cm)'" [typeInput]="'text'"
-			[forName]="'widthSeparation'" [placeholder]="'0,00'"></app-cloe-input-field>
+		<app-cloe-input-field formControlName="width" [useNumericInput]="true" [label]="'Ancho (cm)'" [typeInput]="'text'"
+			[forName]="'widthSeparation'" [placeholder]="'0.00'"></app-cloe-input-field>
 
-		<app-cloe-input-field formControlName="height" [mask]="'separator,2'" [label]="'Alto (cm)'" [typeInput]="'text'"
-			[forName]="'heightSeparation'" [placeholder]="'0,00'"></app-cloe-input-field>
+		<app-cloe-input-field formControlName="height" [useNumericInput]="true" [label]="'Alto (cm)'" [typeInput]="'text'"
+			[forName]="'heightSeparation'" [placeholder]="'0.00'"></app-cloe-input-field>
 
 		<app-cloe-input-field [label]="'Observación'" formControlName="comment" [rows]="'3'" [typeInput]="'textarea'"
 			[forName]="'commentSeparation'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>

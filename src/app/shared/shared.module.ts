@@ -13,6 +13,7 @@ import { LettersOnlyDirective } from './directives/letters-only.directive';
 import { NumbersOnlyDirective } from './directives/numbers-only.directive';
 import { ErrorPopupComponent } from './components/error-popup/error-popup.component';
 import { SpecialCharactersDirectiveDirective } from './directives/special-characters-directive.directive';
+import { NumericInputDirective } from './directives/numeric-input.directive';
 @NgModule({
 	declarations: [
 		CloeInputFieldComponent,
@@ -25,6 +26,7 @@ import { SpecialCharactersDirectiveDirective } from './directives/special-charac
 		NumbersOnlyDirective,
   ErrorPopupComponent,
   SpecialCharactersDirectiveDirective,
+  NumericInputDirective,
 	],
 	exports: [
 		CloeInputFieldComponent,

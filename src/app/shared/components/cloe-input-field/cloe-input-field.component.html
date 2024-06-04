@@ -52,7 +52,21 @@
 				(focus)="onInputFocus()" (blur)="onInputBlur()" />
 		</ng-container>
 
-		<ng-container *ngIf="!useLettersOnly && !useNumbersOnly && !useSpecialCharactersOnly">
+		<ng-container *ngIf="useNumericInput">
+			<input [ngClass]="{
+			'border-success-500': isInputActive,
+			'ring-success-500': isInputActive,
+			'outline-none': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+			'ring-1': (control.invalid && (control.dirty || control.touched)) || isInputActive,
+			'border-danger-500': control.invalid && (control.dirty || control.touched),
+			'ring-danger-500': control.invalid && (control.dirty || control.touched),
+		}" [mask]="mask" [allowNegativeNumbers]="false" [id]="forName" [placeholder]="placeholder" [formControl]="control"
+				[type]="typeInput === 'password' && !showPassword ? 'password' : 'text'"  appNumericInput [isActive]="useNumericInput"
+				class="block w-full text-[#000000DE] border border-light rounded py-3 px-4 leading-tight focus:outline-none focus:border-success-500 focus:ring-1 focus:ring-success-500"
+				(focus)="onInputFocus()" (blur)="onInputBlur()" />
+		</ng-container>
+
+		<ng-container *ngIf="!useLettersOnly && !useNumbersOnly && !useSpecialCharactersOnly && !useNumericInput">
 			<input [ngClass]="{
 			'border-success-500': isInputActive,
 			'ring-success-500': isInputActive,

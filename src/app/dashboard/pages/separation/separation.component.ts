@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatTabGroup } from '@angular/material/tabs';
 import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/shared/services/alert.service';
@@ -21,6 +20,7 @@ import { ViewComponentComponent } from './view-component/view-component.componen
 import { Clasification } from '../../interfaces/clasification.interface';
 import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
 import { RaeeComponent, RaeeComponentEdit } from '../../interfaces/raee-component.interface';
+import { RaeeComponentsService } from '../../services/raee-components.service';
 
 @Component({
 	selector: 'app-separation',
@@ -31,8 +31,7 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	isActiveSeparationView: boolean = false;
 	raeeSelected: any;
 	separationRaeeList: any[] = [];
-	componentsList: any[] = [];
-	separationList: any[] = [];
+	componentsList: RaeeComponent[] = [];
 	materialList: SelectionInput[] = [];
 	processList: SelectionInput[] = [];
 	separation!: Separation;
@@ -61,7 +60,30 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		private _cdr: ChangeDetectorRef,
 		private _alertService: AlertService,
 		private _generalService: GeneralService,
+		private _raeeComponentsService: RaeeComponentsService
 	) {}
+
+	private updateComponentList(component_id: number) {
+		const index = this.componentsList.findIndex(
+			(item) => item.component_id === component_id
+		);
+		if (index !== -1) {
+			this.componentsList.splice(index, 1);
+			this.updateDataSource();
+		}
+	}
+
+	private updateDataSource() {
+		this.dataSource.data = this.componentsList;
+		this._cdr.detectChanges();
+	}
+
+	private showAlert(message: string) {
+		this._alertService.setAlert({
+			isActive: true,
+			message: 'Excelente, el componente se ha eliminado con éxito.',
+		});
+	}
 
 	ngOnInit(): void {
 		this.loadClasifications(1, 5, 1);
@@ -72,13 +94,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		this._generalService.getProcess().subscribe((res) => {
 			this.processList = res.success ? res.data : [];
 		});
-
-		this.separationListSubscription =
-			this._separationService.separationList$.subscribe(
-				(separationsRaee: any[]) => {
-					this.separationRaeeList = separationsRaee;
-				}
-			);
 	}
 
 	handleTabChange() {
@@ -86,19 +101,23 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		this.loadClasifications(1, 5, tabInedx + 1);
 	}
 
-
-	loadClasifications(currentPage: number, itemsPerPage:number, typeClasification: number){
+	loadClasifications(
+		currentPage: number,
+		itemsPerPage: number,
+		typeClasification: number
+	) {
 		this._separationService
 			.getRaeeByStatus(currentPage, itemsPerPage, typeClasification)
 			.subscribe((response) => {
 				this.totalItems = response.meta.total;
 				this.itemsPerPage = response.meta.itemsPerPage;
 				this.currentPage = response.meta.currentPage;
-				this.clasificationList; response.data
+				this.clasificationList;
+				response.data;
 			});
 	}
 
-	openDialogComponentEdit(component?: RaeeComponent) {
+	openDialogComponentEdit(component?: any, index?: number) {
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(ComponentEditComponent, {
 			width: viewportSize.width < 768 ? '380px' : '474px',
@@ -112,17 +131,13 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		});
 
 		dialogRef.afterClosed().subscribe((result: any) => {
-			if (result) this.openDialogConfirmationComponent(result);
+			if (result) this.openDialogConfirmationComponent(result, index);
 		});
 	}
 
-	openDialogConfirmationComponent(component: RaeeComponentEdit): void {
-		const title = component.component_id
-			? 'Editar componente de RAEE'
-			: 'Componente de RAEE';
-		const subtitle = component.component_id
-			? '¿Seguro de que deseas editar esta componente de RAEE?'
-			: '¿Seguro de que deseas registrar este componente de RAEE?';
+	openDialogConfirmationComponent(component: any, index?: number): void {
+		const title = 'Componente de RAEE';
+		const subtitle = '¿Seguro de que deseas guardar este componente de RAEE?';
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
 			height: 'auto',
@@ -138,25 +153,25 @@ export class SeparationComponent implements OnInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				if (!component.component_id) component.component_id = this.componentsList.length + 1;
-
-				const index = this.componentsList.findIndex(
-					(item) => item.id === component.component_id
-				);
-
-				let message = '';
-				if (index !== -1) {
-					this.componentsList[index] = component;
-					message = 'Excelente, el componente se ha registrado con éxito.';
-				} else {
-					this.componentsList.push(component);
-					message = 'Excelente, el componente se ha editado con éxito.';
+				const materialIds = component.materials;
+				const processIds = component.process;
+				component.materials = this.materialList.filter(item => materialIds.includes(item.id)).map(material => material.name);
+				component.process = this.processList.filter(item => processIds.includes(item.id)).map(process => process.name);
+				if (component.component_id) {
+					index = this.componentsList.findIndex(
+						(item) => item.component_id === component.component_id
+					);
 				}
+
+				if(index != undefined) this.componentsList[index] = component;
+				else this.componentsList.push(component);
+
 
 				this._alertService.setAlert({
 					isActive: true,
-					message,
+					message: 'Excelente, el componente se ha guardado con éxito.',
 				});
+
 				this.dataSource.data = this.componentsList;
 
 				this._cdr.detectChanges();
@@ -164,7 +179,7 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	openDiaglogRemoveComponent(component: any) {
+	openDiaglogRemoveComponent(component: RaeeComponentEdit, index?: number) {
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
 			height: 'auto',
@@ -179,17 +194,22 @@ export class SeparationComponent implements OnInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				const index = this.componentsList.findIndex(
-					(item) => item.id === component.id
-				);
-				this.componentsList.splice(index, 1);
-				this._alertService.setAlert({
-					isActive: true,
-					message: 'Excelente, el componente se ha eliminado con éxito.',
-				});
-
-				this.dataSource.data = this.componentsList;
-				this._cdr.detectChanges();
+				if (component.component_id) {
+					this._raeeComponentsService
+						.deleteComponent(component.component_id)
+						.subscribe((res) => {
+							if (res.success) {
+								this.updateComponentList(component.component_id!);
+								this.showAlert(
+									'Excelente, el componente se ha eliminado con éxito.'
+								);
+							}
+						});
+				} else if (index !== undefined) {
+					this.componentsList.splice(index, 1);
+					this.updateDataSource();
+					this.showAlert('Excelente, el componente se ha eliminado con éxito.');
+				}
 			}
 		});
 	}
@@ -197,19 +217,17 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	editSeparation(raee: Clasification) {
 		this.isActiveSeparationView = true;
 		this.raeeSelected = raee;
-		this._separationService.getSeparationById(raee.id).subscribe(res => {
-			if(res.success){
+		this._separationService.getSeparationById(raee.id).subscribe((res) => {
+			this.separation = {
+				raee_id: raee.id,
+				components: [],
+			};
+
+			if (res.success) {
 				this.componentsList = res.data.components;
 				this.dataSource.data = this.componentsList;
 			}
-			else{
-				this.separation = {
-					raeeId: raee.id,
-					components: [],
-				};
-				this.separation.raeeId = raee.id;
-			}
-		})
+		});
 	}
 
 	openDialogCancelSeparation() {
@@ -238,12 +256,8 @@ export class SeparationComponent implements OnInit, OnDestroy {
 	}
 
 	openDialogConfirmationSeparation() {
-		const title = this.separation.id
-			? 'Editar separación de RAEE'
-			: 'Separar RAEE';
-		const subtitle = this.separation.id
-			? '¿Seguro de que deseas editar la separación de este RAEE?'
-			: '¿Seguro de que deseas separar este RAEE?';
+		const title = 'Separar RAEE';
+		const subtitle = '¿Seguro de que deseas guardar la separación de este RAEE?'
 		const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
 			width: '380px',
 			height: 'auto',
@@ -258,27 +272,46 @@ export class SeparationComponent implements OnInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				this.separation.components = this.componentsList;
-				this._separationService.addSeparation(this.separation);
-				this._alertService.setAlert({
-					isActive: true,
-					message: 'Excelente, el RAEE se ha separado con éxito.',
+				this.separation.components = this.componentsList.map((component) => {
+					return {
+						id: component.component_id,
+						name: component.name,
+						weight: Number(component.weight),
+						dimensions: component.dimensions,
+						reusable: component.reusable,
+						observations: component.observations,
+						materials: this.materialList.filter(item => component.materials!.includes(item.name)).map(material => material.id),
+						process: this.processList.filter(item => component.process!.includes(item.name)).map(process => process.id),
+					};
 				});
-				this._cdr.detectChanges();
-				this.isActiveSeparationView = false;
-				this.raeeSelected = null;
-				this.componentsList = [];
-				this.dataSource.data = this.componentsList;
+
+				this._separationService.registerSeparation(this.separation).subscribe(res => {
+					if(res.success){
+						this._alertService.setAlert({
+							isActive: true,
+							message: 'Excelente, el RAEE se ha separado con éxito.',
+						});
+						this._cdr.detectChanges();
+						this.isActiveSeparationView = false;
+						this.raeeSelected = null;
+						this.componentsList = [];
+						this.dataSource.data = this.componentsList;
+					}
+					else{
+						this._alertService.setAlert({
+							isActive: true,
+							message: res.message,
+							type: 'error'
+						});
+					}
+				})
+
+
 			}
 		});
 	}
 
-	openDialogComponentDetail(component: any){
-		const materialIds = component.materials;
-		const processIds = component.process;
-		component.materials = 	this.materialList.filter(item => materialIds.includes(item.id)).map(material => material.name);
-		component.process = 	this.processList.filter(item => processIds.includes(item.id)).map(process => process.name);
-
+	openDialogComponentDetail(component: any, index: number){
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(ViewComponentComponent, {
 			width: viewportSize.width < 768 ? '380px' : '479px',
@@ -290,8 +323,8 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		});
 
 		dialogRef.afterClosed().subscribe((result: any) => {
-			if (result == 'edit') this.openDialogComponentEdit(component);
-			if (result == 'delete') this.openDiaglogRemoveComponent(component);
+			if (result == 'edit') this.openDialogComponentEdit(component, index);
+			if (result == 'delete') this.openDiaglogRemoveComponent(component, index);
 		});
 	}
 

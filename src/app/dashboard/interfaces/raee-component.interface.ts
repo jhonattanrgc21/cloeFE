@@ -1,5 +1,5 @@
 export interface RaeeComponent {
-	raee_name:    string;
+	raee_name?:    string;
 	component_id: number;
 	name:         string;
 	weight:       number;
