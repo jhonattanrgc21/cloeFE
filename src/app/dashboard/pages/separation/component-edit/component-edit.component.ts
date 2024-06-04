@@ -108,8 +108,8 @@ export class ComponentEditComponent implements OnInit {
 			const component: RaeeComponentEdit = {
 				component_id: form.id,
 				name: form.name.trim(),
-				weight: form.weight,
-				dimensions: (form.length + 'x' + form.width + 'x' + form.height).replace('.', ','),
+				weight: form.weight.replace(',', '.'),
+				dimensions: form.length.replace(',', '.') + 'x' + form.width.replace(',', '.') + 'x' + form.height.replace(',', '.'),
 				reusable: form.reutilizable,
 				materials: form.materials,
 				process: form.process,

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
-import { NgxMaskModule } from 'ngx-mask';
 import { PaginatePipe } from './pipes/paginate.pipe';
 import { CloeInputFieldComponent } from './components/cloe-input-field/cloe-input-field.component';
 import { CloeSelectSearchComponent } from './components/cloe-select-search/cloe-select-search.component';
@@ -42,7 +41,6 @@ import { NumericInputDirective } from './directives/numeric-input.directive';
 		CommonModule,
 		ReactiveFormsModule,
 		NgSelectModule,
-		NgxMaskModule.forChild(),
 	],
 })
 export class SharedModule { }

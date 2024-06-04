@@ -15,7 +15,6 @@ export class CloeInputFieldComponent implements ControlValueAccessor, OnInit, On
 	@Input() rows: string = '10';
 	@Input() isDisabled: boolean = false;
 	@Input() options: string[] = [];
-	@Input() mask: string = '';
 	@Input() useLettersOnly: boolean = false;
 	@Input() useNumbersOnly: boolean = false;
 	@Input() useSpecialCharactersOnly: boolean = false;

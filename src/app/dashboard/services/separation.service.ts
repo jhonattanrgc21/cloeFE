@@ -79,11 +79,4 @@ export class SeparationService {
 	// 	this._clasificationService.modifyStatus(separation.raee_id, 'Separado');
 	// }
 
-	// removeSeparation(raeeId: number) {
-	// 	const currentList = this._separationListSubject.getValue();
-	// 	const index = currentList.findIndex((item) => item.id === raeeId);
-	// 	currentList.splice(index, 1);
-	// 	this._separationListSubject.next(currentList);
-	// 	this._clasificationService.modifyStatus(raeeId, 'Clasificado');
-	// }
 }

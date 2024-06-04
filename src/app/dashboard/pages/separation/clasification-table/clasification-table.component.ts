@@ -188,31 +188,6 @@ export class ClasificationTableComponent
 		this.clasificationSelected.emit(clasification);
 	}
 
-	openDiaglogDisabletSeparation(clasification: any) {
-		// const dialogRef = this._dialog.open(ConfirmationPopupComponent, {
-		// 	width: '380px',
-		// 	height: 'auto',
-		// 	autoFocus: false,
-		// 	data: {
-		// 		icon: './../../../../../../assets/svg/icono_sidebar_separar_rojo_24x24.svg',
-		// 		title: 'Eliminar separación de RAEE',
-		// 		subtitle: '¿Seguro de que deseas eliminar este separación de RAEE?',
-		// 		type: 'delete',
-		// 	},
-		// });
-
-		// dialogRef.afterClosed().subscribe((result) => {
-		// 	if (result) {
-		// 		this._separationService.removeSeparation(clasification.raeeId);
-		// 		this._cdr.detectChanges();
-		// 		this._alertService.setAlert({
-		// 			isActive: true,
-		// 			message:
-		// 				'Excelente, la separación de RAEE se ha eliminado con éxito.',
-		// 		});
-		// 	}
-		// });
-	}
 
 	ngOnDestroy(): void {
 		if(this._clasificationListSubscription) this._clasificationListSubscription.unsubscribe();

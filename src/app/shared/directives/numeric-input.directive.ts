@@ -5,7 +5,7 @@ import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 })
 export class NumericInputDirective {
   @Input() isActive: boolean = false;
-  private regex: RegExp = new RegExp(/^\d*\.?\d{0,2}$/g); // Permite números en el formato "2.33"
+	private regex: RegExp = new RegExp(/^\d*\.?\d{0,2}$/g); // Permite números en el formato "2.33"
   private specialKeys: Array<string> = ['Backspace', 'Tab', 'End', 'Home', 'ArrowLeft', 'ArrowRight', 'Delete'];
 
   constructor(private el: ElementRef) { }
@@ -18,8 +18,8 @@ export class NumericInputDirective {
     }
 
     // Evita la entrada de caracteres especiales, letras, espacios y números negativos
-    const isInvalidCharacter = /[^0-9.\-\b]/.test(event.key);
-    if (isInvalidCharacter) {
+    const isInvalidCharacter = /[^0-9.]/.test(event.key);
+    if (isInvalidCharacter || event.key === ' ' || event.key === '-') {
       event.preventDefault();
     }
 
@@ -37,9 +37,27 @@ export class NumericInputDirective {
     let pastedText = clipboardData?.getData('text');
 
     if (pastedText) {
-      let pastedInput = pastedText.replace(/[^0-9.]/g, '');
-      if (!pastedInput.match(this.regex)) {
+      // Reemplaza comas con puntos y elimina caracteres no permitidos
+      let pastedInput = pastedText.replace(/,/g, '.').replace(/[^0-9.]/g, '');
+      if (!pastedInput.match(this.regex) || pastedInput === '.') {
         event.preventDefault();
+      } else {
+        this.el.nativeElement.value = pastedInput;
+        event.preventDefault();
+      }
+    }
+  }
+
+  @HostListener('blur', ['$event'])
+  onBlur(event: FocusEvent) {
+    let current: string = this.el.nativeElement.value;
+    if (current) {
+      // Reemplaza comas con puntos y elimina caracteres no permitidos
+      let sanitizedValue = current.replace(/,/g, '.').replace(/[^0-9.]/g, '');
+      if (!sanitizedValue.match(this.regex) || sanitizedValue === '.') {
+        this.el.nativeElement.value = '';
+      } else {
+        this.el.nativeElement.value = sanitizedValue;
       }
     }
   }
