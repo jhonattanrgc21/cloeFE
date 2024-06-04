@@ -274,7 +274,12 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	openDialogComponentDetail(component: RaeeComponent){
+	openDialogComponentDetail(component: any){
+		const materialIds = component.materials;
+		const processIds = component.process;
+		component.materials = 	this.materialList.filter(item => materialIds.includes(item.id)).map(material => material.name);
+		component.process = 	this.processList.filter(item => processIds.includes(item.id)).map(process => process.name);
+
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(ViewComponentComponent, {
 			width: viewportSize.width < 768 ? '380px' : '479px',

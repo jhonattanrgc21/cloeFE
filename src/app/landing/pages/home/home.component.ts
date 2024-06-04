@@ -118,8 +118,8 @@ export class HomeComponent implements OnInit {
 					name: input.name.trim(),
 					phone: input.phone.trim(),
 					email: input.email.trim(),
-					ciudad_id: stateId!,
-					estado_id: cityId!,
+					ciudad_id: cityId!,
+					estado_id: stateId!,
 					message: input.message.trim(),
 				};
 
