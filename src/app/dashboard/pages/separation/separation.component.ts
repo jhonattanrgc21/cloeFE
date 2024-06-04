@@ -206,7 +206,6 @@ export class SeparationComponent implements OnInit, OnDestroy {
 				this.separation = {
 					raeeId: raee.id,
 					components: [],
-					observation: '',
 				};
 				this.separation.raeeId = raee.id;
 			}

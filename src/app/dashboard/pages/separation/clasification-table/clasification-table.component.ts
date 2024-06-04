@@ -10,6 +10,7 @@ import {
 	EventEmitter,
 	SimpleChanges,
 	OnChanges,
+	OnDestroy,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
@@ -30,7 +31,7 @@ import { GeneralService } from 'src/app/shared/services/general.service';
 	styleUrls: ['./clasification-table.component.scss'],
 })
 export class ClasificationTableComponent
-	implements OnInit, AfterViewInit, OnChanges
+	implements OnInit, AfterViewInit, OnChanges, OnDestroy
 {
 	private _clasificationListSubscription!: Subscription;
 	@Input() clasificationList: Clasification[] = [];
@@ -160,11 +161,11 @@ export class ClasificationTableComponent
 
 		dialogRef.afterClosed().subscribe((result: any) => {
 			if (result) {
-				const getPdfUrl: string = 'split/report-pdf';
-				const getExcelUrl: string = 'split/report-excel';
+				const getPdfUrl: string = `split/report-pdf?type=${this.typeRaeeStatus}`;
+				const getExcelUrl: string = `split/report-excel?type=${this.typeRaeeStatus}`;
 				if (result == 1)
 					this._generalService.getDocument(
-						'reporte-usuarios.xlsx',
+						'reporte-separacion.xlsx',
 						DOCUMENT_TYPE.excel,
 						getExcelUrl
 					);
@@ -211,5 +212,9 @@ export class ClasificationTableComponent
 				});
 			}
 		});
+	}
+
+	ngOnDestroy(): void {
+		if(this._clasificationListSubscription) this._clasificationListSubscription.unsubscribe();
 	}
 }
