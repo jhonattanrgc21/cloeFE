@@ -172,7 +172,6 @@ export class EditUserPopupComponent implements OnInit, OnDestroy {
 				identification: user.cedula_number,
 				employePosition: user.role,
 				address: user.address,
-				gatheringCenter: user.centro_id,
 			});
 		}
 	}
