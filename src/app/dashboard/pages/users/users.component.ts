@@ -189,12 +189,11 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 	}
 
 	openDialogConfirmationUser(userEdit: UserEdit): void {
-		const isEdit = !!userEdit.id;
-		const title = isEdit ? 'Editar usuario' : 'Registrar usuario';
-		const subtitle = isEdit
+		const title = userEdit.id ? 'Editar usuario' : 'Registrar usuario';
+		const subtitle = userEdit.id
 			? '¿Seguro de que deseas editar este usuario?'
 			: '¿Seguro de que deseas registrar este usuario?';
-		const description = isEdit
+		const description = userEdit.id
 			? ''
 			: 'Se enviará un correo electrónico al usuario desde el cual podrá establecer su contraseña para acceder al sistema.';
 
@@ -213,7 +212,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				const action$ = isEdit
+				const action$ = userEdit.id
 					? this._usersServices.updateUser(userEdit)
 					: this._usersServices.createUser(userEdit as UserRegister);
 

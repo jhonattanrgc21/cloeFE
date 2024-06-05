@@ -159,6 +159,10 @@ export class EditUserPopupComponent implements OnInit, OnDestroy {
 			this.title = 'Registrar usuario';
 		} else {
 			this.title = 'Editar usuario';
+			this.state = this.statesList.find(
+				(item) => item.name.toLowerCase() === user.estado.toLowerCase()
+			)?.id;
+			this.userForm.get('state')?.setValue(this.state);
 			this.userForm.patchValue({
 				id: user.id,
 				firstName: user.name,
@@ -170,10 +174,6 @@ export class EditUserPopupComponent implements OnInit, OnDestroy {
 				address: user.address,
 				gatheringCenter: user.centro_id,
 			});
-			this.state = this.statesList.find(
-				(item) => item.name.toLowerCase() === user.estado.toLowerCase()
-			)?.id;
-			this.userForm.get('state')?.setValue(this.state);
 		}
 	}
 
