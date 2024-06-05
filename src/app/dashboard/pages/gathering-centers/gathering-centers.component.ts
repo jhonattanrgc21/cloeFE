@@ -238,14 +238,15 @@ export class GatheringCentersComponent
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				let gatheringCenterUpdate: GatheringCenterUpdate =
-					center as GatheringCenterUpdate;
-				gatheringCenterUpdate.active = 0;
+				const json = {
+					centro_id: center.centro_id,
+					active: false
+				}
 				const action$ = this._gatheringCenterService.updateGatheringCenter(
-					gatheringCenterUpdate
+					json
 				);
 				action$.subscribe((res) => {
-					center.active = gatheringCenterUpdate.active = 0;
+					center.active =  0;
 					this._handleUserResponse(
 						res,
 						'Excelente, el centro de acopio se ha desactivado con éxito.',
@@ -272,15 +273,15 @@ export class GatheringCentersComponent
 
 		dialogRef.afterClosed().subscribe((result) => {
 			if (result) {
-				let gatheringCenterUpdate: GatheringCenterUpdate =
-					center as GatheringCenterUpdate;
-				gatheringCenterUpdate.active = 1;
-
+				const json = {
+					centro_id: center.centro_id,
+					active: true
+				}
 				const action$ = this._gatheringCenterService.updateGatheringCenter(
-					gatheringCenterUpdate
+					json
 				);
 				action$.subscribe((res) => {
-					center.active = gatheringCenterUpdate.active = 0;
+					center.active = 1;
 					this._handleUserResponse(
 						res,
 						'Excelente, el centro de acopio se ha activado con éxito.',

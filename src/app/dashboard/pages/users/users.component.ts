@@ -279,7 +279,7 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 
 				const action$ = this._usersServices.updateUser(userEdit);
 				action$.subscribe((res) => {
-					user.active = userEdit.active = 1;
+					user.active = 1;
 					this._handleUserResponse(
 						res,
 						'Excelente, el usuario se ha activado con éxito.',

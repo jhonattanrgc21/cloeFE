@@ -33,7 +33,7 @@ export class GatheringCentersService {
 		return this._httpService.post(this._createGatheringCenterUrl, json);
 	}
 
-	updateGatheringCenter(json: GatheringCenterUpdate) {
+	updateGatheringCenter(json: GatheringCenterUpdate | any) {
 		const id = json.centro_id;
 		delete json.centro_id;
 		return this._httpService.put(this._updateGatheringCenterUrl + '/' + id, json);
