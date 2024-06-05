@@ -7,6 +7,7 @@ import { AuthComponent } from './auth.component';
 import { SignInComponent } from './pages/sign-in/sign-in.component';
 import { ForgotPasswordComponent } from './pages/forgot-password/forgot-password.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 
 
 @NgModule({
@@ -20,6 +21,8 @@ import { ChangePasswordComponent } from './pages/change-password/change-password
     CommonModule,
     AuthRoutingModule,
 		ReactiveFormsModule,
+		RecaptchaFormsModule,
+    RecaptchaModule,
 		SharedModule
   ]
 })

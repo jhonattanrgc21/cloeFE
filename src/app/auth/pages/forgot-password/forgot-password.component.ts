@@ -1,17 +1,19 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { emailPattern } from 'src/app/core/constants/constants';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-forgot-password',
 	templateUrl: './forgot-password.component.html',
 	styleUrls: ['./forgot-password.component.scss'],
 })
-export class ForgotPasswordComponent {
+export class ForgotPasswordComponent implements OnInit {
 	form: FormGroup;
 	isSentMessage = false;
 	errorMessage: string = '';
+	siteKey: string = '';
 
 	constructor(
 		private _fb: FormBuilder,
@@ -26,8 +28,17 @@ export class ForgotPasswordComponent {
 					Validators.pattern(emailPattern),
 				],
 			],
+			recaptcha: ['', Validators.required]
 		});
 	}
+
+	ngOnInit(): void {
+		this.siteKey = environment.siteKey;
+	}
+
+	resolved(captchaResponse: any) {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
+  }
 
 	isNotValid(field: string): boolean {
 		return (

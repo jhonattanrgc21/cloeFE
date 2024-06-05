@@ -23,6 +23,7 @@
     "@ng-select/ng-select": "^10.0.4",
     "chart.js": "^4.4.2",
     "file-saver": "^2.0.5",
+    "ng-recaptcha": "^11.0.0",
     "ngx-spinner": "^15.0.1",
     "rxjs": "~7.5.0",
     "tslib": "^2.3.0",

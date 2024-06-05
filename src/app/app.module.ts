@@ -12,8 +12,6 @@ import { AuthModule } from './auth/auth.module';
 import { DashboardModule } from './dashboard/dashboard.module';
 import { MaterialModule } from './material.module';
 import { AppComponent } from './app.component';
-
-
 @NgModule({
   declarations: [
     AppComponent
@@ -24,15 +22,15 @@ import { AppComponent } from './app.component';
 		ReactiveFormsModule,
 		BrowserAnimationsModule,
 		CoreModule,
-		SharedModule,
-		NgxSpinnerModule,
 		NgSelectModule,
 		MaterialModule,
+		SharedModule,
+		NgxSpinnerModule,
 		LandingModule,
 		AuthModule,
 		DashboardModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -13,6 +13,7 @@ import { RaeeTypeCardComponent } from './components/raee-type-card/raee-type-car
 import { LocationCardComponent } from './components/location-card/location-card.component';
 import { GatheringCenterComponent } from './pages/gathering-center/gathering-center.component';
 import { ReceivedMessageComponent } from './pages/home/received-message/received-message.component';
+import { RecaptchaFormsModule, RecaptchaModule } from 'ng-recaptcha';
 
 
 @NgModule({
@@ -30,6 +31,8 @@ import { ReceivedMessageComponent } from './pages/home/received-message/received
   imports: [
     CommonModule,
 		ReactiveFormsModule,
+		RecaptchaFormsModule,
+    RecaptchaModule,
     LandingRoutingModule,
 		SharedModule,
 		MaterialModule

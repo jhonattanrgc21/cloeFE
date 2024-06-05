@@ -11,6 +11,7 @@ import { LandingService } from '../../services/landing.service';
 import { ErrorPopupComponent } from 'src/app/shared/components/error-popup/error-popup.component';
 import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
 import { SelectFilter } from 'src/app/shared/interfaces/filters.interface';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-home',
@@ -25,6 +26,7 @@ export class HomeComponent implements OnInit {
 	city?: number;
 	statesList: SelectionInput[] = [];
 	citiesList: SelectionInput[] = [];
+	siteKey: string = '';
 
 	constructor(
 		private _fb: FormBuilder,
@@ -57,6 +59,7 @@ export class HomeComponent implements OnInit {
 				,
 				[Validators.required, this._generalService.noWhitespaceValidator()],
 			],
+			recaptcha: ['', Validators.required]
 		});
 
 		this.landingForm.get('state')?.valueChanges.subscribe((stateId) => {
@@ -72,10 +75,15 @@ export class HomeComponent implements OnInit {
 		});
 	}
 	ngOnInit(): void {
+		this.siteKey = environment.siteKey;
 		this._generalService.getStates().subscribe((res) => {
 			this.statesList = res.success ? res.data : [];
 		});
 	}
+
+	resolved(captchaResponse: any) {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
+  }
 
 	goToGatheringCenter() {
 		this._router.navigateByUrl(ROUTES.landingGatheringCenter);

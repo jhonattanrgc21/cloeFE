@@ -113,6 +113,14 @@
 				<div class="mb-6  w-full ">
 					<app-cloe-input-field [label]="'Mensaje'" [useSpecialCharactersOnly]="true" formControlName="message" [typeInput]="'textarea'" [forName]="'messageLanding'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 				</div>
+
+				<div class="mb-6  w-full ">
+					<re-captcha
+					(resolved)="resolved($event)"
+					[siteKey]="siteKey"
+					formControlName="recaptcha"
+				></re-captcha>
+				</div>
 			</div>
 			<div class="w-24 m-auto md:m-0">
 				<button class="btn btn-lg btn-primary__success" [disabled]="landingForm.invalid" (click)="sendMessage()">Enviar</button>
