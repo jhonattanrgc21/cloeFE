@@ -5,7 +5,7 @@ import { GeneralService } from 'src/app/shared/services/general.service';
 import { User, UserEdit } from 'src/app/dashboard/interfaces/users.interface';
 import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
 import { SelectFilter } from 'src/app/shared/interfaces/filters.interface';
-import { Subject, switchMap, takeUntil } from 'rxjs';
+import { Subject, forkJoin, switchMap, takeUntil } from 'rxjs';
 import { GatheringCenterCard } from 'src/app/landing/interfaces/gathering-center.interface';
 
 @Component({
@@ -80,75 +80,44 @@ export class EditUserPopupComponent implements OnInit, OnDestroy {
 				}
 			})
 
-		this.userForm
-			.get('state')
-			?.valueChanges.pipe(
+			this.userForm.get('state')?.valueChanges.pipe(
 				takeUntil(this._destroyed$),
-				switchMap((stateId) => {
+				switchMap(stateId => {
 					this.userForm.get('city')?.reset();
-					const stateSelectionFilter: SelectFilter = {
-						filters: { estado_id: stateId },
-					};
-					return this._generalService.getCities(stateSelectionFilter).pipe(
-						switchMap((res) => {
-							this.citiesList = res.success ? res.data : [];
-							if (this.data.user) {
-								const user: User = this.data.user;
-								this.city = this.citiesList.find(
-									(item) =>
-										item.name.toLowerCase() === user.ciudad.toLowerCase()
-								)?.id;
-								this.userForm.get('city')?.setValue(this.city);
-							}
-							return this._generalService.getGatheringCenters(
-								stateSelectionFilter
-							);
-						})
-					);
+					this.userForm.get('gatheringCenter')?.reset();
+					const stateSelectionFilter: SelectFilter = { filters: { estado_id: stateId } };
+					return this._generalService.getCities(stateSelectionFilter);
 				})
-			)
-			.subscribe((res) => {
-				this.userForm.get('gatheringCenter')?.reset();
-				if (!res.success) this.centersList = [];
-				else {
-					const centers: GatheringCenterCard[] = res.data;
-					this.centersList = [];
-					centers.forEach((center) => {
-						this.centersList.push({ id: center.centro_id, name: center.name });
-					});
-
-					if (this.data.user) {
-						const user: User = this.data.user;
-						this.center = this.centersList.find(
-							(item) =>
-								item.id === user.centro_id
-						)?.id;
-						this.userForm.get('gatheringCenter')?.setValue(this.center);
-					}
+			).subscribe(res => {
+				this.citiesList = res.success ? res.data : [];
+				this.centersList = [];
+				if (this.data.user) {
+					const user: User = this.data.user;
+					this.city = this.citiesList.find(item => item.name.toLowerCase() === user.ciudad.toLowerCase())?.id;
+					this.userForm.get('city')?.setValue(this.city);
 				}
 			});
 
-		this.userForm
-			.get('city')
-			?.valueChanges.pipe(
+			this.userForm.get('city')?.valueChanges.pipe(
 				takeUntil(this._destroyed$),
-				switchMap((cityId) => {
+				switchMap(cityId => {
 					const stateId = this.userForm.get('state')?.value;
-					const centersFilter: SelectFilter = {
-						filters: { estado_id: stateId, ciudad_id: cityId },
-					};
-					return this._generalService.getGatheringCenters(centersFilter);
+					if (stateId && cityId) {
+						const centersFilter: SelectFilter = { filters: { estado_id: stateId, ciudad_id: cityId } };
+						return this._generalService.getGatheringCenters(centersFilter);
+					}
+					return [];
 				})
-			)
-			.subscribe((res) => {
+			).subscribe(res => {
 				this.userForm.get('gatheringCenter')?.reset();
-				if (!res.success) this.centersList = [];
-				else {
-					const centers: GatheringCenterCard[] = res.data;
-					this.centersList = [];
-					centers.forEach((center) => {
-						this.centersList.push({ id: center.centro_id, name: center.name });
-					});
+				this.centersList = res.success ? res.data.map((center: GatheringCenterCard) => ({
+					id: center.centro_id,
+					name: center.name
+				})) : [];
+				if (this.data.user) {
+					const user: User = this.data.user;
+					this.center = this.centersList.find(item => item.id === user.centro_id)?.id;
+					this.userForm.get('gatheringCenter')?.setValue(this.center);
 				}
 			});
 	}
@@ -159,10 +128,6 @@ export class EditUserPopupComponent implements OnInit, OnDestroy {
 			this.title = 'Registrar usuario';
 		} else {
 			this.title = 'Editar usuario';
-			this.state = this.statesList.find(
-				(item) => item.name.toLowerCase() === user.estado.toLowerCase()
-			)?.id;
-			this.userForm.get('state')?.setValue(this.state);
 			this.userForm.patchValue({
 				id: user.id,
 				firstName: user.name,
@@ -172,7 +137,12 @@ export class EditUserPopupComponent implements OnInit, OnDestroy {
 				identification: user.cedula_number,
 				employePosition: user.role,
 				address: user.address,
+				gatheringCenter: user.centro_id,
 			});
+			this.state = this.statesList.find(
+				(item) => item.name.toLowerCase() === user.estado.toLowerCase()
+			)?.id;
+			this.userForm.get('state')?.setValue(this.state);
 		}
 	}
 
