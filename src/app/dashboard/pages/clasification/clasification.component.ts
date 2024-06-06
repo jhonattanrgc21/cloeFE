@@ -133,7 +133,6 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 				this.currentPage = response.meta.currentPage;
 				this.clasificationList = response.data;
 				this.dataSource.data = this.clasificationList;
-				this.dataSource.paginator = this.paginator;
 			});
 	}
 

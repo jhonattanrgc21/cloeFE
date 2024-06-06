@@ -121,7 +121,6 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 				this.currentPage = response.meta.currentPage;
 				this.componentsList = response.data;
 				this.dataSource.data = this.componentsList;
-				this.dataSource.paginator = this.paginator;
 			});
 	}
 
