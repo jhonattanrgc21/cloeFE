@@ -31,7 +31,6 @@ export class GatheringCentersComponent
 	@ViewChild('gatheringCenterPaginator') paginator!: MatPaginator;
 	gatheringCenterList: GatheringCenter[] = [];
 	statesList: SelectionInput[] = [];
-	managerList : SelectionInput[] = [];
 	totalItems: number = 0;
 	itemsPerPage = 5;
 	currentPage = 1;
@@ -82,8 +81,7 @@ export class GatheringCentersComponent
 		private _gatheringCenterService: GatheringCentersService,
 		private _cdr: ChangeDetectorRef,
 		private _alertService: AlertService,
-		private _generalService: GeneralService,
-		private _usersService: UsersService
+		private _generalService: GeneralService
 	) {}
 
 	ngOnInit(): void {
@@ -101,14 +99,6 @@ export class GatheringCentersComponent
 			this.statesList = res.success ? res.data : [];
 		});
 
-		this._usersService
-			.getUsersByRole({
-				roleName: 'Encargado',
-				estado_id: 7,
-			})
-			.subscribe((res) => {
-				this.managerList = res.success ? res.data: [];
-			});
 	}
 
 	handlePageEvent(e: PageEvent) {
@@ -172,8 +162,7 @@ export class GatheringCentersComponent
 			autoFocus: false,
 			data: {
 				center,
-				statesList: this.statesList,
-				managerList: this.managerList
+				statesList: this.statesList
 			},
 		});
 

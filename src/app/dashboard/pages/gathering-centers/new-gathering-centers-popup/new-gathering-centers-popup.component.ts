@@ -6,6 +6,7 @@ import { GeneralService } from 'src/app/shared/services/general.service';
 import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
 import { Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { SelectFilter } from 'src/app/shared/interfaces/filters.interface';
+import { UsersService } from 'src/app/dashboard/services/users.service';
 
 @Component({
 	selector: 'app-new-gathering-centers-popup',
@@ -28,6 +29,7 @@ export class NewGatheringCentersPopupComponent implements OnInit, OnDestroy {
 		public dialogRef: MatDialogRef<NewGatheringCentersPopupComponent>,
 		private _fb: FormBuilder,
 		private _generalService: GeneralService,
+		private _usersService: UsersService,
 		@Inject(MAT_DIALOG_DATA) public data: any
 	) {
 		this.statesList = this.data.statesList;
@@ -51,31 +53,52 @@ export class NewGatheringCentersPopupComponent implements OnInit, OnDestroy {
 			],
 		});
 
-		this.gatheringCenterForm
-			.get('estado_id')
-			?.valueChanges.pipe(
-				takeUntil(this._destroyed$),
-				switchMap((stateId) => {
-					this.gatheringCenterForm.get('ciudad_id')?.reset();
-					const stateSelectionFilter: SelectFilter = {
-						filters: { estado_id: stateId },
-					};
-					return this._generalService.getCities(stateSelectionFilter).pipe(
-						tap((res) => {
-							this.citiesList = res.success ? res.data : [];
-							if (this.data.center) {
-								const center: GatheringCenter = this.data.center;
-								this.city = this.citiesList.find(
-									(item) =>
-										item.name.toLowerCase() === center.ciudad.toLowerCase()
-								)?.id;
-								this.gatheringCenterForm.get('ciudad_id')?.setValue(this.city);
-							}
-						})
-					);
-				})
-			)
-			.subscribe();
+    this.gatheringCenterForm
+      .get('estado_id')
+      ?.valueChanges.pipe(
+        takeUntil(this._destroyed$),
+        tap(() => {
+          this.gatheringCenterForm.get('ciudad_id')?.reset();
+          this.gatheringCenterForm.get('encargado_id')?.reset();
+        }),
+        switchMap((stateId) => {
+          const managersRequest = this._usersService.getUsersByRole({
+            roleName: 'Encargado',
+            estado_id: stateId
+          }).pipe(
+            tap((res) => {
+              this.managerList = res.success ? res.data : [];
+              if (this.data.center) {
+                const center = this.data.center;
+                const encargado = this.managerList.find(
+                  (item) => item.id === center.encargado.user_id,
+                )?.id;
+                this.gatheringCenterForm.get('encargado_id')?.setValue(encargado);
+              }
+            })
+          );
+
+          const citiesRequest = this._generalService.getCities({
+            filters: { estado_id: stateId }
+          }).pipe(
+            tap((res) => {
+              this.citiesList = res.success ? res.data : [];
+              if (this.data.center) {
+                const center = this.data.center;
+                this.city = this.citiesList.find(
+                  (item) => item.name.toLowerCase() === center.ciudad.toLowerCase()
+                )?.id;
+                this.gatheringCenterForm.get('ciudad_id')?.setValue(this.city);
+              }
+            })
+          );
+
+          return managersRequest.pipe(
+            switchMap(() => citiesRequest)
+          );
+        })
+      )
+      .subscribe();
 	}
 
 	ngOnInit(): void {
