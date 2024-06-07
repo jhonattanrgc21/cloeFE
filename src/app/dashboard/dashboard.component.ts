@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 				headerMessage = 'Inicio';
 				break;
 			case 'summary':
-				headerMessage = 'Resumen';
+				headerMessage = 'Analíticas';
 				break;
 			case 'gathering-centers':
 				headerMessage = 'Centros de acopio';
