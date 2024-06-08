@@ -46,12 +46,13 @@ export class ChangePasswordComponent implements OnInit {
 			if(res.success){
 				this.isSavePassword = true;
 				this.isErrorSave = false;
+				this._authService.logout();
 			}
 			else{
 				this.isSavePassword = false;
 				this.isErrorSave = true;
 			}
-			this.message = res.message;;
+			this.message = res.message;
 		})
 	}
 
