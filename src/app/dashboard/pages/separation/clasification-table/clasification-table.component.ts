@@ -18,7 +18,6 @@ import { MatTableDataSource } from '@angular/material/table';
 import { AlertService } from 'src/app/shared/services/alert.service';
 import { ClasificationDetailComponent } from '../../clasification/clasification-detail/clasification-detail.component';
 import { DownloadPopupComponent } from 'src/app/shared/components/download-popup/download-popup.component';
-import { ConfirmationPopupComponent } from 'src/app/shared/components/confirmation-popup/confirmation-popup.component';
 import { SeparationService } from 'src/app/dashboard/services/separation.service';
 import { Clasification } from 'src/app/dashboard/interfaces/clasification.interface';
 import { Subscription } from 'rxjs';
@@ -123,9 +122,7 @@ export class ClasificationTableComponent
 		this.pageIndex = this.currentPage - 1;
 
 		this.dataSource.filterPredicate = (data: any, filter: string) => {
-			const searchData =
-				`${data.model} ${data.brand} ${data.lineType} ${data.lineType} ${data.category} ${data.status}`.toLowerCase();
-
+			const searchData =`${data.model} ${data.brand} ${data.linea} ${data.categoria} ${data.category}  ${data.status}`.toLowerCase();
 			const otherColumnsMatch = searchData.includes(
 				filter.trim().toLowerCase()
 			);

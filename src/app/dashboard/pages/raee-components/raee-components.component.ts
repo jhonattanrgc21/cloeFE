@@ -135,12 +135,14 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 		this.pageIndex = this.currentPage - 1;
 
 		this.dataSource.filterPredicate = (data: any, filter: string) => {
-			const searchData =
-				`${data.name} ${data.model} ${data.brand} ${data.lineType} ${data.category} `.toLowerCase();
+			const searchData =	`${data.name} ${data.weight} ${data.brand} ${data.dimensions}`.toLowerCase();
+			const statusMatch =
+				(data.reusable == 1 ? 'Si' : 'No').toLowerCase() ===
+				filter.trim().toLowerCase();
 			const otherColumnsMatch = searchData.includes(
 				filter.trim().toLowerCase()
 			);
-			return otherColumnsMatch;
+			return statusMatch || otherColumnsMatch;
 		};
 	}
 
