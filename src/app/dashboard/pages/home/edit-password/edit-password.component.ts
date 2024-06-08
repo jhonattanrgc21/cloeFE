@@ -25,6 +25,14 @@ export class EditPasswordComponent {
 		this.user = this.data?.user;
 		this.title = this.data?.title;
 		this.form = this._fb.group({
+			old_password: [
+				,
+				[
+					Validators.required,
+					Validators.minLength(8),
+					this._generalService.noWhitespaceValidator(),
+				],
+			],
 			password: [
 				,
 				[
@@ -55,6 +63,7 @@ export class EditPasswordComponent {
 	onSave() {
 		const userEdit: UserEdit  = {
 			id: this.user?.user_id,
+			old_password: this.form.value.old_password.trim(),
 			password: this.form.value.password.trim(),
 			confirm_password: this.form.value.confirmPassword.trim(),
 		};

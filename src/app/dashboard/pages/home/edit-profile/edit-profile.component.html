@@ -6,11 +6,11 @@
 		<p class="font-poppins-medium text-sm text-[#00000099]">Correo electrónico: {{user?.email}}</p>
 		<p class="font-poppins-medium text-sm text-[#00000099]">Username: {{user?.username}}</p>
 
-		<app-cloe-input-field [label]="'Nombre'" formControlName="firstName" [typeInput]="'text'" [forName]="'firstNameUser'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
-		<app-cloe-input-field [label]="'Apellido'" formControlName="lastName" [typeInput]="'text'" [forName]="'lastNameUser'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+		<app-cloe-input-field [useLettersOnly]="true" [label]="'Nombre'" formControlName="firstName" [typeInput]="'text'" [forName]="'firstNameUser'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+		<app-cloe-input-field [useLettersOnly]="true" [label]="'Apellido'" formControlName="lastName" [typeInput]="'text'" [forName]="'lastNameUser'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 		<app-cloe-select-search  formControlName="state" [forName]="'stateUser'" [label]="'Estado'" [placeholder]="'Selecciona'" [options]="statesList"></app-cloe-select-search>
 		<app-cloe-select-search  formControlName="city" [forName]="'cityUser'" [label]="'Ciudad'" [placeholder]="'Selecciona'" [options]="citiesList"></app-cloe-select-search>
-		<app-cloe-input-field [label]="'Dirección'" formControlName="address" [typeInput]="'text'" [forName]="'addressGatheringCenters'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+		<app-cloe-input-field  [useSpecialCharactersOnly]="true"  [label]="'Dirección'" formControlName="address" [typeInput]="'text'" [forName]="'addressGatheringCenters'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 	</form>
 
 	<div class="mt-6 flex items-center justify-end gap-6">

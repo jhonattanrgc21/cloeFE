@@ -113,7 +113,7 @@ export class HomeComponent implements OnInit {
 		const viewportSize = this._viewportRuler.getViewportSize();
 		const dialogRef = this._dialog.open(EditPasswordComponent, {
 			width: viewportSize.width < 768 ? '380px' : '400px',
-			height: '350px',
+			height: 'auto',
 			autoFocus: false,
 			data: {
 				title,

@@ -2,12 +2,12 @@
 	<p class="text-[#0B132B] font-poppins-medium text-lg mb-6">{{ title }}</p>
 
 	<form [formGroup]="gatheringCenterForm" class="flex flex-col gap-4">
-		<app-cloe-input-field [label]="'Nombre'" formControlName="name"  [typeInput]="'text'" [forName]="'nameGatheringCenters'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
-		<app-cloe-input-field [label]="'Descripción'" formControlName="description" [useLettersOnly]="true"  [typeInput]="'text'" [forName]="'descriptionGatheringCenters'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+		<app-cloe-input-field  [useSpecialCharactersOnly]="true" [label]="'Nombre'" formControlName="name"  [typeInput]="'text'" [forName]="'nameGatheringCenters'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+		<app-cloe-input-field  [useSpecialCharactersOnly]="true" [label]="'Descripción'" formControlName="description"  [typeInput]="'text'" [forName]="'descriptionGatheringCenters'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 		<app-cloe-select-search  formControlName="estado_id" [forName]="'stateGatheringCenters'" [label]="'Estado'" [placeholder]="'Selecciona'" [options]="statesList"></app-cloe-select-search>
 		<app-cloe-select-search  formControlName="ciudad_id" [forName]="'cityGatheringCenters'" [label]="'Ciudad'" [placeholder]="'Selecciona'" [options]="citiesList"></app-cloe-select-search>
 		<app-cloe-select-search  formControlName="encargado_id" [forName]="'managerGatheringCenters'" [label]="'Encargado'" [placeholder]="'Selecciona'" [options]="managerList"></app-cloe-select-search>
-		<app-cloe-input-field [label]="'Dirección'" formControlName="address" [typeInput]="'text'" [forName]="'addressGatheringCenters'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
+		<app-cloe-input-field  [useSpecialCharactersOnly]="true" [label]="'Dirección'" formControlName="address" [typeInput]="'text'" [forName]="'addressGatheringCenters'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 	</form>
 
 	<div class="mt-6 flex items-center justify-end gap-6">

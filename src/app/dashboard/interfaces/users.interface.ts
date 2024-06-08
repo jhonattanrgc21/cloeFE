@@ -12,10 +12,11 @@ export interface UserRegister {
 }
 
 export type UserEdit = Partial<UserRegister> & {
-    id?: number;
-    active?: number
-		password?: string;
-		confirm_password?: string;
+	id?: number;
+	active?: number
+	old_password?: string;
+	password?: string;
+	confirm_password?: string;
 
 }
 
