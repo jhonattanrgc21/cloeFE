@@ -1,7 +1,8 @@
 <header class="h-16 bg-success-500 py-3 px-6 flex items-center justify-between text-white">
 	<div class="flex items-center justify-between gap-6">
-		<button class="block" (click)="toggleSidebar()">
+		<button class="block relative hover:p-1" (click)="toggleSidebar()">
 			<img src="./../../../../assets/svg/icono_hamburguesa_24x24.svg" alt="Logo" class="w-6 h-6" />
+			<div class="absolute top-0 left-0 w-full h-full bg-success-800 opacity-0 rounded-full md:rounded transition-opacity duration-300 ease-in-out hover:opacity-50"></div>
 		</button>
 
 		<div class="lg:w-6/12">

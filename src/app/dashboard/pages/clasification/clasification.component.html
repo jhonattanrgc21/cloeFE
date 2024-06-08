@@ -17,6 +17,7 @@
 
 					<div class="w-full md:w-auto btn-download">
 						<button class="btn btn-outline btn-outline__success btn-md"
+							matTooltip="Descargar listado de RAEE"
 							(click)="openDialogClasificationDownload()">
 							<img class="w-6 h-6 mr-3 svg-download-default" src="../../../../assets/svg/icono_descarga_24x24.svg" alt="" role="img" />
 							<img class="w-6 h-6 mr-3 svg-download-hover" src="../../../../assets/svg/icono_descarga_blanco_24x24.svg" alt="" role="img" />
@@ -24,7 +25,7 @@
 						</button>
 					</div>
 					<ng-container *ngIf="!isAdminRole()">
-						<div class="w-full md:w-auto">
+						<div class="w-full md:w-auto"  matTooltip="Clasificar RAEE">
 							<button class="btn btn-primary btn-primary__success btn-md" (click)="openDialogEditClasification()">Registrar</button>
 						</div>
 					</ng-container>
@@ -92,7 +93,7 @@
 				<p class="text-[#00000099] font-poppins-regular text-base pt-2 text-center">Puedes <span class="text-[#000000DE]">registrar y clasificar</span> tus RAEE <span class="text-[#000000DE]">desde aquí.</span> </p>
 
 				<div class="w-24 mt-6">
-					<button class="btn btn-primary__success btn-md" (click)="openDialogEditClasification()">Registrar</button>
+					<button class="btn btn-primary__success btn-md" (click)="openDialogEditClasification()" matTooltip="Clasificar RAEE">Registrar</button>
 				</div>
 			</div>
 		</div>

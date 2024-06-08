@@ -13,7 +13,7 @@
 			</a>
 
 			<ng-container *ngIf="showOption(['admin'])">
-				<a routerLink="/dashboard/summary" routerLinkActive="active" (click)="toggleSidebar()" class="option">
+				<a routerLink="/dashboard/summary" routerLinkActive="active" (click)="toggleSidebar()" class="option" matTooltip="Estadísticas del sistema">
 					<img src="../../../../assets/svg/icono_sidebar_analiticas_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
 					<img src="../../../../assets/svg/icono_sidebar_analiticas_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
 					<img src="../../../../assets/svg/icono_sidebar_analiticas_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
@@ -22,7 +22,7 @@
 			</ng-container>
 
 			<ng-container *ngIf="showOption(['admin'])">
-				<a routerLink="/dashboard/gathering-centers" routerLinkActive="active"  (click)="toggleSidebar()" class="option">
+				<a routerLink="/dashboard/gathering-centers" routerLinkActive="active"  (click)="toggleSidebar()" class="option" matTooltip="Gestión de centros de acopio">
 					<img src="../../../../assets/svg/icono_sidebar_centros_acopios_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
 					<img src="../../../../assets/svg/icono_sidebar_centros_acopios_blanco_24x24.svg" alt="Logo"
 						class="w-6 h-6 svg-active" />
@@ -33,7 +33,7 @@
 
 
 			<ng-container *ngIf="showOption(['admin'])">
-				<a routerLink="/dashboard/users" routerLinkActive="active" (click)="toggleSidebar()" class="option"><img
+				<a routerLink="/dashboard/users" routerLinkActive="active" (click)="toggleSidebar()" class="option" matTooltip="Gestión de usuarios del sistema"><img
 						src="../../../../assets/svg/icono_sidebar_usuarios_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
 					<img src="../../../../assets/svg/icono_sidebar_usuarios_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
 					<img src="../../../../assets/svg/icono_sidebar_usuarios_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
@@ -42,7 +42,7 @@
 
 
 			<ng-container *ngIf="showOption(['admin', 'encargado', 'clasificador'])">
-				<a routerLink="/dashboard/clasification" routerLinkActive="active" (click)="toggleSidebar()" class="option"><img
+				<a routerLink="/dashboard/clasification" routerLinkActive="active" (click)="toggleSidebar()" class="option" matTooltip="Gestión de RAEE"><img
 						src="../../../../assets/svg/icono_sidebar_clasificar_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
 					<img src="../../../../assets/svg/icono_sidebar_clasificar_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
 					<img src="../../../../assets/svg/icono_sidebar_clasificar_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
@@ -51,7 +51,7 @@
 
 
 			<ng-container *ngIf="showOption(['admin', 'encargado', 'separador'])">
-				<a routerLink="/dashboard/separation" routerLinkActive="active" (click)="toggleSidebar()" class="option"><img
+				<a routerLink="/dashboard/separation" routerLinkActive="active" (click)="toggleSidebar()" class="option" matTooltip="Separación de RAEE"><img
 						src="../../../../assets/svg/icono_sidebar_separar_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
 					<img src="../../../../assets/svg/icono_sidebar_separar_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
 					<img src="../../../../assets/svg/icono_sidebar_separar_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
@@ -59,14 +59,14 @@
 			</ng-container>
 
 			<ng-container *ngIf="showOption(['admin', 'encargado', 'separador'])">
-				<a routerLink="/dashboard/raee-components" routerLinkActive="active" (click)="toggleSidebar()" class="option"><img
+				<a routerLink="/dashboard/raee-components" routerLinkActive="active" (click)="toggleSidebar()" class="option" matTooltip="Listado de componentes de RAEE"><img
 						src="../../../../assets/svg/icono_sidebar_separar_24x24.svg" alt="Logo" class="w-6 h-6 svg-default" />
 					<img src="../../../../assets/svg/icono_sidebar_separar_verde_24x24.svg" alt="Logo" class="w-6 h-6 svg-hover" />
 					<img src="../../../../assets/svg/icono_sidebar_separar_blanco_24x24.svg" alt="Logo" class="w-6 h-6 svg-active" />
 					Componentes RAEE</a>
 			</ng-container>
 
-			<a routerLink="/auth/sign-in" routerLinkActive="active" class="option" (click)="logout()"><img
+			<a class="option" matTooltip="Salir del sistema" (click)="logout()"><img
 					src="../../../../assets/svg/logout.svg" alt="Logo" class="w-6 h-6 svg-default" />
 				<img src="../../../../assets/svg/logout_verde.svg" alt="Logo" class="w-6 h-6 svg-hover" />
 				<img src="../../../../assets/svg/logout_blanco.svg" alt="Logo" class="w-6 h-6 svg-active" />

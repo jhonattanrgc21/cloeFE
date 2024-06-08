@@ -17,6 +17,7 @@
 
 					<div class="w-full md:w-auto btn-download">
 						<button class="btn btn-outline btn-outline__success btn-md"
+							matTooltip="Descargar listado de centros de acopio"
 							(click)="openDialogGatheringCenterDownload()">
 							<img class="w-6 h-6 mr-3 svg-download-default" src="../../../../assets/svg/icono_descarga_24x24.svg" alt="" role="img" />
 							<img class="w-6 h-6 mr-3 svg-download-hover" src="../../../../assets/svg/icono_descarga_blanco_24x24.svg" alt="" role="img" />
@@ -25,7 +26,7 @@
 					</div>
 
 					<div class="w-full md:w-auto">
-						<button class="btn btn-primary btn-primary__success btn-md" (click)="openDialogNewGatheringCenter()">Registrar</button>
+						<button class="btn btn-primary btn-primary__success btn-md" (click)="openDialogNewGatheringCenter()" matTooltip="Agregar un centro de acopio">Registrar</button>
 					</div>
 				</div>
 
@@ -104,7 +105,7 @@
 				<p class="text-[#00000099] font-poppins-regular text-base pt-2 text-center">Puedes <span class="text-[#000000DE]">registrar y gestionar</span> tus centros de acopio <span class="text-[#000000DE]">desde aquí.</span> </p>
 
 				<div class="w-24 mt-6">
-					<button class="btn btn-primary__success btn-md" (click)="openDialogNewGatheringCenter()">Registrar</button>
+					<button class="btn btn-primary__success btn-md" (click)="openDialogNewGatheringCenter()" matTooltip="Agregar un centro de acopio">Registrar</button>
 				</div>
 			</div>
 		</div>
