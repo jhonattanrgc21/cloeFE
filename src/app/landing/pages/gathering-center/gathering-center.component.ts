@@ -43,7 +43,7 @@ export class GatheringCenterComponent implements OnInit, OnDestroy {
   initForm(): void {
     this.locationForm = this._fb.group({
       state: [],
-      city: [],
+      city:  [{ value: null, disabled: true }] ,
     });
   }
 
@@ -58,21 +58,39 @@ export class GatheringCenterComponent implements OnInit, OnDestroy {
   setupValueChangeSubscriptions(): void {
     this.locationForm.get('state')?.valueChanges
       .pipe(
-        takeUntil(this._destroyed$),
-        switchMap(stateId => {
+        takeUntil(this._destroyed$)
+      )
+      .subscribe(stateId => {
+        // Verificar si el estado está seleccionado
+        if (!stateId) {
+          // Si no hay estado seleccionado, resetear y deshabilitar el campo de la ciudad
           this.locationForm.get('city')?.reset();
+          this.locationForm.get('city')?.disable();
+        } else {
+          // Si hay un estado seleccionado, habilitar el campo de la ciudad
+          this.locationForm.get('city')?.enable();
+          // Obtener ciudades para el estado seleccionado
           const stateSelectionFilter: SelectFilter = { filters: { estado_id: stateId } };
-          return this._generalService.getCities(stateSelectionFilter)
+          this._generalService.getCities(stateSelectionFilter)
             .pipe(
               switchMap(res => {
                 this.citiesList = res.success ? res.data : [];
+                const hasCities = this.citiesList.length > 0;
+                if (!hasCities) {
+                  // Si no hay ciudades disponibles, resetear y deshabilitar el campo de la ciudad
+                  this.locationForm.get('city')?.reset();
+                  this.locationForm.get('city')?.disable();
+                } else {
+                  // Si hay ciudades disponibles, habilitar el campo de la ciudad
+                  this.locationForm.get('city')?.enable();
+                }
                 return this._generalService.getGatheringCenters(stateSelectionFilter);
               })
-            );
-        })
-      )
-      .subscribe(res => {
-        this.gatheringCentersList = res.success ? res.data : [];
+            )
+            .subscribe(res => {
+              this.gatheringCentersList = res.success ? res.data : [];
+            });
+        }
       });
 
     this.locationForm.get('city')?.valueChanges
@@ -88,7 +106,6 @@ export class GatheringCenterComponent implements OnInit, OnDestroy {
         this.gatheringCentersList = res.success ? res.data : [];
       });
   }
-
 	handlePage(event: PageEvent): void {
 		this.pageNumber = event.pageIndex + 1;
 		this.pageSize = event.pageSize;
