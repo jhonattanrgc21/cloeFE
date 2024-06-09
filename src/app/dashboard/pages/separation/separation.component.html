@@ -52,7 +52,9 @@
 							<div class="flex gap-1 items-center md:gap-4">
 								<img matTooltip="Ver" (click)="openDialogComponentDetail(element, i)" src="../../../../assets/svg/icono_visibilidad_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
 								<img matTooltip="Editar" (click)="openDialogComponentEdit(element, i)" src="../../../../assets/svg/icono_editar_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
-								<img matTooltip="Eliminar" (click)="openDiaglogRemoveComponent(element, i)" src="../../../../assets/svg/icono_basura_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
+								<ng-container *ngIf="isAdminRole()">
+									<img matTooltip="Eliminar" (click)="openDiaglogRemoveComponent(element, i)" src="../../../../assets/svg/icono_basura_24x24.svg" class="w-6 h-6 cursor-pointer" alt="">
+								</ng-container>
 							</div>
 						</td>
 					</ng-container>

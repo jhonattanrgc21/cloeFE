@@ -14,6 +14,7 @@ import { DownloadPopupComponent } from 'src/app/shared/components/download-popup
 import { DOCUMENT_TYPE } from 'src/app/core/constants/constants';
 import { RaeeComponent, RaeeComponentEdit } from '../../interfaces/raee-component.interface';
 import { ViewComponentComponent } from '../separation/view-component/view-component.component';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-raee-components',
@@ -79,6 +80,7 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 		private _cdr: ChangeDetectorRef,
 		private _alertService: AlertService,
 		private _generalService: GeneralService,
+		private _authService: AuthService
 	) {}
 
 	ngOnInit(): void {
@@ -99,6 +101,10 @@ export class RaeeComponentsComponent implements OnInit, OnDestroy {
 		this._generalService.getProcess().subscribe((res) => {
 			this.processList = res.success ? res.data : [];
 		});
+	}
+
+	isAdminRole() {
+		return this._authService.currentRole == 'admin';
 	}
 
 	handlePageEvent(e: PageEvent) {

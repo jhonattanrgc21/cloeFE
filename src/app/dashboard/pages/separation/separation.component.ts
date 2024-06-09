@@ -21,6 +21,7 @@ import { Clasification } from '../../interfaces/clasification.interface';
 import { SelectionInput } from 'src/app/shared/interfaces/selection-input.interface';
 import { RaeeComponent, RaeeComponentEdit } from '../../interfaces/raee-component.interface';
 import { RaeeComponentsService } from '../../services/raee-components.service';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
 	selector: 'app-separation',
@@ -60,7 +61,8 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		private _cdr: ChangeDetectorRef,
 		private _alertService: AlertService,
 		private _generalService: GeneralService,
-		private _raeeComponentsService: RaeeComponentsService
+		private _raeeComponentsService: RaeeComponentsService,
+		private _authService: AuthService
 	) {}
 
 	private updateComponentList(component_id: number) {
@@ -94,6 +96,10 @@ export class SeparationComponent implements OnInit, OnDestroy {
 		this._generalService.getProcess().subscribe((res) => {
 			this.processList = res.success ? res.data : [];
 		});
+	}
+
+	isAdminRole() {
+		return this._authService.currentRole == 'admin';
 	}
 
 	handleTabChange() {
