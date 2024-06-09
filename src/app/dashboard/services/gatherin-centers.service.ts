@@ -49,17 +49,7 @@ export class GatheringCentersService {
 
 		if (index !== -1) currentList[index] = gatheringCenter;
 		else currentList.push(gatheringCenter);
+		currentList.sort((a, b) => b.centro_id - a.centro_id);
 		this._gatheringCenterListSubject.next(currentList);
-	}
-
-	modifyStatusGatheringCenter(gatheringCenter: GatheringCenter): void {
-		// const currentList = this._gatheringCenterListSubject.getValue();
-		// const index = currentList.findIndex(
-		// 	(item) => item.id === gatheringCenter.id
-		// );
-		// gatheringCenter.status =
-		// 	gatheringCenter.status == 'Inactivo' ? 'Activo' : 'Inactivo';
-		// currentList[index] = gatheringCenter;
-		// this._gatheringCenterListSubject.next(currentList);
 	}
 }

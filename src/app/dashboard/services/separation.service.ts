@@ -19,7 +19,6 @@ export class SeparationService {
 	private _getSeparationByIdUrl: string = 'split/show/';
 
 	constructor(
-		private _clasificationService: ClasificationService,
 		private _httpService: HttpService
 	) {}
 
@@ -65,18 +64,4 @@ export class SeparationService {
         return response;
       }));
 	}
-
-	// addSeparation(separation: Separation) {
-	// 	const currentList = this._separationListSubject.getValue();
-	// 	const index = currentList.findIndex(
-	// 		(item) => item.raee_id === separation.raee_id
-	// 	);
-
-	// 	if (index !== -1) currentList[index] = separation;
-	// 	else currentList.push(separation);
-
-	// 	this._separationListSubject.next(currentList);
-	// 	this._clasificationService.modifyStatus(separation.raee_id, 'Separado');
-	// }
-
 }

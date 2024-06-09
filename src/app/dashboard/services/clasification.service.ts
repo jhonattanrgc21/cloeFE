@@ -55,6 +55,7 @@ export class ClasificationService {
 
 		if (index !== -1) currentList[index] = raee;
 		else currentList.push(raee);
+		currentList.sort((a, b) => b.id - a.id);
 		this._clasificationListSubject.next(currentList);
 	}
 
@@ -64,6 +65,7 @@ export class ClasificationService {
 			(item) => item.id === raee.id
 		);
 		currentList.splice(index, 1);
+		currentList.sort((a, b) => b.id - a.id);
 		this._clasificationListSubject.next(currentList);
 	}
 
@@ -73,6 +75,7 @@ export class ClasificationService {
 			(item) => item.id === raeeId
 		);
 		currentList[index].status = status;
+		currentList.sort((a, b) => b.id - a.id);
 		this._clasificationListSubject.next(currentList);
 	}
 }

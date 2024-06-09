@@ -44,6 +44,8 @@ export class RaeeComponentsService {
 
 		if (index !== -1) currentList[index] = component;
 		else currentList.push(component);
+
+		currentList.sort((a, b) => b.component_id - a.component_id);
 		this._raeeComponentListSubject.next(currentList);
 	}
 
@@ -51,6 +53,8 @@ export class RaeeComponentsService {
 		const currentList = this._raeeComponentListSubject.getValue();
 		const index = currentList.findIndex((item) => item.component_id === component.component_id);
 		currentList.splice(index, 1);
+
+		currentList.sort((a, b) => b.component_id - a.component_id);
 		this._raeeComponentListSubject.next(currentList);
 	}
 }

@@ -49,6 +49,8 @@ export class UsersService {
 
 		if (index !== -1) currentList[index] = user;
 		else currentList.push(user);
+
+		currentList.sort((a, b) => b.id - a.id);
 		this._userListSubject.next(currentList);
 	}
 }
