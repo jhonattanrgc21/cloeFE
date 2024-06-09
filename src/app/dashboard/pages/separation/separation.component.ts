@@ -296,6 +296,7 @@ export class SeparationComponent implements OnInit, OnDestroy {
 						this.raeeSelected = null;
 						this.componentsList = [];
 						this.dataSource.data = this.componentsList;
+						this.loadClasifications(1, 5, 1);
 					}
 					else{
 						this._alertService.setAlert({

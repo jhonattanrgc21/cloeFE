@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AuthService } from 'src/app/auth/services/auth.service';
 
 @Component({
   selector: 'app-clasification-detail',
@@ -9,6 +10,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 export class ClasificationDetailComponent {
 	constructor(
 		public dialogRef: MatDialogRef<ClasificationDetailComponent>,
+		private _authService: AuthService,
 		@Inject(MAT_DIALOG_DATA) public data: any
 	) {}
 
@@ -16,4 +18,7 @@ export class ClasificationDetailComponent {
 		this.dialogRef.close(option);
 	}
 
+	isAdminRole() {
+		return this._authService.currentRole == 'admin';
+	}
 }

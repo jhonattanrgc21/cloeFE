@@ -2,7 +2,7 @@ export interface RaeeComponent {
 	raee_name?:    string;
 	component_id: number;
 	name:         string;
-	weight:       number;
+	weight:       string;
 	dimensions:   string;
 	reusable:     number;
 	observations: string;
@@ -13,7 +13,7 @@ export interface RaeeComponent {
 export interface RaeeComponentEdit {
 	component_id?: number;
 	name?:         string;
-	weight?:       number;
+	weight?:       string;
 	dimensions?:   string;
 	reusable?:     boolean;
 	observations?: string;

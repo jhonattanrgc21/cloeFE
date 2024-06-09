@@ -36,9 +36,11 @@
 
 	<ng-container *ngIf="!data.disableActions">
 		<div class="mt-7 flex justify-between items-center">
-			<div class="w-24">
-				<button class="btn btn-md btn-outline btn-outline__danger" (click)="onClose('delete')">Eliminar</button>
-			</div>
+			<ng-container *ngIf="isAdminRole()">
+				<div class="w-24">
+					<button class="btn btn-md btn-outline btn-outline__danger" (click)="onClose('delete')">Eliminar</button>
+				</div>
+			</ng-container>
 
 			<div class="w-24">
 				<button class="btn btn-md btn-primary btn-primary__success" (click)="onClose('edit')">Editar</button>
