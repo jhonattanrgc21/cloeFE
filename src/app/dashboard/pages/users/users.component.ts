@@ -244,7 +244,11 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (result) {
 				let userEdit: UserEdit = user as UserEdit;
 				userEdit.active = 0;
-				const action$ = this._usersServices.updateUser(userEdit);
+				const json = {
+					id: userEdit.id,
+					active: 0
+				}
+				const action$ = this._usersServices.updateUser(json);
 				action$.subscribe((res) => {
 					user.active = userEdit.active = 0;
 					this._handleUserResponse(
@@ -276,8 +280,12 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
 			if (result) {
 				let userEdit: UserEdit = user as UserEdit;
 				userEdit.active = 1;
+				const json = {
+					id: userEdit.id,
+					active: 1
+				}
 
-				const action$ = this._usersServices.updateUser(userEdit);
+				const action$ = this._usersServices.updateUser(json);
 				action$.subscribe((res) => {
 					user.active = 1;
 					this._handleUserResponse(
