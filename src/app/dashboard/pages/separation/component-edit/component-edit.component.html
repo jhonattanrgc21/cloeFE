@@ -2,7 +2,7 @@
 	<p class="text-[#0B132B] font-poppins-medium text-lg mb-6">{{ title }}</p>
 
 	<form [formGroup]="componentForm" class="flex flex-col gap-4">
-		<app-cloe-input-field formControlName="name" [label]="'Componente'" [typeInput]="'text'"
+		<app-cloe-input-field [useSpecialCharactersOnly]="true" formControlName="name" [label]="'Componente'" [typeInput]="'text'"
 			[forName]="'nameSeparation'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 
 		<app-cloe-select-search formControlName="materials" [label]="'Materiales'" [isMultiple]="true"
@@ -23,7 +23,7 @@
 		<app-cloe-input-field formControlName="height" [useNumericInput]="true" [label]="'Alto (cm)'" [typeInput]="'text'"
 			[forName]="'heightSeparation'" [placeholder]="'0.00'"></app-cloe-input-field>
 
-		<app-cloe-input-field [label]="'Observación'" formControlName="comment" [rows]="'3'" [typeInput]="'textarea'"
+		<app-cloe-input-field [useSpecialCharactersOnly]="true" [label]="'Observación'" formControlName="comment" [rows]="'3'" [typeInput]="'textarea'"
 			[forName]="'commentSeparation'" [placeholder]="'Escribe aquí...'"></app-cloe-input-field>
 
 		<label class="inline-flex items-center">
