@@ -233,7 +233,7 @@ export class ClasificationComponent implements OnInit, AfterViewInit, OnDestroy 
 			autoFocus: false,
 			data: {
 				clasification,
-				disableActions:  this.isAdminRole()
+				disableActions:  false
 			}
 		});
 
